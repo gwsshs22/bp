@@ -3,13 +3,24 @@ package club.sgen.entity;
 import java.util.Date;
 
 public class Product {
-	private String type;
+	public static enum TYPE {
+		P, M;
 
-	public String getType() {
+		public String toString() {
+			if (this == P)
+				return "P";
+			else
+				return "M";
+		}
+	};
+
+	private TYPE type;
+
+	public TYPE getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TYPE type) {
 		this.type = type;
 	}
 
@@ -61,6 +72,15 @@ public class Product {
 		this.image = image;
 	}
 
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	private int price;
 	private int product_key;
 	private String name;
 	private Date term_start;
