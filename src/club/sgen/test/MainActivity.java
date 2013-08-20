@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main2);
 
 		btn = (Button) findViewById(R.id.request_btn);
 		id = (EditText) findViewById(R.id.id_text);
