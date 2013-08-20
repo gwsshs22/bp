@@ -28,7 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 import android.widget.Toast;
 import club.sgen.custom.FriendListAdapter;
 import club.sgen.custom.MainGridItemAdapter;
@@ -70,7 +72,7 @@ public class MainActivity extends Activity {
 
 		// sliding drawer 랑 action bar app icon 이랑 잘 interact 하게 해주는 애
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+				R.drawable.actionbar_btn_menu, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
@@ -170,15 +172,17 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
+	
 	/**
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
-	public static class PageFragment extends Fragment {
+	public static class PageFragment extends Fragment{
 		public static final String ARG_PAGE_NUMBER = "page_number";
 		int fragmentPosition = -1;
 		GridView gridView;
 		ListView listView;
 		View rootView;
+		TabHost tabHost;
 		ArrayList<Betting> bettingItems;
 		ArrayList<User> friendItems;
 
@@ -248,18 +252,19 @@ public class MainActivity extends Activity {
 				viewPager.setAdapter(myPagerAdapter);
 
 				//Tabhost
-				TabHost tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
 				tabHost.setup();
 				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
 				tabSpec.setContent(R.id.grid_all_popple);
-				tabSpec.setIndicator("tab one");
+				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab1));
 				tabHost.addTab(tabSpec);
 				
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.grid_friend);
-				tabSpec.setIndicator("tab two");
+				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab2));
 				tabHost.addTab(tabSpec);
-				//tabHost.setCurrentTab(0);
+				tabHost.setCurrentTab(0);				
+				
 				
 				// GridView
 				gridView = (GridView) rootView
@@ -275,20 +280,49 @@ public class MainActivity extends Activity {
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
 				MainGridItemAdapter mainGridItemAdapter = new MainGridItemAdapter(
-						getActivity(), R.layout.view_grid, bettingItems);
+						getActivity(), R.layout.view_grid2, bettingItems);
 				gridView.setAdapter(mainGridItemAdapter);
 				gridView.setOnItemClickListener(bettingItemListener);
 				break;
 			case 2: // friend list
-				listView = (ListView) rootView.findViewById(R.id.list_friend);
+				//Tabhost
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost_friend);
+				tabHost.setup();
+				tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
+				tabSpec.setContent(R.id.list_my_friend);
+				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab_my_pople));
+				tabHost.addTab(tabSpec);
+				
+				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
+				tabSpec.setContent(R.id.list_find_friend);
+				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab_find_pople));
+				tabHost.addTab(tabSpec);
+				tabHost.setCurrentTab(0);	
+				
+				//listView
+				listView = (ListView) rootView.findViewById(R.id.list_my_friend);
 				FriendListAdapter friendListAdapter = new FriendListAdapter(
 						getActivity(), R.layout.view_list, friendItems);
+				listView.setAdapter(friendListAdapter);
+				listView.setOnItemClickListener(friendItemListener);
+				
+				listView = (ListView) rootView.findViewById(R.id.list_find_friend);
 				listView.setAdapter(friendListAdapter);
 				listView.setOnItemClickListener(friendItemListener);
 			default:
 			}
 		}
-
+		
+		public void onTabChanged(String tabId){
+			Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
+			
+			TabWidget tabWidget = tabHost.getTabWidget();
+			
+			if(tabId == "Tab1"){
+				Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
+			}
+		}
+		
 		AdapterView.OnItemClickListener bettingItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
