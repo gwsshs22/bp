@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(MainActivity.this,
-						BettingMakeActivity.class);
+						club.sgen.bettingpop.AddBettingActivity.class);
 				startActivity(intent);
 			}
 

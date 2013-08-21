@@ -12,6 +12,12 @@ public class Product {
 			else
 				return "M";
 		}
+
+		public static TYPE getTypeByString(String s) {
+			if (s.equals("P"))
+				return P;
+			return M;
+		}
 	};
 
 	private TYPE type;

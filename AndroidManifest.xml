@@ -30,6 +30,7 @@
         </activity>
         <activity android:name="club.sgen.test.BettingMakeActivity" >
         </activity>
+        <activity android:name="club.sgen.bettingpop.AddBettingActivity"/>
     </application>
 
 </manifest>

@@ -11,6 +11,12 @@ public class Betting {
 			else
 				return "D";
 		}
+
+		public static TYPE getTypeByString(String s) {
+			if (s.equals("B"))
+				return B;
+			return D;
+		}
 	};
 
 	public Product getProduct() {
@@ -32,6 +38,15 @@ public class Betting {
 	private int max_number;
 	private int product_key;
 	private String result_image;
+	private String user_id;
+
+	public String getUserId() {
+		return user_id;
+	}
+
+	public void setUserId(String userId) {
+		this.user_id = userId;
+	}
 
 	public String getResultImage() {
 		return result_image;
