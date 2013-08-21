@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import club.sgen.entity.Betting;
+import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
 import club.sgen.entity.User;
 
@@ -215,6 +216,18 @@ public abstract class DataRequester {
 	
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	
+	public static Pop toPop(JSONObject object) throws JSONException, ParseException
+	{
+		Pop pop = new Pop();
+		
+		User user = toUser(object);		
+		Product product = toProduct(object);
+		Betting betting = toBetting(object);
+		pop.setAgree(object.getInt("agree"));
+		pop.setDisagree(object.getInt("disagree"));		
+		
+		return pop;
+	}
 	
 	public static User toUser(JSONObject object) throws JSONException, ParseException
 	{
@@ -288,16 +301,16 @@ public abstract class DataRequester {
 				new DataParser("showAllbettinglist"){
 			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
 				JSONArray success = data.getJSONArray("success");
-				ArrayList<Betting> bettings = new ArrayList<Betting>();
+				ArrayList<Pop> pops = new ArrayList<Pop>();
 				for(int i = 0; i < success.length();i++){
 					try {
-						bettings.add(toBetting(success.getJSONObject(i)));
+						pops.add(toPop(success.getJSONObject(i)));
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-				map.put("bettings", bettings);
+				map.put("pops", pops);
 			}
 		});
 	}

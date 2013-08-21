@@ -60,8 +60,12 @@
 
 				@Override
 				public void onClick(View arg0) {
-					System.out.println("1");
-					DataRequester.showAllbettinglist(MainActivity.this);
+					try {
+						DataRequester.showJoinbettinglist(new String(id.getEditableText().toString().getBytes("UTF-8")), MainActivity.this);
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 
 			});
@@ -96,7 +100,7 @@
 		public void onResult(HashMap<String, Object> result) {
 			String type = (String) result.get("type");
 			Boolean errorOccured = (Boolean) result.get("error_occured");
-			if (type.equals("showAllbetinglist")) {
+			if (type.equals("showJoinbettinglist")) {
 				if (!errorOccured) {
 					int x = 0;
 					x += 10;
