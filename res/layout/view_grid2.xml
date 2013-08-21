@@ -15,28 +15,29 @@
             android:id="@+id/product_image"
             android:layout_width="148dp"
             android:layout_height="74dp"
-            android:layout_margin="14dp"
+            android:layout_marginTop="14dp"
             android:src="@drawable/product_1" />
 
         <TextView
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:gravity="center"
-            android:layout_margin="15dp"
             android:text="파리크라상 딸기스무디"
             android:textColor="#037eba"
-            android:textSize="15dp" />
+            android:textSize="13dp" />
 
         <TextView
             android:id="@+id/product_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:layout_margin="7dp"
             android:text="생딸기의 새콤달콤한\n그맛 그대로"
             android:textColor="#747474"
-            android:textSize="13dp" />
+            android:textSize="10dp" />
+
     </LinearLayout>
 
     <LinearLayout
