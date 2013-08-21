@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000" >
+
+    <ImageView
+        android:id="@+id/popup_bettingstart_productbuy_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상품명" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가격" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="개수" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_totalprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총금액" >
+        </TextView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="위 상품을 결제하시겠습니까?" >
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/popup_bettingstart_productbuy_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+
+    <ImageButton
+        android:id="@+id/popup_bettingstart_productbuy_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+
+    <ImageButton
+        android:id="@+id/popup_bettingstart_productbuy_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+
+</FrameLayout>
