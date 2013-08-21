@@ -22,45 +22,48 @@
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="파리크라상 딸기스무디"
             android:textColor="#037eba"
-            android:textSize="13dp" />
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/product_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:gravity="center"
             android:text="생딸기의 새콤달콤한\n그맛 그대로"
             android:textColor="#747474"
-            android:textSize="10dp" />
-
+            android:textSize="13dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="174dp"
         android:layout_height="30dp"
         android:background="@drawable/plate_bottom"
-        android:orientation="horizontal"
-        android:gravity="center" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:text="6000"
             android:textColor="#ffffff"
             android:textSize="15dp" />
+
         <TextView
             android:id="@+id/product_price_won"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:text=" 원"
             android:textColor="#ffffff"
             android:textSize="15dp" />
+
     </LinearLayout>
 
 </LinearLayout>

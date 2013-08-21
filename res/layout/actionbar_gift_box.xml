@@ -7,7 +7,7 @@
     
     <ToggleButton 
         android:id="@+id/actionbar_toggle"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="match_parent"
         android:textOn=""
         android:textOff=""

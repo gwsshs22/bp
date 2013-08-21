@@ -3,6 +3,7 @@
 
     <string name="app_name">Betting Pop</string>
     <string-array name="pages_array">
+        <item>bettings</item>
         <item>my_page</item>
         <item>betting_item</item>
         <item>friend</item>

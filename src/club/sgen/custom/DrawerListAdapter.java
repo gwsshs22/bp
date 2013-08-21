@@ -1,16 +1,12 @@
 package club.sgen.custom;
 
-import java.util.ArrayList;
-
-import club.sgen.entity.User;
-import club.sgen.network.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import club.sgen.network.R;
 
 public class DrawerListAdapter extends BaseAdapter {
 	Context context;
@@ -53,16 +49,20 @@ public class DrawerListAdapter extends BaseAdapter {
 
 		LinearLayout linearLayout = (LinearLayout) listView
 				.findViewById(R.id.drawer_list_back);
-		if(position == 0){
+		if (position == 0) {
+			linearLayout.setBackgroundResource(R.drawable.slide_1);
+		} else if (position == 1) {
 			linearLayout.setBackgroundResource(R.drawable.slide_2);
-		}else if(position == 1){
+		} else if (position == 2) {
 			linearLayout.setBackgroundResource(R.drawable.slide_3);
-		}else if(position == 2){
+		} else if (position == 3) {
 			linearLayout.setBackgroundResource(R.drawable.slide_4);
-		}else if(position == 3){
+		} else if (position == 4) {
 			linearLayout.setBackgroundResource(R.drawable.slide_5);
-		}  
-		
+		} else if (position == 5) {
+			linearLayout.setBackgroundResource(R.drawable.slide_6);
+		}
+
 		return listView;
 	}
 }

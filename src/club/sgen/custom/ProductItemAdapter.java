@@ -80,7 +80,7 @@ public class ProductItemAdapter extends BaseAdapter {
 		productIntro.setText(product.getDescription());
 
 		TextView price = (TextView) gridView.findViewById(R.id.product_price);
-		price.setText(product.getPrice());
+		price.setText(String.valueOf(product.getPrice()));
 		return gridView;
 	}
 }
