@@ -257,9 +257,7 @@ public class PictureSelector {
 			Log.w(TAG, "mImageCaptureUri = " + mImageCaptureUri);
 
 			String full_path = mImageCaptureUri.getPath();
-			BitmapFactory.Options bof = new BitmapFactory.Options();
-			bof.inSampleSize = 2;
-			photo = BitmapFactory.decodeFile(full_path, bof);
+			photo = BitmapFactory.decodeFile(full_path);
 			if (height > 0 && width > 0) {
 				Bitmap temp = photo;
 				photo = Bitmap.createScaledBitmap(temp, width, height, false);

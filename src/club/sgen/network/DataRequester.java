@@ -167,7 +167,7 @@ public abstract class DataRequester {
 						if (success != null && (Boolean) success) {
 							if (image != null)
 								executeFileUpload(image,
-										"UPDATE user SET image = ? WHERE id = \""
+										"UPDATE user SET image = ? WHERE user_id = \""
 												+ id + "\"", id);
 						}
 					}
