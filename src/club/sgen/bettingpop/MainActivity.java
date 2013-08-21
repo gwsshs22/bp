@@ -28,6 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -52,10 +53,13 @@ public class MainActivity extends Activity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ToggleButton toggleButton;
+	private ActionBar actionBar;
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mPageTitles;
+	private int[] actionBackgrounds = { R.layout.actionbar_background,
+			R.layout.actionbar_gift_box, R.layout.actionbar_background };
 
 	ImageView iv;
 
@@ -76,26 +80,27 @@ public class MainActivity extends Activity {
 		DrawerListAdapter drawerListAdapter = new DrawerListAdapter(this,
 				R.layout.view_drawer_list, mPageTitles);
 		mDrawerList.setAdapter(drawerListAdapter);
-		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-		// R.layout.drawer_list_item, mPageTitles));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// enbable ActionBar app icon to behave as action to toggle nav drawer
-		// getActionBar().setDisplayHomeAsUpEnabled(true);
-		// getActionBar().setHomeButtonEnabled(true);
-		ActionBar actionBar = getActionBar();
-		View v = getLayoutInflater().inflate(R.layout.actionbar_background,
+		setActionBar(0);
+		
+		if (savedInstanceState == null) {
+			selectItem(0);
+		}
+	}
+	
+	public void setActionBar(int position){
+		actionBar = getActionBar();
+		int mPostion = position%actionBackgrounds.length;
+		View view = getLayoutInflater().inflate(actionBackgrounds[mPostion],
 				null);
-		actionBar.setCustomView(v, new ActionBar.LayoutParams(
+		actionBar.setCustomView(view, new ActionBar.LayoutParams(
 				ActionBar.LayoutParams.MATCH_PARENT,
 				ActionBar.LayoutParams.MATCH_PARENT));
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		toggleButton = (ToggleButton) actionBar.getCustomView().findViewById(
 				R.id.actionbar_toggle);
-		
-		
-		toggleButton.setOnClickListener(new OnClickListener() {
-		
+		toggleButton.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View arg0) {
 				if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
@@ -107,28 +112,33 @@ public class MainActivity extends Activity {
 
 		});
 
+
 		// sliding drawer 랑 action bar app icon 이랑 잘 interact 하게 해주는 애
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.actionbar_btn_menu, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
+				invalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View view) {
 				getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
+				invalidateOptionsMenu();
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		if (savedInstanceState == null) {
-			selectItem(0);
+		
+		if(mPostion == 0){
+			ImageButton button = (ImageButton) actionBar.getCustomView().findViewById(R.id.btn_add_betting);
+			button.setOnClickListener(new OnClickListener(){
+				public void onClick(View arg0) {
+					Intent intent = new Intent(MainActivity.this,
+							 AddBettingActivity.class);
+							 startActivity(intent);
+				}
+			});
 		}
-
 	}
 
 	@Override
@@ -136,14 +146,6 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
-	}
-
-	// invalidateOptionsMenu 부르면 불림
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// nav drawer가 열리면 hide action items related to the content view
-//		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//		menu.findItem(R.id.action_add_betting).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -154,11 +156,6 @@ public class MainActivity extends Activity {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-//		case R.id.action_add_betting:
-//			Intent intent = new Intent(MainActivity.this,
-//					AddBettingActivity.class);
-//			startActivity(intent);
-//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -185,14 +182,8 @@ public class MainActivity extends Activity {
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mPageTitles[position]);
+		setActionBar(position);
 		mDrawerLayout.closeDrawer(mDrawerList);
-	}
-
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
 	}
 
 	@Override

@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="56dp"
     android:orientation="horizontal"
-    android:background="@drawable/actionbar_background" >
+    android:background="@drawable/top_center" >
     
     <ToggleButton 
+        android:layout_alignParentLeft="true"
         android:id="@+id/actionbar_toggle"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="match_parent"
         android:textOn=""
         android:textOff=""
         android:background="@drawable/actionbar_btn_menu"/>
 
-</LinearLayout>
+    <ImageButton
+        android:layout_alignParentRight="true"
+        android:id="@+id/btn_add_betting"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="@drawable/top_right_new_betting"
+        android:focusable="false" />
+
+</RelativeLayout>

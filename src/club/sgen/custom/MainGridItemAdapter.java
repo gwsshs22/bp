@@ -1,6 +1,7 @@
 package club.sgen.custom;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import club.sgen.entity.Betting;
+import club.sgen.network.AsyncCallback;
 import club.sgen.network.R;
+import club.sgen.network.DataRequester;
 
-public class MainGridItemAdapter extends BaseAdapter {
+public class MainGridItemAdapter extends BaseAdapter implements
+		AsyncCallback<HashMap<String, Object>> {
 	Context context;
-	// private int [] pics = {R.drawable.earth, R.drawable.mars,
-	// R.drawable.jupiter};
 	LayoutInflater inflater;
 	ArrayList<Betting> bettingSrc;
 	int layout;
@@ -28,6 +31,7 @@ public class MainGridItemAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.bettingSrc = bettingSrc;
 		this.layout = layout;
+		DataRequester.showAllbettinglist(this);
 	}
 
 	@Override
@@ -83,6 +87,28 @@ public class MainGridItemAdapter extends BaseAdapter {
 		// }
 
 		return gridView;
+	}
+	
+	@Override
+	public void onResult(HashMap<String, Object> result) {
+		String type = (String) result.get("type");
+		Boolean errorOccured = (Boolean) result.get("error_occured");
+		if (type.equals("showAllbettinglist")) {
+			if (!errorOccured) {
+				int x = 0;
+				x += 10;
+			} else {
+				
+			}
+		}
+	}
+
+	@Override
+	public void exceptionOccured(Exception e) {
+	}
+
+	@Override
+	public void cancelled() {
 	}
 
 }
