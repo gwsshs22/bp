@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import club.sgen.entity.Betting;
+import club.sgen.entity.User;
 import club.sgen.network.AsyncCallback;
 import club.sgen.network.R;
 import club.sgen.network.DataRequester;
 
-public class MainGridItemAdapter extends BaseAdapter implements
-		AsyncCallback<HashMap<String, Object>> {
+public class MainGridItemAdapter extends BaseAdapter {
 	Context context;
 	LayoutInflater inflater;
 	ArrayList<Betting> bettingSrc;
@@ -31,7 +31,6 @@ public class MainGridItemAdapter extends BaseAdapter implements
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.bettingSrc = bettingSrc;
 		this.layout = layout;
-		DataRequester.showAllbettinglist(this);
 	}
 
 	@Override
@@ -51,17 +50,9 @@ public class MainGridItemAdapter extends BaseAdapter implements
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// ImageView imageView =
-		// (ImageView)convertView.findViewById(R.id.betting_image);
-		// ImageView imageView =
-		// (ImageView)tempView.findViewById(R.id.betting_image);
-
-		Log.d("A1", "1");
-
 		View gridView;
 
 		if (convertView == null) {
-			Log.d("A1", "2");
 			gridView = inflater.from(context).inflate(layout, null);
 
 		} else {
@@ -70,45 +61,19 @@ public class MainGridItemAdapter extends BaseAdapter implements
 
 		ImageView imageView = (ImageView) gridView
 				.findViewById(R.id.betting_image);
-		// imageView.setImageResource(bettingSrc.get(position).getBettingImage());
+		//imageView.setImageResource(Integer.parseInt(bettingSrc.get(position).getResultImage()));
 
-		TextView textView = (TextView) gridView
-				.findViewById(R.id.betting_title);
-		// textView.setText(bettingSrc.get(position).getTitle());
-		// TextView textView = (TextView) gridView.
-		// if(convertView == null){
-		// //imageView = new ImageView(context);
-		// imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
-		// imageView.setAdjustViewBounds(false);
-		// imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-		// imageView.setPadding(8, 8, 8, 8);
-		// }else{
-		// imageView = (ImageView)convertView;
-		// }
+		imageView = (ImageView) gridView.findViewById(R.id.better_image);
+		// imageView set image
+
+		TextView textView = (TextView) gridView.findViewById(R.id.better_name);
+		textView.setText(bettingSrc.get(position).getUserId());
+
+		textView = (TextView) gridView.findViewById(R.id.betting_title);
+		textView.setText(bettingSrc.get(position).getName());
 
 		return gridView;
 	}
-	
-	@Override
-	public void onResult(HashMap<String, Object> result) {
-		String type = (String) result.get("type");
-		Boolean errorOccured = (Boolean) result.get("error_occured");
-		if (type.equals("showAllbettinglist")) {
-			if (!errorOccured) {
-				int x = 0;
-				x += 10;
-			} else {
-				
-			}
-		}
-	}
 
-	@Override
-	public void exceptionOccured(Exception e) {
-	}
-
-	@Override
-	public void cancelled() {
-	}
 
 }

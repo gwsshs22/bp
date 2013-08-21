@@ -2,6 +2,7 @@ package club.sgen.bettingpop;
 
 //
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -45,6 +46,7 @@ import club.sgen.custom.MainGridItemAdapter;
 import club.sgen.custom.MyPagerAdapter;
 import club.sgen.entity.Betting;
 import club.sgen.entity.User;
+import club.sgen.network.AsyncCallback;
 import club.sgen.network.DataRequester;
 import club.sgen.network.R;
 
@@ -203,7 +205,8 @@ public class MainActivity extends Activity {
 	/**
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
-	public static class PageFragment extends Fragment {
+	public static class PageFragment extends Fragment implements
+	AsyncCallback<HashMap<String, Object>>{
 		public static final String ARG_PAGE_NUMBER = "page_number";
 		int fragmentPosition = -1;
 		GridView gridView;
@@ -211,7 +214,9 @@ public class MainActivity extends Activity {
 		View rootView;
 		TabHost tabHost;
 		ArrayList<Betting> bettingItems;
+		ArrayList<User> bettingUsers;
 		ArrayList<User> friendItems;
+		User user;
 
 		public PageFragment() {
 			// Empty constructor
@@ -224,14 +229,9 @@ public class MainActivity extends Activity {
 			fragmentPosition = i;
 
 			// temporary bettings
+			DataRequester.showAllbettinglist(this);
+			
 			bettingItems = new ArrayList<Betting>();
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
 
 			// temporary users(friends)
 			friendItems = new ArrayList<User>();
@@ -384,6 +384,32 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 			}
 		};
+
+		@Override
+		public void onResult(HashMap<String, Object> result) {
+			String type = (String) result.get("type");
+			Boolean errorOccured = (Boolean) result.get("error_occured");
+			if (type.equals("showAllbettinglist")) {
+				if (!errorOccured) {
+					bettingItems = (ArrayList<Betting>) result.get("bettings");
+					Toast.makeText(getActivity(), bettingItems.size()+"개 베팅", Toast.LENGTH_LONG).show();
+				} else {
+
+				}
+			}
+		}
+
+		@Override
+		public void exceptionOccured(Exception e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void cancelled() {
+			// TODO Auto-generated method stub
+			
+		}
 
 	}
 

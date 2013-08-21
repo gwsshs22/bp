@@ -392,7 +392,7 @@ public abstract class DataRequester {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		addParam(params, "user_id", id);
 		execute(serverURL + "/servlets/showUserInfo", params, callback,
-				new DataParser("showBettingInfo"){
+				new DataParser("showUserInfo"){
 			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
 				try {
 					map.put("user", toUser(data.getJSONObject("success")));
