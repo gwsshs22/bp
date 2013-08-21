@@ -18,9 +18,12 @@ public final class R {
         public static final int wallpaper_open_enter=0x7f040006;
         public static final int wallpaper_open_exit=0x7f040007;
     }
+<<<<<<< HEAD
     public static final class array {
         public static final int pages_array=0x7f070000;
     }
+=======
+>>>>>>> maymay
     public static final class attr {
     }
     public static final class dimen {
@@ -55,6 +58,7 @@ public final class R {
         public static final int white=0x7f020012;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int action_add_betting=0x7f0a0073;
         public static final int betting_image=0x7f0a006f;
         public static final int betting_make_btn=0x7f0a0007;
@@ -211,6 +215,38 @@ public final class R {
         public static final int drawer_close=0x7f060002;
         public static final int drawer_open=0x7f060001;
         public static final int hello_world=0x7f060006;
+=======
+        public static final int action_settings=0x7f09000f;
+        public static final int betting_make_btn=0x7f090004;
+        public static final int btn_camera_crop=0x7f09000d;
+        public static final int btn_gellary_crop=0x7f09000e;
+        public static final int goal=0x7f090007;
+        public static final int id_text=0x7f090001;
+        public static final int image_down_test_btn=0x7f09000b;
+        public static final int image_test_delete_btn=0x7f09000c;
+        public static final int img_down_btn=0x7f090005;
+        public static final int m_number=0x7f090008;
+        public static final int password_text=0x7f090002;
+        public static final int profile_image=0x7f090006;
+        public static final int request_btn=0x7f090003;
+        public static final int upload_button=0x7f090009;
+        public static final int user_image=0x7f090000;
+        public static final int user_image_test=0x7f09000a;
+    }
+    public static final class layout {
+        public static final int activity_main=0x7f030000;
+        public static final int betting_make=0x7f030001;
+        public static final int download_layout=0x7f030002;
+        public static final int image_crop_row=0x7f030003;
+    }
+    public static final class menu {
+        public static final int main=0x7f080000;
+    }
+    public static final class string {
+        public static final int action_settings=0x7f060001;
+        public static final int app_name=0x7f060000;
+        public static final int hello_world=0x7f060002;
+>>>>>>> maymay
     }
     public static final class style {
         /** 
@@ -234,10 +270,18 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
+<<<<<<< HEAD
         public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f080001;
+=======
+        public static final int AppBaseTheme=0x7f070000;
+        /**  Application theme. 
+ All customizations that are NOT specific to a particular API-level can go here. 
+         */
+        public static final int AppTheme=0x7f070001;
+>>>>>>> maymay
     }
 }
