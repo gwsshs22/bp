@@ -3,6 +3,7 @@ package club.sgen.entity;
 import java.util.Date;
 
 public class Betting {
+	private Product product;
 	private int betting_key;
 	private String name;
 	private String goal;
@@ -12,6 +13,28 @@ public class Betting {
 	private String description;
 	private int max_number;
 	private int product_key;
+	private String image;
+	private String user_id;
+	
+	
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public int getBetting_key() {
 		return betting_key;
 	}

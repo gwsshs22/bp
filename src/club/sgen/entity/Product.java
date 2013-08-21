@@ -59,7 +59,17 @@ public class Product {
 
 	public void setImage(String image) {
 		this.image = image;
+	}	
+	
+	public int getPrice() {
+		return price;
 	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+
 
 	private int product_key;
 	private String name;
@@ -67,5 +77,6 @@ public class Product {
 	private Date term_end;
 	private String description;
 	private String image;
+	private int price;
 
 }
