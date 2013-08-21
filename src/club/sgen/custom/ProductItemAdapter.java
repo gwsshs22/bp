@@ -19,19 +19,19 @@ import club.sgen.network.ImageDownloader;
 import club.sgen.network.R;
 import club.sgen.network.cache.ImageCacheFactory;
 
-public class MainGridItemAdapter extends BaseAdapter {
+public class ProductItemAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater;
-	private ArrayList<Pop> popSrc;
+	private ArrayList<Product> productSrc;
 	private int layout;
 	private ImageDownloader imageDownloader;
 
-	public MainGridItemAdapter(Context context, int layout,
-			ArrayList<Pop> popSrc) {
+	public ProductItemAdapter(Context context, int layout,
+			ArrayList<Product> productSrc) {
 		this.context = context;
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.popSrc = popSrc;
+		this.productSrc = productSrc;
 		this.layout = layout;
 		this.imageDownloader = new ImageDownloader(context,
 				ImageCacheFactory.DEFAULT_CACHE_NAME);
@@ -39,12 +39,12 @@ public class MainGridItemAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return popSrc.size();
+		return productSrc.size();
 	}
 
 	@Override
-	public Pop getItem(int position) {
-		return popSrc.get(position);
+	public Product getItem(int position) {
+		return productSrc.get(position);
 	}
 
 	@Override
@@ -62,31 +62,25 @@ public class MainGridItemAdapter extends BaseAdapter {
 		} else {
 			gridView = convertView;
 		}
+		BitmapDrawable noImageDrawable = new BitmapDrawable(
+				context.getResources(), BitmapFactory.decodeResource(
+						context.getResources(), R.drawable.product_1));
+		ImageView productImage = (ImageView) gridView
+				.findViewById(R.id.product_image);
+		Product product = productSrc.get(position);
+		imageDownloader.download(product.getImage(), productImage,
+				noImageDrawable);
 
-		Betting betting = popSrc.get(position).getBetting();
-		User user = popSrc.get(position).getUser();
-		Product product = popSrc.get(position).getProduct();
+		TextView productName = (TextView) gridView
+				.findViewById(R.id.product_name);
+		productName.setText(product.getName());
 
-		ImageView imageView = (ImageView) gridView
-				.findViewById(R.id.betting_image);
-		BitmapDrawable noImage = new BitmapDrawable(context.getResources(),
-				BitmapFactory.decodeResource(context.getResources(),
-						R.drawable.product_3));
-		imageDownloader.download(product.getImage(), imageView, noImage);
+		TextView productIntro = (TextView) gridView
+				.findViewById(R.id.product_intro);
+		productIntro.setText(product.getDescription());
 
-		imageView = (ImageView) gridView.findViewById(R.id.better_image);
-		noImage = new BitmapDrawable(context.getResources(),
-				BitmapFactory.decodeResource(context.getResources(),
-						R.drawable.user1));
-		imageDownloader.download(user.getImage(), imageView, noImage);
-
-		TextView textView = (TextView) gridView.findViewById(R.id.better_name);
-		textView.setText(betting.getUserId());
-
-		textView = (TextView) gridView.findViewById(R.id.betting_title);
-		textView.setText(betting.getName());
-
+		TextView price = (TextView) gridView.findViewById(R.id.product_price);
+		price.setText(product.getPrice());
 		return gridView;
 	}
-
 }

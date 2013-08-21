@@ -25,6 +25,9 @@ public class ImageDownloader {
 
 	public void download(String fileName, ImageView imageView,
 			Drawable noImageDrawable) {
+		imageView.setImageDrawable(noImageDrawable);
+		if (fileName == null)
+			return;
 		String url = DataRequester.serverURL + "/images/" + fileName;
 		Bitmap bitmap = imageCache.getBitmap(url);
 		if (bitmap == null) {
@@ -39,8 +42,6 @@ public class ImageDownloader {
 			Drawable noImageDrawable) {
 		if (!cancelPotentialDownload(url, imageView))
 			return;
-
-		imageView.setImageDrawable(noImageDrawable);
 		runAsyncImageDownloading(url, imageView);
 	}
 
