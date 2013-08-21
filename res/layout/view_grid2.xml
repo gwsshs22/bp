@@ -22,6 +22,8 @@
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="파리크라상 딸기스무디"
@@ -32,11 +34,14 @@
             android:id="@+id/product_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:layout_marginTop="3dp"
             android:gravity="center"
             android:text="생딸기의 새콤달콤한\n그맛 그대로"
             android:textColor="#747474"
             android:textSize="13dp" />
+
     </LinearLayout>
 
     <LinearLayout

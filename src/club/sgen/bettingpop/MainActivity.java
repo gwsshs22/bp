@@ -216,13 +216,14 @@ public class MainActivity extends Activity {
 		private ArrayList<Pop> myPopItems;
 		private ArrayList<Pop> allPopItems;
 		private ArrayList<Product> productItems;
-		private ArrayList<User> bettingUsers;
+		private ArrayList<User> friendRequestItems;
 		private ArrayList<User> friendItems;
 		private MyPagerAdapter myPagerAdapter;
 		private ProductItemAdapter productItemAdapter;
 		private MainGridItemAdapter mainGridItemAdapterAll;
 		private MainGridItemAdapter mainGridItemAdapterMyPople;
 		private FriendListAdapter friendListAdapter;
+		private FriendListAdapter friendRequestListAdapter;
 
 		private ArrayList<Pop> parPopItems;
 		private ArrayList<Pop> makedPopItems;
@@ -237,16 +238,8 @@ public class MainActivity extends Activity {
 			makedPopItems = new ArrayList<Pop>();
 
 			productItems = new ArrayList<Product>();
-			Product p = new Product();
-			p.setName("test");
-			p.setDescription("실험입니다.");
-			p.setImage("pro1");
-			productItems.add(p);
-			// temporary users(friends)
 			friendItems = new ArrayList<User>();
-			friendItems.add(new User());
-			friendItems.add(new User());
-			friendItems.add(new User());
+			friendRequestItems = new ArrayList<User>();
 		}
 
 		@Override
@@ -266,14 +259,19 @@ public class MainActivity extends Activity {
 			case 1:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
+				DataRequester.showMakebettinglist("Lee", this);
+				DataRequester.showJoinbettinglist("Gang", this);
 				break;
 			case 2:
 				rootView = inflater.inflate(R.layout.fragment_betting_item,
 						container, false);
+				DataRequester.showMyproductlist("Gang", this);
 				break;
 			case 3:
 				rootView = inflater.inflate(R.layout.fragment_friend,
 						container, false);
+				DataRequester.showFriendlist("Hwang", this);
+				DataRequester.showFriendrequestlist("Hwang", this);
 				break;
 			default:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
@@ -356,7 +354,7 @@ public class MainActivity extends Activity {
 						.findViewById(R.id.grid_all_popple);
 				mainGridItemAdapterMaked = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, makedPopItems);
-				gridView.setAdapter(mainGridItemAdapterAll);
+				gridView.setAdapter(mainGridItemAdapterMaked);
 				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
 				mainGridItemAdapterPar = new MainGridItemAdapter(getActivity(),
 						R.layout.view_grid, parPopItems);
@@ -392,12 +390,14 @@ public class MainActivity extends Activity {
 				friendListAdapter = new FriendListAdapter(getActivity(),
 						R.layout.view_list, friendItems);
 				listView.setAdapter(friendListAdapter);
-				listView.setOnItemClickListener(friendItemListener);
+				// listView.setOnItemClickListener(friendItemListener);
 
+				friendRequestListAdapter = new FriendListAdapter(getActivity(),
+						R.layout.view_list, friendRequestItems);
 				listView = (ListView) rootView
 						.findViewById(R.id.list_find_friend);
-				listView.setAdapter(friendListAdapter);
-				listView.setOnItemClickListener(friendItemListener);
+				listView.setAdapter(friendRequestListAdapter);
+				// listView.setOnItemClickListener(friendItemListener);
 			default:
 			}
 		}
@@ -467,6 +467,56 @@ public class MainActivity extends Activity {
 						for (Pop b : tempItems)
 							myPopItems.add(b);
 					mainGridItemAdapterMyPople.notifyDataSetChanged();
+				}
+			} else if (type.equals("showMakebettinglist")) {
+				if (!errorOccured) {
+					makedPopItems.clear();
+					ArrayList<Pop> tempItems = (ArrayList<Pop>) result
+							.get("pops");
+					if (tempItems != null)
+						for (Pop b : tempItems)
+							makedPopItems.add(b);
+					mainGridItemAdapterMaked.notifyDataSetChanged();
+				}
+			} else if (type.equals("showJoinbettinglist")) {
+				if (!errorOccured) {
+					parPopItems.clear();
+					ArrayList<Pop> tempItems = (ArrayList<Pop>) result
+							.get("pops");
+					if (tempItems != null)
+						for (Pop b : tempItems)
+							parPopItems.add(b);
+					mainGridItemAdapterPar.notifyDataSetChanged();
+				}
+			} else if (type.equals("showMyproductlist")) {
+				if (!errorOccured) {
+					productItems.clear();
+					ArrayList<Product> tempItems = (ArrayList<Product>) result
+							.get("products");
+					if (tempItems != null)
+						for (Product b : tempItems)
+							productItems.add(b);
+					productItemAdapter.notifyDataSetChanged();
+				}
+			} else if (type.equals("showFriendlist")) {
+				if (!errorOccured) {
+					friendItems.clear();
+					ArrayList<User> tempItems = (ArrayList<User>) result
+							.get("users");
+					if (tempItems != null)
+						for (User b : tempItems)
+							friendItems.add(b);
+					friendListAdapter.notifyDataSetChanged();
+				}
+			} else if (type.equals("showFriendrequestlist")) {
+				if (!errorOccured) {
+					friendRequestItems.clear();
+					ArrayList<User> tempItems = (ArrayList<User>) result
+							.get("users");
+					if (tempItems != null)
+						for (User b : tempItems)
+							friendRequestItems.add(b);
+					friendRequestListAdapter.notifyDataSetChanged();
 				}
 			}
 		}
