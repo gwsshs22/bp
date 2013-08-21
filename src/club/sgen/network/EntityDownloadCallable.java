@@ -40,7 +40,7 @@ public class EntityDownloadCallable implements
 			HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
 			HttpPost post = new HttpPost(url);
 			UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(
-					params, "UTF-8");
+					params, "utf8");
 			post.setEntity(entityRequest);
 			HttpResponse response = client.execute(post);
 			HttpEntity entityResponse = response.getEntity();

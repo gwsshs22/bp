@@ -211,10 +211,10 @@ public abstract class DataRequester {
 		}
 		return result;
 	}
-
 	
 	
-	//wowowowo
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	
 	
 	public static User toUser(JSONObject object) throws JSONException, ParseException
 	{
@@ -237,10 +237,22 @@ public abstract class DataRequester {
 		product.setImage(object.getString("product_image"));
 		product.setPrice(object.getInt("product_price"));
 		product.setDescription(object.getString("product_description"));
-		product.setTerm_start(df.parse(object.getString("product_term_start")));
-		product.setTerm_end(df.parse(object.getString("product_term_end")));
+		product.setTerm_start(parseDateString(object.getString("product_term_start")));
+		product.setTerm_end(parseDateString(object.getString("product_term_end")));
 		product.setProduct_key(object.getInt("product_key"));
 		return product;
+	}
+	
+	private static Date parseDateString(String string)
+	{
+		if(string != null)
+			try {
+				return df.parse(string);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return null;
 	}
 	
 	public static Betting toBetting(JSONObject object) throws JSONException, ParseException
@@ -251,8 +263,8 @@ public abstract class DataRequester {
 		product.setImage(object.getString("product_image"));
 		product.setPrice(object.getInt("product_price"));
 		product.setDescription(object.getString("product_description"));
-		product.setTerm_start(df.parse(object.getString("product_term_start")));
-		product.setTerm_end(df.parse(object.getString("product_term_end")));
+		product.setTerm_start(parseDateString(object.getString("product_term_start")));
+		product.setTerm_end(parseDateString(object.getString("product_term_end")));
 		product.setProduct_key(object.getInt("product_key"));
 		
 		Betting betting = new Betting();
@@ -262,8 +274,8 @@ public abstract class DataRequester {
 		betting.setName(object.getString("betting_name"));
 		betting.setGoal(object.getString("betting_goal"));
 		betting.setType(Betting.TYPE.getTypeByString(object.getString("betting_type")));
-		betting.setTerm_start(df.parse(object.getString("betting_term_start")));
-		betting.setTerm_end(df.parse(object.getString("betting_term_end")));
+		betting.setTerm_start(parseDateString(object.getString("betting_term_start")));
+		betting.setTerm_end(parseDateString(object.getString("betting_term_end")));
 		betting.setProduct_key(object.getInt("product_key"));
 		betting.setProduct(product);
 		
@@ -376,7 +388,7 @@ public abstract class DataRequester {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		addParam(params, "product_key", product_key);
 		execute(serverURL + "/servlets/showProductInfo", params, callback,
-				new DataParser("showBettings"){
+				new DataParser("showProductInfo"){
 			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
 				try {
 					map.put("product", toProduct(data.getJSONObject("success")));
@@ -392,7 +404,7 @@ public abstract class DataRequester {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		addParam(params, "user_id", id);
 		execute(serverURL + "/servlets/showUserInfo", params, callback,
-				new DataParser("showBettingInfo"){
+				new DataParser("showUserInfo"){
 			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
 				try {
 					map.put("user", toUser(data.getJSONObject("success")));
