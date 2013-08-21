@@ -15,8 +15,4 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_add_betting"
-          android:icon="@drawable/action_add_betting"
-          android:title="@string/action_add_betting"
-          android:showAsAction="ifRoom|withText" />
 </menu>
