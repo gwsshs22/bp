@@ -1,6 +1,7 @@
 package club.sgen.custom;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,13 +11,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import club.sgen.entity.Betting;
+import club.sgen.entity.User;
+import club.sgen.network.AsyncCallback;
 import club.sgen.network.R;
+import club.sgen.network.DataRequester;
 
 public class MainGridItemAdapter extends BaseAdapter {
 	Context context;
-	// private int [] pics = {R.drawable.earth, R.drawable.mars,
-	// R.drawable.jupiter};
 	LayoutInflater inflater;
 	ArrayList<Betting> bettingSrc;
 	int layout;
@@ -47,17 +50,9 @@ public class MainGridItemAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// ImageView imageView =
-		// (ImageView)convertView.findViewById(R.id.betting_image);
-		// ImageView imageView =
-		// (ImageView)tempView.findViewById(R.id.betting_image);
-
-		Log.d("A1", "1");
-
 		View gridView;
 
 		if (convertView == null) {
-			Log.d("A1", "2");
 			gridView = inflater.from(context).inflate(layout, null);
 
 		} else {
@@ -66,23 +61,19 @@ public class MainGridItemAdapter extends BaseAdapter {
 
 		ImageView imageView = (ImageView) gridView
 				.findViewById(R.id.betting_image);
-		// imageView.setImageResource(bettingSrc.get(position).getBettingImage());
+		//imageView.setImageResource(Integer.parseInt(bettingSrc.get(position).getResultImage()));
 
-		TextView textView = (TextView) gridView
-				.findViewById(R.id.betting_title);
-		// textView.setText(bettingSrc.get(position).getTitle());
-		// TextView textView = (TextView) gridView.
-		// if(convertView == null){
-		// //imageView = new ImageView(context);
-		// imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
-		// imageView.setAdjustViewBounds(false);
-		// imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-		// imageView.setPadding(8, 8, 8, 8);
-		// }else{
-		// imageView = (ImageView)convertView;
-		// }
+		imageView = (ImageView) gridView.findViewById(R.id.better_image);
+		// imageView set image
+
+		TextView textView = (TextView) gridView.findViewById(R.id.better_name);
+		textView.setText(bettingSrc.get(position).getUserId());
+
+		textView = (TextView) gridView.findViewById(R.id.betting_title);
+		textView.setText(bettingSrc.get(position).getName());
 
 		return gridView;
 	}
+
 
 }
