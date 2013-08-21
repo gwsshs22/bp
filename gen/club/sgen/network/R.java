@@ -89,6 +89,7 @@ public final class R {
         public static final int betting_title=0x7f0a0023;
         public static final int btn_camera_crop=0x7f0a001b;
         public static final int btn_gellary_crop=0x7f0a001c;
+        public static final int btn_tab=0x7f0a002b;
         public static final int buttonLayout=0x7f0a0016;
         public static final int button_close_popup=0x7f0a001d;
         public static final int content_frame=0x7f0a0002;
@@ -144,6 +145,7 @@ public final class R {
         public static final int view_grid2=0x7f03000f;
         public static final int view_list=0x7f030010;
         public static final int view_search_plate=0x7f030011;
+        public static final int view_tab_button=0x7f030012;
     }
     public static final class menu {
         public static final int main=0x7f090000;
