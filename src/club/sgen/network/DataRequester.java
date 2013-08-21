@@ -58,7 +58,7 @@ public abstract class DataRequester {
 		parseBetting(params, betting);
 		parseProduct(params, product);
 		execute(serverURL + "/servlets/registerBetting", params, callback,
-				new DataParser("registerID") {
+				new DataParser("registerBetting") {
 					@Override
 					public void addEntities(HashMap<String, Object> map,
 							JSONObject data) throws JSONException {

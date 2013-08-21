@@ -1,12 +1,16 @@
 package club.sgen.bettingpop;
+
 //
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -19,32 +23,47 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import club.sgen.custom.DrawerListAdapter;
 import club.sgen.custom.FriendListAdapter;
 import club.sgen.custom.MainGridItemAdapter;
 import club.sgen.custom.MyPagerAdapter;
 import club.sgen.entity.Betting;
 import club.sgen.entity.User;
+import club.sgen.network.AsyncCallback;
+import club.sgen.network.DataRequester;
 import club.sgen.network.R;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private ToggleButton toggleButton;
+	private ActionBar actionBar;
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mPageTitles;
+	private int[] actionBackgrounds = { R.layout.actionbar_background,
+			R.layout.actionbar_gift_box, R.layout.actionbar_background };
+
+	ImageView iv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,36 +79,68 @@ public class MainActivity extends Activity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		// drawer list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mPageTitles));
+		DrawerListAdapter drawerListAdapter = new DrawerListAdapter(this,
+				R.layout.view_drawer_list, mPageTitles);
+		mDrawerList.setAdapter(drawerListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// enbable ActionBar app icon to behave as action to toggle nav drawer
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		setActionBar(0);
+		
+		if (savedInstanceState == null) {
+			selectItem(0);
+		}
+	}
+	
+	public void setActionBar(int position){
+		actionBar = getActionBar();
+		int mPostion = position%actionBackgrounds.length;
+		View view = getLayoutInflater().inflate(actionBackgrounds[mPostion],
+				null);
+		actionBar.setCustomView(view, new ActionBar.LayoutParams(
+				ActionBar.LayoutParams.MATCH_PARENT,
+				ActionBar.LayoutParams.MATCH_PARENT));
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		toggleButton = (ToggleButton) actionBar.getCustomView().findViewById(
+				R.id.actionbar_toggle);
+		toggleButton.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View arg0) {
+				if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+					mDrawerLayout.openDrawer(Gravity.LEFT);
+				} else {
+					mDrawerLayout.closeDrawer(Gravity.LEFT);
+				}
+			}
+
+		});
+
 
 		// sliding drawer 랑 action bar app icon 이랑 잘 interact 하게 해주는 애
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+				R.drawable.actionbar_btn_menu, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
+				invalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View view) {
 				getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
+				invalidateOptionsMenu();
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		if (savedInstanceState == null) {
-			selectItem(0);
+		
+		if(mPostion == 0){
+			ImageButton button = (ImageButton) actionBar.getCustomView().findViewById(R.id.btn_add_betting);
+			button.setOnClickListener(new OnClickListener(){
+				public void onClick(View arg0) {
+					Intent intent = new Intent(MainActivity.this,
+							 AddBettingActivity.class);
+							 startActivity(intent);
+				}
+			});
 		}
-
 	}
 
 	@Override
@@ -97,14 +148,6 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
-	}
-
-	// invalidateOptionsMenu 부르면 불림
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// nav drawer가 열리면 hide action items related to the content view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_add_betting).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -115,11 +158,6 @@ public class MainActivity extends Activity {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		case R.id.action_add_betting:
-			Intent intent = new Intent(MainActivity.this,
-					AddBettingActivity.class);
-			startActivity(intent);
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -146,14 +184,8 @@ public class MainActivity extends Activity {
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mPageTitles[position]);
+		setActionBar(position);
 		mDrawerLayout.closeDrawer(mDrawerList);
-	}
-
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
 	}
 
 	@Override
@@ -173,14 +205,18 @@ public class MainActivity extends Activity {
 	/**
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
-	public static class PageFragment extends Fragment {
+	public static class PageFragment extends Fragment implements
+	AsyncCallback<HashMap<String, Object>>{
 		public static final String ARG_PAGE_NUMBER = "page_number";
 		int fragmentPosition = -1;
 		GridView gridView;
 		ListView listView;
 		View rootView;
+		TabHost tabHost;
 		ArrayList<Betting> bettingItems;
+		ArrayList<User> bettingUsers;
 		ArrayList<User> friendItems;
+		User user;
 
 		public PageFragment() {
 			// Empty constructor
@@ -193,14 +229,9 @@ public class MainActivity extends Activity {
 			fragmentPosition = i;
 
 			// temporary bettings
+			DataRequester.showAllbettinglist(this);
+			
 			bettingItems = new ArrayList<Betting>();
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
 
 			// temporary users(friends)
 			friendItems = new ArrayList<User>();
@@ -247,45 +278,81 @@ public class MainActivity extends Activity {
 						getActivity());
 				viewPager.setAdapter(myPagerAdapter);
 
-				//Tabhost
-				TabHost tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
+				// Tabhost
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
 				tabHost.setup();
-				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
+				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator(
+						"Tab1");
 				tabSpec.setContent(R.id.grid_all_popple);
-				tabSpec.setIndicator("tab one");
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab1));
 				tabHost.addTab(tabSpec);
-				
+
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.grid_friend);
-				tabSpec.setIndicator("tab two");
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab2));
 				tabHost.addTab(tabSpec);
-				//tabHost.setCurrentTab(0);
-				
+				tabHost.setCurrentTab(0);
+
 				// GridView
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_all_popple);
 				MainGridItemAdapter mainGridItemAdapater = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, bettingItems);
 				gridView.setAdapter(mainGridItemAdapater);
-				gridView = (GridView) rootView
-						.findViewById(R.id.grid_friend);
+				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
 				gridView.setAdapter(mainGridItemAdapater);
 				break;
 			case 1: // betting item
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
 				MainGridItemAdapter mainGridItemAdapter = new MainGridItemAdapter(
-						getActivity(), R.layout.view_grid, bettingItems);
+						getActivity(), R.layout.view_grid2, bettingItems);
 				gridView.setAdapter(mainGridItemAdapter);
 				gridView.setOnItemClickListener(bettingItemListener);
 				break;
 			case 2: // friend list
-				listView = (ListView) rootView.findViewById(R.id.list_friend);
+				// Tabhost
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost_friend);
+				tabHost.setup();
+				tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
+				tabSpec.setContent(R.id.list_my_friend);
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab_my_pople));
+				tabHost.addTab(tabSpec);
+
+				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
+				tabSpec.setContent(R.id.list_find_friend);
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab_find_pople));
+				tabHost.addTab(tabSpec);
+				tabHost.setCurrentTab(0);
+
+				// listView
+				listView = (ListView) rootView
+						.findViewById(R.id.list_my_friend);
 				FriendListAdapter friendListAdapter = new FriendListAdapter(
 						getActivity(), R.layout.view_list, friendItems);
 				listView.setAdapter(friendListAdapter);
 				listView.setOnItemClickListener(friendItemListener);
+
+				listView = (ListView) rootView
+						.findViewById(R.id.list_find_friend);
+				listView.setAdapter(friendListAdapter);
+				listView.setOnItemClickListener(friendItemListener);
 			default:
+			}
+		}
+
+		public void onTabChanged(String tabId) {
+			Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
+
+			TabWidget tabWidget = tabHost.getTabWidget();
+
+			if (tabId == "Tab1") {
+				Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT)
+						.show();
 			}
 		}
 
@@ -309,13 +376,40 @@ public class MainActivity extends Activity {
 				});
 			}
 		};
-		
+
 		AdapterView.OnItemClickListener friendItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(), "list click "+position, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "list click " + position,
+						Toast.LENGTH_SHORT).show();
 			}
 		};
+
+		@Override
+		public void onResult(HashMap<String, Object> result) {
+			String type = (String) result.get("type");
+			Boolean errorOccured = (Boolean) result.get("error_occured");
+			if (type.equals("showAllbettinglist")) {
+				if (!errorOccured) {
+					bettingItems = (ArrayList<Betting>) result.get("bettings");
+					Toast.makeText(getActivity(), bettingItems.size()+"개 베팅", Toast.LENGTH_LONG).show();
+				} else {
+
+				}
+			}
+		}
+
+		@Override
+		public void exceptionOccured(Exception e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void cancelled() {
+			// TODO Auto-generated method stub
+			
+		}
 
 	}
 

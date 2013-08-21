@@ -46,6 +46,7 @@ public class FileUploadCallable implements Callable<String> {
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setRequestMethod("POST");
+			
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			conn.setRequestProperty("Content-Type",
 					"multipart/form-data;boundary=" + boundary);

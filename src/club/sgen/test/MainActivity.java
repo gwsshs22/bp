@@ -60,16 +60,8 @@
 
 				@Override
 				public void onClick(View arg0) {
-					try {
-						System.out.println("1");
-						DataRequester.registerID(new String(id.getEditableText()
-								.toString().getBytes("UTF_8")), pass
-								.getEditableText().toString(), "aa@vb.com",
-								selector.getFileName(), MainActivity.this);
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					System.out.println("1");
+					DataRequester.showAllbettinglist(MainActivity.this);
 				}
 
 			});
@@ -104,7 +96,7 @@
 		public void onResult(HashMap<String, Object> result) {
 			String type = (String) result.get("type");
 			Boolean errorOccured = (Boolean) result.get("error_occured");
-			if (type.equals("registerID")) {
+			if (type.equals("showAllbetinglist")) {
 				if (!errorOccured) {
 					int x = 0;
 					x += 10;
