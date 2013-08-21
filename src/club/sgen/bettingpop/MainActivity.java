@@ -404,21 +404,7 @@ public class MainActivity extends Activity {
 					if (tempItems != null)
 						for (Pop b : tempItems)
 							allPopItems.add(b);
-					Betting b = new Betting();
-					b.setDescription("asdf");
-					b.setName("asdf");
-					b.setUserId("하아나나");
-					User user = new User();
-					user.setImage("Park.jpg");
-					Product product = new Product();
-					Pop pop = new Pop();
-					pop.setUser(user);
-					pop.setBetting(b);
-					pop.setProduct(product);
-					allPopItems.add(pop);
 					mainGridItemAdapterAll.notifyDataSetChanged();
-					Toast.makeText(getActivity(), allPopItems.size() + "개 베팅",
-							Toast.LENGTH_LONG).show();
 				} else {
 
 				}

@@ -212,25 +212,26 @@ public abstract class DataRequester {
 		}
 		return result;
 	}
-	
-	
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	
-	public static Pop toPop(JSONObject object) throws JSONException, ParseException
-	{
+
+	// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	public static Pop toPop(JSONObject object) throws JSONException,
+			ParseException {
 		Pop pop = new Pop();
-		
-		User user = toUser(object);		
+
+		User user = toUser(object);
 		Product product = toProduct(object);
 		Betting betting = toBetting(object);
 		pop.setAgree(object.getInt("agree"));
-		pop.setDisagree(object.getInt("disagree"));		
-		
+		pop.setDisagree(object.getInt("disagree"));
+		pop.setUser(user);
+		pop.setBetting(betting);
+		pop.setProduct(product);
 		return pop;
 	}
-	
-	public static User toUser(JSONObject object) throws JSONException, ParseException
-	{
+
+	public static User toUser(JSONObject object) throws JSONException,
+			ParseException {
 		User user = new User();
 		user.setId(object.getString("user_id"));
 		user.setUser_key(object.getInt("user_key"));
@@ -238,27 +239,29 @@ public abstract class DataRequester {
 		user.setEmail(object.getString("email"));
 		user.setPoint(object.getInt("point"));
 		user.setImage(object.getString("image"));
-		
+
 		return user;
 	}
-	
-	public static Product toProduct(JSONObject object) throws JSONException, ParseException
-	{
+
+	public static Product toProduct(JSONObject object) throws JSONException,
+			ParseException {
 		Product product = new Product();
 		product.setName(object.getString("product_name"));
-		product.setType(Product.TYPE.getTypeByString(object.getString("product_type")));
+		product.setType(Product.TYPE.getTypeByString(object
+				.getString("product_type")));
 		product.setImage(object.getString("product_image"));
 		product.setPrice(object.getInt("product_price"));
 		product.setDescription(object.getString("product_description"));
-		product.setTerm_start(parseDateString(object.getString("product_term_start")));
-		product.setTerm_end(parseDateString(object.getString("product_term_end")));
+		product.setTerm_start(parseDateString(object
+				.getString("product_term_start")));
+		product.setTerm_end(parseDateString(object
+				.getString("product_term_end")));
 		product.setProduct_key(object.getInt("product_key"));
 		return product;
 	}
-	
-	private static Date parseDateString(String string)
-	{
-		if(string != null)
+
+	private static Date parseDateString(String string) {
+		if (string != null)
 			try {
 				return df.parse(string);
 			} catch (ParseException e) {
@@ -267,224 +270,248 @@ public abstract class DataRequester {
 			}
 		return null;
 	}
-	
-	public static Betting toBetting(JSONObject object) throws JSONException, ParseException
-	{
+
+	public static Betting toBetting(JSONObject object) throws JSONException,
+			ParseException {
 		Product product = new Product();
 		product.setName(object.getString("product_name"));
-		product.setType(Product.TYPE.getTypeByString(object.getString("product_type")));
+		product.setType(Product.TYPE.getTypeByString(object
+				.getString("product_type")));
 		product.setImage(object.getString("product_image"));
 		product.setPrice(object.getInt("product_price"));
 		product.setDescription(object.getString("product_description"));
-		product.setTerm_start(parseDateString(object.getString("product_term_start")));
-		product.setTerm_end(parseDateString(object.getString("product_term_end")));
+		product.setTerm_start(parseDateString(object
+				.getString("product_term_start")));
+		product.setTerm_end(parseDateString(object
+				.getString("product_term_end")));
 		product.setProduct_key(object.getInt("product_key"));
-		
+
 		Betting betting = new Betting();
 		betting.setProduct_key(object.getInt("product_key"));
 		betting.setBetting_key(object.getInt("betting_key"));
 		betting.setUserId(object.getString("betting_user_id"));
 		betting.setName(object.getString("betting_name"));
 		betting.setGoal(object.getString("betting_goal"));
-		betting.setType(Betting.TYPE.getTypeByString(object.getString("betting_type")));
-		betting.setTerm_start(parseDateString(object.getString("betting_term_start")));
-		betting.setTerm_end(parseDateString(object.getString("betting_term_end")));
+		betting.setType(Betting.TYPE.getTypeByString(object
+				.getString("betting_type")));
+		betting.setTerm_start(parseDateString(object
+				.getString("betting_term_start")));
+		betting.setTerm_end(parseDateString(object
+				.getString("betting_term_end")));
 		betting.setProduct_key(object.getInt("product_key"));
 		betting.setProduct(product);
-		
+
 		return betting;
 	}
-	
-	public static void showAllbettinglist(AsyncCallback<HashMap<String, Object>> callback){
+
+	public static void showAllbettinglist(
+			AsyncCallback<HashMap<String, Object>> callback) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		execute(serverURL + "/servlets/showAllbettinglist", params, callback,
-				new DataParser("showAllbettinglist"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				JSONArray success = data.getJSONArray("success");
-				ArrayList<Pop> pops = new ArrayList<Pop>();
-				for(int i = 0; i < success.length();i++){
-					try {
-						pops.add(toPop(success.getJSONObject(i)));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				new DataParser("showAllbettinglist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<Pop> pops = new ArrayList<Pop>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								pops.add(toPop(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("pops", pops);
 					}
-				}
-				map.put("pops", pops);
-			}
-		});
+				});
 	}
-	
-	public static void showBettingInfo(final String betting_key,  AsyncCallback<HashMap<String, Object>> callback){
+
+	public static void showBettingInfo(final String betting_key,
+			AsyncCallback<HashMap<String, Object>> callback) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		addParam(params, "betting_key", betting_key);
 		execute(serverURL + "/servlets/showBettingInfo", params, callback,
-				new DataParser("showBettingInfo"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				try {
-					map.put("betting", toBetting(data.getJSONObject("success")));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	
-	public static void showJoinbettinglist(final String id, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showJoinbettinglist", params, callback,
-				new DataParser("showJoinbettinglist"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				JSONArray success = data.getJSONArray("success");
-				ArrayList<Betting> bettings = new ArrayList<Betting>();
-				for(int i = 0; i < success.length();i++){
-					try {
-						bettings.add(toBetting(success.getJSONObject(i)));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				map.put("bettings", bettings);
-			}
-		});
-	}
-	
-	
-	public static void showMakebettinglist(final String id, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showMakebettinglist", params, callback,
-				new DataParser("showMakebettinglist"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				JSONArray success = data.getJSONArray("success");
-				ArrayList<Betting> bettings = new ArrayList<Betting>();
-				for(int i = 0; i < success.length();i++){
-					try {
-						bettings.add(toBetting(success.getJSONObject(i)));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				map.put("bettings", bettings);
-			}
-		});
-	}
-	
-	
-	public static void showMyproductlist(final String id, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showMyproductlist", params, callback,
-				new DataParser("showMyproductlist"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				JSONArray success = data.getJSONArray("success");
-				ArrayList<Product> products = new ArrayList<Product>();
-				for(int i = 0; i < success.length();i++){
-					try {
-						products.add(toProduct(success.getJSONObject(i)));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				map.put("product", products);
-			}
-		});
-	}
-	
-	public static void showProductInfo(final String product_key, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "product_key", product_key);
-		execute(serverURL + "/servlets/showProductInfo", params, callback,
-				new DataParser("showProductInfo"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				try {
-					map.put("product", toProduct(data.getJSONObject("success")));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				};
-			}
-		});
-	}
-	
-	public static void showUserInfo(final String id, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showUserInfo", params, callback,
-				new DataParser("showUserInfo"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				try {
-					map.put("user", toUser(data.getJSONObject("success")));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	public static void showFriendlist(final String id, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showFriendlist", params, callback, 
-				new DataParser("showFriendlist"){
-			public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-				JSONArray success = data.getJSONArray("success");
-				ArrayList<User> users = new ArrayList<User>();
-				for(int i = 0; i < success.length();i++){
-					try {
-						users.add(toUser(success.getJSONObject(i)));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				map.put("users", users);
-			}
-		});
-	}
-	
-	public static void showFriendrequestlist(final String id, AsyncCallback<HashMap<String, Object>> callback){
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showFriendrequestlist", params, callback,
-				new DataParser("showFriendrequestlist"){public void addEntities(HashMap<String, Object> map, JSONObject data) throws JSONException{
-					JSONArray success = data.getJSONArray("success");
-					ArrayList<User> users = new ArrayList<User>();
-					for(int i = 0; i < success.length();i++){
+				new DataParser("showBettingInfo") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
 						try {
-							users.add(toUser(success.getJSONObject(i)));
+							map.put("betting",
+									toBetting(data.getJSONObject("success")));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
-					map.put("users", users);
-				}
-			});
+				});
 	}
-	
-	
-	public static void changePassword(final String id, String currentPassword, String newPassword,
-			AsyncCallback<HashMap<String, Object>> callback){
+
+	public static void showJoinbettinglist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showJoinbettinglist", params, callback,
+				new DataParser("showJoinbettinglist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<Betting> bettings = new ArrayList<Betting>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								bettings.add(toBetting(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("bettings", bettings);
+					}
+				});
+	}
+
+	public static void showMakebettinglist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showMakebettinglist", params, callback,
+				new DataParser("showMakebettinglist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<Betting> bettings = new ArrayList<Betting>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								bettings.add(toBetting(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("bettings", bettings);
+					}
+				});
+	}
+
+	public static void showMyproductlist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showMyproductlist", params, callback,
+				new DataParser("showMyproductlist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<Product> products = new ArrayList<Product>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								products.add(toProduct(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("product", products);
+					}
+				});
+	}
+
+	public static void showProductInfo(final String product_key,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "product_key", product_key);
+		execute(serverURL + "/servlets/showProductInfo", params, callback,
+				new DataParser("showProductInfo") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						try {
+							map.put("product",
+									toProduct(data.getJSONObject("success")));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						;
+					}
+				});
+	}
+
+	public static void showUserInfo(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showUserInfo", params, callback,
+				new DataParser("showUserInfo") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						try {
+							map.put("user",
+									toUser(data.getJSONObject("success")));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+	}
+
+	public static void showFriendlist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showFriendlist", params, callback,
+				new DataParser("showFriendlist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<User> users = new ArrayList<User>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								users.add(toUser(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("users", users);
+					}
+				});
+	}
+
+	public static void showFriendrequestlist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showFriendrequestlist", params,
+				callback, new DataParser("showFriendrequestlist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<User> users = new ArrayList<User>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								users.add(toUser(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("users", users);
+					}
+				});
+	}
+
+	public static void changePassword(final String id, String currentPassword,
+			String newPassword, AsyncCallback<HashMap<String, Object>> callback) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		addParam(params, "id", id);
 		addParam(params, "currentPassword", makePassword(currentPassword));
 		addParam(params, "newPassword", makePassword(newPassword));
 		execute(serverURL + "/servlets/changePassword", params, callback,
 				new DataParser("changePassword") {
-			public void addEntities(HashMap<String, Object> map,
-					JSONObject data) throws JSONException {
-				map.put("success", data.getBoolean("success"));
-			}
-		});
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						map.put("success", data.getBoolean("success"));
+					}
+				});
 	}
-	
-	
+
 }
