@@ -410,8 +410,7 @@ public abstract class DataRequester {
 					public void addEntities(HashMap<String, Object> map,
 							JSONObject data) throws JSONException {
 						try {
-							map.put("betting",
-									toBetting(data.getJSONObject("success")));
+							map.put("betting",toBetting(data.getJSONObject("success")));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
