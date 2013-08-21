@@ -7,8 +7,7 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import java.sql.Date;
+import java.util.Date;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -22,11 +21,117 @@ import club.sgen.entity.User;
 
 public abstract class DataRequester {
 	public static final String serverURL = "http://ec2-54-213-12-61.us-west-2.compute.amazonaws.com:8080/bettingpop_s";
-	public static final DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
-	
+	private static final DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+
+	public static Date getCurrentDate() {
+		return new Date(System.currentTimeMillis());
+	}
+
+	public static Date toDate(int y, int M, int d, int h, int m, int s) {
+		StringBuilder sb = new StringBuilder();
+
+		String arr[] = new String[6];
+		arr[0] = String.valueOf(y);
+		arr[1] = String.valueOf(M);
+		arr[2] = String.valueOf(d);
+		arr[3] = String.valueOf(h);
+		arr[4] = String.valueOf(m);
+		arr[5] = String.valueOf(s);
+		for (int i = 4 - arr[0].length(); i > 0; i--)
+			arr[0] += "0" + arr[0];
+		for (int i = 1; i < 6; i++)
+			for (int j = 2 - arr[i].length(); j > 0; j--)
+				arr[i] += "0" + arr[i];
+		for (int i = 0; i < 6; i++)
+			sb.append(arr[i]);
+		try {
+			return df.parse(sb.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return getCurrentDate();
+	}
+
+	public static void registerBetting(Betting betting, Product product,
+			final String image, AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		parseBetting(params, betting);
+		parseProduct(params, product);
+		execute(serverURL + "/servlets/registerBetting", params, callback,
+				new DataParser("registerID") {
+					@Override
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						map.put("success", data.getBoolean("success"));
+						map.put("product_key", data.getInt("product_key"));
+					}
+
+					@Override
+					public void afterParsing(HashMap<String, Object> map) {
+						Object success = map.get("success");
+						// user가 등록되면 프로필을 등록한다.
+						if (success != null && (Boolean) success) {
+							if (image != null) {
+								int product_key = (Integer) map
+										.get("product_key");
+								executeFileUpload(image,
+										"UPDATE product SET image = ? WHERE product_key = \""
+												+ product_key + "\"",
+										String.valueOf(product_key));
+							}
+						}
+					}
+				});
+	}
+
+	public static void registerBetting(Betting betting, int product_key,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		parseBetting(params, betting);
+		execute(serverURL + "/servlets/registerBetting", params, callback,
+				new DataParser("registerID") {
+					@Override
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						map.put("success", data.getBoolean("success"));
+					}
+
+				});
+	}
+
+	private static void parseBetting(ArrayList<NameValuePair> params,
+			Betting betting) {
+		if (betting == null)
+			return;
+		addParam(params, "description", betting.getDescription());
+		addParam(params, "goal", betting.getGoal());
+		addParam(params, "name", betting.getName());
+		addParam(params, "max_number", String.valueOf(betting.getMax_number()));
+		addParam(params, "term_end", df.format(betting.getTerm_end()));
+		addParam(params, "term_start", df.format(getCurrentDate()));
+		addParam(params, "type", betting.getType().toString());
+	}
+
+	private static void parseProduct(ArrayList<NameValuePair> params,
+			Product product) {
+		if (product == null)
+			return;
+		addParam(params, "prodcut_description", product.getDescription());
+		addParam(params, "product_name", product.getName());
+		addParam(params, "product_term_start", df.format(getCurrentDate()));
+		addParam(params, "product_term_end", df.format(product.getTerm_start()));
+		addParam(params, "product_type", String.valueOf(product.getType()));
+		addParam(params, "product_price", String.valueOf(product.getPrice()));
+	}
+
+	public static void updateResultImage(int betting_key, String image) {
+		executeFileUpload(image,
+				"UPDATE betting SET result_image = ? WHERE betting_key = \""
+						+ betting_key + "\"", String.valueOf(betting_key));
+	}
+
 	public static void login(String id, String password,
 			AsyncCallback<HashMap<String, Object>> callback) {
-		
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		addParam(params, "id", id);
 		addParam(params, "password", makePassword(password));
@@ -62,18 +167,17 @@ public abstract class DataRequester {
 						if (success != null && (Boolean) success) {
 							if (image != null)
 								executeFileUpload(image,
-										"UPDATE user SET image = ? WHERE id = \"" + id
-												+ "\"",id);
+										"UPDATE user SET image = ? WHERE id = \""
+												+ id + "\"", id);
 						}
 					}
 				});
 	}
-	
-		
 
-	private static void executeFileUpload(String fileName, String query,String userID) {
+	private static void executeFileUpload(String fileName, String query,
+			String userID) {
 		new AsyncExecutor<String>().setCallable(
-				new FileUploadCallable(fileName, query,userID)).execute();
+				new FileUploadCallable(fileName, query, userID)).execute();
 	}
 
 	private static void execute(String url, ArrayList<NameValuePair> params,
@@ -107,6 +211,7 @@ public abstract class DataRequester {
 		}
 		return result;
 	}
+
 	
 	
 	//wowowowo
@@ -128,7 +233,7 @@ public abstract class DataRequester {
 	{
 		Product product = new Product();
 		product.setName(object.getString("product_name"));
-		product.setType(object.getString("product_type"));
+		product.setType(Product.TYPE.getTypeByString(object.getString("product_type")));
 		product.setImage(object.getString("product_image"));
 		product.setPrice(object.getInt("product_price"));
 		product.setDescription(object.getString("product_description"));
@@ -142,7 +247,7 @@ public abstract class DataRequester {
 	{
 		Product product = new Product();
 		product.setName(object.getString("product_name"));
-		product.setType(object.getString("product_type"));
+		product.setType(Product.TYPE.getTypeByString(object.getString("product_type")));
 		product.setImage(object.getString("product_image"));
 		product.setPrice(object.getInt("product_price"));
 		product.setDescription(object.getString("product_description"));
@@ -153,10 +258,10 @@ public abstract class DataRequester {
 		Betting betting = new Betting();
 		betting.setProduct_key(object.getInt("product_key"));
 		betting.setBetting_key(object.getInt("betting_key"));
-		betting.setUser_id(object.getString("bettubg_user_id"));
+		betting.setUserId(object.getString("betting_user_id"));
 		betting.setName(object.getString("betting_name"));
 		betting.setGoal(object.getString("betting_goal"));
-		betting.setType(object.getString("betting_type"));
+		betting.setType(Betting.TYPE.getTypeByString(object.getString("betting_type")));
 		betting.setTerm_start(df.parse(object.getString("betting_term_start")));
 		betting.setTerm_end(df.parse(object.getString("betting_term_end")));
 		betting.setProduct_key(object.getInt("product_key"));
