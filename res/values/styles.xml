@@ -22,13 +22,7 @@
         
     </style>
     <style name="ActionBar" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/actionbar_background</item>
     	<item name="android:height">48dp</item>
-    	<item name="android:titleTextStyle">@style/TitleStyle</item>
-    </style>
-    <style name="TitleStyle">
-        <item name="android:textColor">#ffffff</item>
-    	<item name="android:textSize">22dp</item>
     </style>
 
 </resources>

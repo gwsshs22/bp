@@ -1,12 +1,15 @@
 package club.sgen.bettingpop;
+
 //
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -19,11 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -32,21 +37,27 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import club.sgen.custom.DrawerListAdapter;
 import club.sgen.custom.FriendListAdapter;
 import club.sgen.custom.MainGridItemAdapter;
 import club.sgen.custom.MyPagerAdapter;
 import club.sgen.entity.Betting;
 import club.sgen.entity.User;
+import club.sgen.network.DataRequester;
 import club.sgen.network.R;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private ToggleButton toggleButton;
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mPageTitles;
+
+	ImageView iv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +73,39 @@ public class MainActivity extends Activity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		// drawer list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mPageTitles));
+		DrawerListAdapter drawerListAdapter = new DrawerListAdapter(this,
+				R.layout.view_drawer_list, mPageTitles);
+		mDrawerList.setAdapter(drawerListAdapter);
+		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+		// R.layout.drawer_list_item, mPageTitles));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		// enbable ActionBar app icon to behave as action to toggle nav drawer
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		// getActionBar().setDisplayHomeAsUpEnabled(true);
+		// getActionBar().setHomeButtonEnabled(true);
+		ActionBar actionBar = getActionBar();
+		View v = getLayoutInflater().inflate(R.layout.actionbar_background,
+				null);
+		actionBar.setCustomView(v, new ActionBar.LayoutParams(
+				ActionBar.LayoutParams.MATCH_PARENT,
+				ActionBar.LayoutParams.MATCH_PARENT));
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		toggleButton = (ToggleButton) actionBar.getCustomView().findViewById(
+				R.id.actionbar_toggle);
+		
+		
+		toggleButton.setOnClickListener(new OnClickListener() {
+		
+			@Override
+			public void onClick(View arg0) {
+				if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+					mDrawerLayout.openDrawer(Gravity.LEFT);
+				} else {
+					mDrawerLayout.closeDrawer(Gravity.LEFT);
+				}
+			}
+
+		});
 
 		// sliding drawer 랑 action bar app icon 이랑 잘 interact 하게 해주는 애
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -104,8 +141,8 @@ public class MainActivity extends Activity {
 	// invalidateOptionsMenu 부르면 불림
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// nav drawer가 열리면 hide action items related to the content view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_add_betting).setVisible(!drawerOpen);
+//		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+//		menu.findItem(R.id.action_add_betting).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -117,11 +154,11 @@ public class MainActivity extends Activity {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		case R.id.action_add_betting:
-			Intent intent = new Intent(MainActivity.this,
-					AddBettingActivity.class);
-			startActivity(intent);
-			return true;
+//		case R.id.action_add_betting:
+//			Intent intent = new Intent(MainActivity.this,
+//					AddBettingActivity.class);
+//			startActivity(intent);
+//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -172,11 +209,10 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	
 	/**
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
-	public static class PageFragment extends Fragment{
+	public static class PageFragment extends Fragment {
 		public static final String ARG_PAGE_NUMBER = "page_number";
 		int fragmentPosition = -1;
 		GridView gridView;
@@ -251,29 +287,30 @@ public class MainActivity extends Activity {
 						getActivity());
 				viewPager.setAdapter(myPagerAdapter);
 
-				//Tabhost
+				// Tabhost
 				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
 				tabHost.setup();
-				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
+				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator(
+						"Tab1");
 				tabSpec.setContent(R.id.grid_all_popple);
-				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab1));
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab1));
 				tabHost.addTab(tabSpec);
-				
+
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.grid_friend);
-				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab2));
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab2));
 				tabHost.addTab(tabSpec);
-				tabHost.setCurrentTab(0);				
-				
-				
+				tabHost.setCurrentTab(0);
+
 				// GridView
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_all_popple);
 				MainGridItemAdapter mainGridItemAdapater = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, bettingItems);
 				gridView.setAdapter(mainGridItemAdapater);
-				gridView = (GridView) rootView
-						.findViewById(R.id.grid_friend);
+				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
 				gridView.setAdapter(mainGridItemAdapater);
 				break;
 			case 1: // betting item
@@ -285,44 +322,49 @@ public class MainActivity extends Activity {
 				gridView.setOnItemClickListener(bettingItemListener);
 				break;
 			case 2: // friend list
-				//Tabhost
+				// Tabhost
 				tabHost = (TabHost) rootView.findViewById(R.id.tabhost_friend);
 				tabHost.setup();
 				tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
 				tabSpec.setContent(R.id.list_my_friend);
-				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab_my_pople));
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab_my_pople));
 				tabHost.addTab(tabSpec);
-				
+
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.list_find_friend);
-				tabSpec.setIndicator("", getResources().getDrawable(R.drawable.tab_find_pople));
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab_find_pople));
 				tabHost.addTab(tabSpec);
-				tabHost.setCurrentTab(0);	
-				
-				//listView
-				listView = (ListView) rootView.findViewById(R.id.list_my_friend);
+				tabHost.setCurrentTab(0);
+
+				// listView
+				listView = (ListView) rootView
+						.findViewById(R.id.list_my_friend);
 				FriendListAdapter friendListAdapter = new FriendListAdapter(
 						getActivity(), R.layout.view_list, friendItems);
 				listView.setAdapter(friendListAdapter);
 				listView.setOnItemClickListener(friendItemListener);
-				
-				listView = (ListView) rootView.findViewById(R.id.list_find_friend);
+
+				listView = (ListView) rootView
+						.findViewById(R.id.list_find_friend);
 				listView.setAdapter(friendListAdapter);
 				listView.setOnItemClickListener(friendItemListener);
 			default:
 			}
 		}
-		
-		public void onTabChanged(String tabId){
+
+		public void onTabChanged(String tabId) {
 			Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
-			
+
 			TabWidget tabWidget = tabHost.getTabWidget();
-			
-			if(tabId == "Tab1"){
-				Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
+
+			if (tabId == "Tab1") {
+				Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT)
+						.show();
 			}
 		}
-		
+
 		AdapterView.OnItemClickListener bettingItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -343,11 +385,12 @@ public class MainActivity extends Activity {
 				});
 			}
 		};
-		
+
 		AdapterView.OnItemClickListener friendItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(), "list click "+position, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "list click " + position,
+						Toast.LENGTH_SHORT).show();
 			}
 		};
 
