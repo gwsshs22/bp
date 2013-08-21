@@ -398,8 +398,6 @@ public abstract class DataRequester {
 					}
 				});
 	}
-	
-	
 
 	public static void showBettingInfo(final String betting_key,
 			AsyncCallback<HashMap<String, Object>> callback) {
@@ -410,7 +408,7 @@ public abstract class DataRequester {
 					public void addEntities(HashMap<String, Object> map,
 							JSONObject data) throws JSONException {
 						try {
-							map.put("betting",toBetting(data.getJSONObject("success")));
+							map.put("pop",toPop(data.getJSONObject("success")));
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -418,9 +416,6 @@ public abstract class DataRequester {
 					}
 				});
 	}
-
-	
-
 
 	public static void showMyproductlist(final String id,
 			AsyncCallback<HashMap<String, Object>> callback) {
@@ -440,7 +435,7 @@ public abstract class DataRequester {
 								e.printStackTrace();
 							}
 						}
-						map.put("product", products);
+						map.put("products", products);
 					}
 				});
 	}

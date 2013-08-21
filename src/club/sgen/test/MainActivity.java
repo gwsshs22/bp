@@ -61,7 +61,7 @@
 				@Override
 				public void onClick(View arg0) {
 					try {
-						DataRequester.showJoinbettinglist(new String(id.getEditableText().toString().getBytes("UTF-8")), MainActivity.this);
+						DataRequester.showProductInfo(new String(id.getEditableText().toString().getBytes("UTF-8")), MainActivity.this);
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -100,7 +100,7 @@
 		public void onResult(HashMap<String, Object> result) {
 			String type = (String) result.get("type");
 			Boolean errorOccured = (Boolean) result.get("error_occured");
-			if (type.equals("showJoinbettinglist")) {
+			if (type.equals("showProductInfo")) {
 				if (!errorOccured) {
 					int x = 0;
 					x += 10;
