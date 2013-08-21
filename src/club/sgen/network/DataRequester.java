@@ -326,6 +326,81 @@ public abstract class DataRequester {
 				});
 	}
 
+	
+	public static void showJoinbettinglist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showJoinbettinglist", params, callback,
+				new DataParser("showJoinbettinglist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<Pop> pops = new ArrayList<Pop>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								pops.add(toPop(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						map.put("pops", pops);
+					}
+				});
+	}
+	
+	public static void showFriendbettinglist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showFriendbettinglist", params, callback,
+				new DataParser("showFriendbettinglist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+						ArrayList<Pop> pops = new ArrayList<Pop>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								pops.add(toPop(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						map.put("pops", pops);
+					}
+				});
+	}
+	
+	public static void showMakebettinglist(final String id,
+			AsyncCallback<HashMap<String, Object>> callback) {
+		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+		addParam(params, "user_id", id);
+		execute(serverURL + "/servlets/showMakebettinglist", params, callback,
+				new DataParser("showMakebettinglist") {
+					public void addEntities(HashMap<String, Object> map,
+							JSONObject data) throws JSONException {
+						JSONArray success = data.getJSONArray("success");
+
+						ArrayList<Pop> pops = new ArrayList<Pop>();
+						for (int i = 0; i < success.length(); i++) {
+							try {
+								pops.add(toPop(success.getJSONObject(i)));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						map.put("pops", pops);
+					}
+				});
+	}
+	
+	
+
 	public static void showBettingInfo(final String betting_key,
 			AsyncCallback<HashMap<String, Object>> callback) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -345,51 +420,8 @@ public abstract class DataRequester {
 				});
 	}
 
-	public static void showJoinbettinglist(final String id,
-			AsyncCallback<HashMap<String, Object>> callback) {
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showJoinbettinglist", params, callback,
-				new DataParser("showJoinbettinglist") {
-					public void addEntities(HashMap<String, Object> map,
-							JSONObject data) throws JSONException {
-						JSONArray success = data.getJSONArray("success");
-						ArrayList<Betting> bettings = new ArrayList<Betting>();
-						for (int i = 0; i < success.length(); i++) {
-							try {
-								bettings.add(toBetting(success.getJSONObject(i)));
-							} catch (ParseException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-						map.put("bettings", bettings);
-					}
-				});
-	}
+	
 
-	public static void showMakebettinglist(final String id,
-			AsyncCallback<HashMap<String, Object>> callback) {
-		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-		addParam(params, "user_id", id);
-		execute(serverURL + "/servlets/showMakebettinglist", params, callback,
-				new DataParser("showMakebettinglist") {
-					public void addEntities(HashMap<String, Object> map,
-							JSONObject data) throws JSONException {
-						JSONArray success = data.getJSONArray("success");
-						ArrayList<Betting> bettings = new ArrayList<Betting>();
-						for (int i = 0; i < success.length(); i++) {
-							try {
-								bettings.add(toBetting(success.getJSONObject(i)));
-							} catch (ParseException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-						map.put("bettings", bettings);
-					}
-				});
-	}
 
 	public static void showMyproductlist(final String id,
 			AsyncCallback<HashMap<String, Object>> callback) {
