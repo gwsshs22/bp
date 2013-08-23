@@ -20,7 +20,9 @@ import club.sgen.entity.FriendUser;
 import club.sgen.entity.User;
 import club.sgen.network.AsyncCallback;
 import club.sgen.network.DataRequester;
+import club.sgen.network.ImageDownloader;
 import club.sgen.network.R;
+import club.sgen.network.cache.ImageCacheFactory;
 
 public class FriendListAdapter extends BaseAdapter implements 
 AsyncCallback<HashMap<String, Object>>, OnClickListener{
@@ -31,6 +33,7 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 	User friend;
 	String requestedFriend;
 	int layout;
+	private ImageDownloader imageDownloader;
 
 	public FriendListAdapter(Context context, int layout,
 			ArrayList<FriendUser> friendSrc, User user) {
@@ -40,6 +43,8 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 		this.friendSrc = friendSrc;
 		this.layout = layout;
 		this.user = user;
+		this.imageDownloader = new ImageDownloader(context,
+				ImageCacheFactory.DEFAULT_CACHE_NAME);
 	}
 
 	@Override
@@ -86,6 +91,7 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 		BitmapDrawable noImage = new BitmapDrawable(context.getResources(),
 				BitmapFactory.decodeResource(context.getResources(),
 						R.drawable.user1));
+		imageDownloader.download(friend.getImage(), imageView, noImage);
 		
 		TextView textView = (TextView) listView.findViewById(R.id.friend_name);
 		textView.setText(friend.getName());
@@ -109,7 +115,7 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 	public void onClick(View view){
 		switch(view.getId()){
 		case R.id.btn_add_friend: 
-			Toast.makeText(context, "add"+requestedFriend, Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "요청을 수락합니다", Toast.LENGTH_LONG).show();
 			DataRequester.acceptFriend(user.getId(), requestedFriend,"T" ,this);
 			break;
 		case R.id.btn_reject_friend:
@@ -124,7 +130,6 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 		String type = (String) result.get("type");
 		Boolean errorOccured = (Boolean) result.get("error_occured");
 		if (type.equals("acceptFriend")){
-			Toast.makeText(context, "add?"+(String)result.get("success"), Toast.LENGTH_SHORT).show();
 		}
 	}
 
