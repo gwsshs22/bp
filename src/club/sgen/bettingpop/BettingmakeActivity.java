@@ -38,6 +38,7 @@ public class BettingmakeActivity extends Activity implements
 	private EditText writeproductname;
 	private RadioGroup typeGroup;
 	private RadioGroup numberGroup;
+	private RadioGroup productGroup;
 	private RadioButton number2;
 	private RadioButton number4;
 	private RadioButton number6;
@@ -64,6 +65,7 @@ public class BettingmakeActivity extends Activity implements
 		buyproduct = (RadioButton) findViewById(R.id.bettingmake_findgift);
 		writeproduct = (RadioButton) findViewById(R.id.bettingmake_inputgift);
 		writeproductname = (EditText) findViewById(R.id.bettingmake_writeproduct);
+		productGroup = (RadioGroup) findViewById(R.id.radioGroup2);
 		number2 = (RadioButton) findViewById(R.id.bettingmake_people2);
 		number4 = (RadioButton) findViewById(R.id.bettingmake_people4);
 		number6 = (RadioButton) findViewById(R.id.bettingmake_people6);
@@ -120,7 +122,8 @@ public class BettingmakeActivity extends Activity implements
 				else
 					max_number = 8;
 				String t, y, m, d, h, pro;
-				if (type == Betting.TYPE.B) {
+				if (productGroup.getCheckedRadioButtonId() == writeproduct
+						.getId()) {
 					if (isEmpty(writeproductname)) {
 						Toast.makeText(BettingmakeActivity.this,
 								"배팅 상품을 직접 입력해주십시오.", Toast.LENGTH_LONG).show();
