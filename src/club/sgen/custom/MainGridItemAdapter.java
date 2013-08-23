@@ -69,7 +69,12 @@ public class MainGridItemAdapter extends BaseAdapter {
 		User user = popSrc.get(position).getUser();
 		Product product = popSrc.get(position).getProduct();
 
-		ImageView imageView = (ImageView) gridView
+		ImageView imageView = (ImageView) gridView.findViewById(R.id.black);
+		if(betting.getIs_end()=="T"){
+			imageView.setVisibility(View.VISIBLE);
+		}
+		
+		imageView = (ImageView) gridView
 				.findViewById(R.id.betting_image);
 		BitmapDrawable noImage = new BitmapDrawable(context.getResources(),
 				BitmapFactory.decodeResource(context.getResources(),
