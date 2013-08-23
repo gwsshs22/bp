@@ -29,6 +29,7 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 	ArrayList<FriendUser> friendSrc;
 	User user;
 	User friend;
+	String requestedFriend;
 	int layout;
 
 	public FriendListAdapter(Context context, int layout,
@@ -100,6 +101,7 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 			imageButton_reject.setVisibility(View.VISIBLE);
 			imageButton_add.setOnClickListener(this);
 			imageButton_reject.setOnClickListener(this);
+			requestedFriend=friend.getId();
 		}
 		return listView;
 	}
@@ -107,8 +109,8 @@ AsyncCallback<HashMap<String, Object>>, OnClickListener{
 	public void onClick(View view){
 		switch(view.getId()){
 		case R.id.btn_add_friend: 
-			Toast.makeText(context, "친구를 추가했습니다", Toast.LENGTH_LONG).show();
-			DataRequester.acceptFriend(user.getId(), friend.getId(),"T" ,this);
+			Toast.makeText(context, "add"+requestedFriend, Toast.LENGTH_LONG).show();
+			DataRequester.acceptFriend(user.getId(), requestedFriend,"T" ,this);
 			break;
 		case R.id.btn_reject_friend:
 			Toast.makeText(context, "요청을 거절했습니다", Toast.LENGTH_LONG).show();

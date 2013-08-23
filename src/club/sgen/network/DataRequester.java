@@ -496,6 +496,7 @@ public abstract class DataRequester {
 	ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 	addParam(params, "user_id", user_id);
 	addParam(params, "friend_id", friend_id);
+	addParam(params, "accept", accept);
 	execute(serverURL + "/servlets/acceptFriend", params, callback,
 			new DataParser("acceptFriend") {
 				public void addEntities(HashMap<String, Object> map,

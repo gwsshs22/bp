@@ -396,7 +396,7 @@ public class MainActivity extends Activity {
 						R.layout.view_grid2, productItems);
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
-				gridView.setAdapter(productItemAdapter);
+				gridView.setAdapter(productItemAdapter);				
 				productProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_betting_item_progres);
 				productProgress.setVisibility(View.VISIBLE);
