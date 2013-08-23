@@ -5,69 +5,78 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <TabHost
-        android:id="@+id/tabhost_friend"
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:paddingTop="19dp" >
+
+            <RadioButton
+                android:id="@+id/btn_tab5"
+                android:layout_width="124dp"
+                android:layout_height="33dp"
+                android:button="@drawable/btn_tab5"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/btn_tab6"
+                android:layout_width="124dp"
+                android:layout_height="33dp"
+                android:layout_marginLeft="2dp"
+                android:button="@drawable/btn_tab6"
+                android:checked="false" />
+        </RadioGroup>
+
+    <FrameLayout
+        android:id="@android:id/tabcontent"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingTop="19dp" >
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp" >
 
         <LinearLayout
+            android:id="@+id/list_my_friend_linear"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="248dp"
-                android:layout_height="66dp"
-                android:layout_gravity="center"
-                android:padding="0px" >
-            </TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
+            <ListView
+                android:id="@+id/list_my_friend"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="15dp" >
-
-                <ListView
-                    android:id="@+id/list_my_friend"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-
-                <LinearLayout
-                    android:id="@+id/find_friend"
-                    android:layout_width="330dp"
-                    android:layout_height="53dp"
-                    android:background="@drawable/search_plate_1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="15dp">
-
-                    <EditText
-                        android:id="@+id/search_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="70dp"
-                        android:text="이지아"
-                        android:textColor="#000000"
-                        android:textSize="20dp" />
-
-                    <ImageButton
-                        android:id="@+id/btn_find_friend"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="120dp"
-                        android:src="@drawable/search_pople" />
-                </LinearLayout>
-            </FrameLayout>
+                android:layout_height="fill_parent" />
         </LinearLayout>
-    </TabHost>
+
+        <LinearLayout
+            android:id="@+id/find_friend"
+            android:layout_width="330dp"
+            android:layout_height="53dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/search_plate_1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/search_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="70dp"
+                android:text="이지아"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <ImageButton
+                android:id="@+id/btn_find_friend"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="120dp"
+                android:src="@drawable/search_pople" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
