@@ -3,7 +3,9 @@ package club.sgen.custom;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,33 +13,40 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import club.sgen.entity.Betting;
+import club.sgen.entity.Pop;
+import club.sgen.entity.Product;
+import club.sgen.entity.User;
+import club.sgen.network.BitmapDrawRingOnOuter;
+import club.sgen.network.ImageDownloader;
 import club.sgen.network.R;
+import club.sgen.network.cache.ImageCacheFactory;
 
 public class MainGridItemAdapter extends BaseAdapter {
-	Context context;
-	// private int [] pics = {R.drawable.earth, R.drawable.mars,
-	// R.drawable.jupiter};
-	LayoutInflater inflater;
-	ArrayList<Betting> bettingSrc;
-	int layout;
+	private Context context;
+	private LayoutInflater inflater;
+	private ArrayList<Pop> popSrc;
+	private int layout;
+	private ImageDownloader imageDownloader;
 
 	public MainGridItemAdapter(Context context, int layout,
-			ArrayList<Betting> bettingSrc) {
+			ArrayList<Pop> popSrc) {
 		this.context = context;
 		inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.bettingSrc = bettingSrc;
+		this.popSrc = popSrc;
 		this.layout = layout;
+		this.imageDownloader = new ImageDownloader(context,
+				ImageCacheFactory.DEFAULT_CACHE_NAME);
 	}
 
 	@Override
 	public int getCount() {
-		return bettingSrc.size();
+		return popSrc.size();
 	}
 
 	@Override
-	public Betting getItem(int position) {
-		return bettingSrc.get(position);
+	public Pop getItem(int position) {
+		return popSrc.get(position);
 	}
 
 	@Override
@@ -47,40 +56,38 @@ public class MainGridItemAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// ImageView imageView =
-		// (ImageView)convertView.findViewById(R.id.betting_image);
-		// ImageView imageView =
-		// (ImageView)tempView.findViewById(R.id.betting_image);
-
-		Log.d("A1", "1");
-
 		View gridView;
 
 		if (convertView == null) {
-			Log.d("A1", "2");
 			gridView = inflater.from(context).inflate(layout, null);
 
 		} else {
 			gridView = convertView;
 		}
 
+		Betting betting = popSrc.get(position).getBetting();
+		User user = popSrc.get(position).getUser();
+		Product product = popSrc.get(position).getProduct();
+
 		ImageView imageView = (ImageView) gridView
 				.findViewById(R.id.betting_image);
-		// imageView.setImageResource(bettingSrc.get(position).getBettingImage());
+		BitmapDrawable noImage = new BitmapDrawable(context.getResources(),
+				BitmapFactory.decodeResource(context.getResources(),
+						R.drawable.product_3));
+		imageDownloader.download(product.getImage(), imageView, noImage);
 
-		TextView textView = (TextView) gridView
-				.findViewById(R.id.betting_title);
-		// textView.setText(bettingSrc.get(position).getTitle());
-		// TextView textView = (TextView) gridView.
-		// if(convertView == null){
-		// //imageView = new ImageView(context);
-		// imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
-		// imageView.setAdjustViewBounds(false);
-		// imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-		// imageView.setPadding(8, 8, 8, 8);
-		// }else{
-		// imageView = (ImageView)convertView;
-		// }
+		imageView = (ImageView) gridView.findViewById(R.id.better_image);
+		noImage = new BitmapDrawable(context.getResources(),
+				BitmapFactory.decodeResource(context.getResources(),
+						R.drawable.user1));
+		imageDownloader.download(user.getImage(), imageView, noImage,
+				new BitmapDrawRingOnOuter(Color.BLUE, 3, 3));
+
+		TextView textView = (TextView) gridView.findViewById(R.id.better_name);
+		textView.setText(betting.getUserId());
+
+		textView = (TextView) gridView.findViewById(R.id.betting_title);
+		textView.setText(betting.getName());
 
 		return gridView;
 	}

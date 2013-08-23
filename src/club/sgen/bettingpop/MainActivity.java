@@ -1,7 +1,10 @@
 package club.sgen.bettingpop;
+
 //
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -18,33 +21,50 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import club.sgen.custom.DrawerListAdapter;
 import club.sgen.custom.FriendListAdapter;
 import club.sgen.custom.MainGridItemAdapter;
 import club.sgen.custom.MyPagerAdapter;
-import club.sgen.entity.Betting;
+import club.sgen.custom.ProductItemAdapter;
+import club.sgen.entity.Pop;
+import club.sgen.entity.Product;
 import club.sgen.entity.User;
+import club.sgen.network.AsyncCallback;
+import club.sgen.network.BettingpopApplication;
+import club.sgen.network.DataRequester;
 import club.sgen.network.R;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private ToggleButton toggleButton;
+	private ActionBar actionBar;
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private String[] mPageTitles;
+	private int[] actionBackgrounds = { R.layout.actionbar_background,
+			R.layout.actionbar_background, R.layout.actionbar_gift_box,
+			R.layout.actionbar_pople, R.layout.actionbar_pople };
+
+	ImageView iv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,36 +80,68 @@ public class MainActivity extends Activity {
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
 		// drawer list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mPageTitles));
+		DrawerListAdapter drawerListAdapter = new DrawerListAdapter(this,
+				R.layout.view_drawer_list, mPageTitles);
+		mDrawerList.setAdapter(drawerListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// enbable ActionBar app icon to behave as action to toggle nav drawer
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-
-		// sliding drawer 랑 action bar app icon 이랑 잘 interact 하게 해주는 애
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close) {
-			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-
-			public void onDrawerOpened(View view) {
-				getActionBar().setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		setActionBar(0);
 
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
+	}
 
+	public void setActionBar(int position) {
+		actionBar = getActionBar();
+		int mPostion = position % actionBackgrounds.length;
+		View view = getLayoutInflater().inflate(actionBackgrounds[mPostion],
+				null);
+		actionBar.setCustomView(view, new ActionBar.LayoutParams(
+				ActionBar.LayoutParams.MATCH_PARENT,
+				ActionBar.LayoutParams.MATCH_PARENT));
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		toggleButton = (ToggleButton) actionBar.getCustomView().findViewById(
+				R.id.actionbar_toggle);
+		toggleButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+					mDrawerLayout.openDrawer(Gravity.LEFT);
+				} else {
+					mDrawerLayout.closeDrawer(Gravity.LEFT);
+				}
+			}
+
+		});
+
+		// sliding drawer 랑 action bar app icon 이랑 잘 interact 하게 해주는 애
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.actionbar_btn_menu, R.string.drawer_open,
+				R.string.drawer_close) {
+			public void onDrawerClosed(View view) {
+				getActionBar().setTitle(mTitle);
+				invalidateOptionsMenu();
+			}
+
+			public void onDrawerOpened(View view) {
+				getActionBar().setTitle(mDrawerTitle);
+				invalidateOptionsMenu();
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+		if (mPostion == 0 || mPostion == 1) {
+			ImageButton button = (ImageButton) actionBar.getCustomView()
+					.findViewById(R.id.btn_add_betting);
+			button.setOnClickListener(new OnClickListener() {
+				public void onClick(View arg0) {
+					Intent intent = new Intent(MainActivity.this,
+							BettingmakeActivity.class);
+					startActivity(intent);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -97,14 +149,6 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
-	}
-
-	// invalidateOptionsMenu 부르면 불림
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// nav drawer가 열리면 hide action items related to the content view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_add_betting).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -115,11 +159,6 @@ public class MainActivity extends Activity {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		case R.id.action_add_betting:
-			Intent intent = new Intent(MainActivity.this,
-					AddBettingActivity.class);
-			startActivity(intent);
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -146,14 +185,8 @@ public class MainActivity extends Activity {
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mPageTitles[position]);
+		setActionBar(position);
 		mDrawerLayout.closeDrawer(mDrawerList);
-	}
-
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
 	}
 
 	@Override
@@ -173,17 +206,41 @@ public class MainActivity extends Activity {
 	/**
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
-	public static class PageFragment extends Fragment {
+	public static class PageFragment extends Fragment implements
+			AsyncCallback<HashMap<String, Object>> {
 		public static final String ARG_PAGE_NUMBER = "page_number";
-		int fragmentPosition = -1;
-		GridView gridView;
-		ListView listView;
-		View rootView;
-		ArrayList<Betting> bettingItems;
-		ArrayList<User> friendItems;
+		private int fragmentPosition = -1;
+		private GridView gridView;
+		private ListView listView;
+		private View rootView;
+		private TabHost tabHost;
+		private ArrayList<Pop> myPopItems;
+		private ArrayList<Pop> allPopItems;
+		private ArrayList<Product> productItems;
+		private ArrayList<User> friendRequestItems;
+		private ArrayList<User> friendItems;
+		private MyPagerAdapter myPagerAdapter;
+		private ProductItemAdapter productItemAdapter;
+		private MainGridItemAdapter mainGridItemAdapterAll;
+		private MainGridItemAdapter mainGridItemAdapterMyPople;
+		private FriendListAdapter friendListAdapter;
+		private FriendListAdapter friendRequestListAdapter;
+
+		private ArrayList<Pop> parPopItems;
+		private ArrayList<Pop> makedPopItems;
+		private MainGridItemAdapter mainGridItemAdapterPar;
+		private MainGridItemAdapter mainGridItemAdapterMaked;
 
 		public PageFragment() {
 			// Empty constructor
+			myPopItems = new ArrayList<Pop>();
+			allPopItems = new ArrayList<Pop>();
+			parPopItems = new ArrayList<Pop>();
+			makedPopItems = new ArrayList<Pop>();
+
+			productItems = new ArrayList<Product>();
+			friendItems = new ArrayList<User>();
+			friendRequestItems = new ArrayList<User>();
 		}
 
 		@Override
@@ -191,36 +248,32 @@ public class MainActivity extends Activity {
 				Bundle savedInstanceState) {
 			int i = getArguments().getInt(ARG_PAGE_NUMBER);
 			fragmentPosition = i;
-
-			// temporary bettings
-			bettingItems = new ArrayList<Betting>();
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-			bettingItems.add(new Betting());
-
-			// temporary users(friends)
-			friendItems = new ArrayList<User>();
-			friendItems.add(new User());
-			friendItems.add(new User());
-			friendItems.add(new User());
+			User user = BettingpopApplication.getUser();
 
 			switch (i) {
 			case 0: // my page
 				Log.d("A1", "my page입니당");
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
+				DataRequester.showAllbettinglist(this);
+				DataRequester.showFriendbettinglist(user.getId(), this);
 				break;
 			case 1:
-				rootView = inflater.inflate(R.layout.fragment_betting_item,
+				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
+				DataRequester.showMakebettinglist(user.getId(), this);
+				DataRequester.showJoinbettinglist(user.getId(), this);
 				break;
 			case 2:
+				rootView = inflater.inflate(R.layout.fragment_betting_item,
+						container, false);
+				DataRequester.showMyproductlist(user.getId(), this);
+				break;
+			case 3:
 				rootView = inflater.inflate(R.layout.fragment_friend,
 						container, false);
+				DataRequester.showFriendlist(user.getId(), this);
+				DataRequester.showFriendrequestlist(user.getId(), this);
 				break;
 			default:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
@@ -239,53 +292,126 @@ public class MainActivity extends Activity {
 			Log.d("A1", "onActivityCreated started");
 			super.onActivityCreated(savedInstanceState);
 			switch (fragmentPosition) {
-			case 0: // my page
+			case 0: // main page
 				// View Pager
 				ViewPager viewPager = (ViewPager) rootView
 						.findViewById(R.id.viewPager);
-				MyPagerAdapter myPagerAdapter = new MyPagerAdapter(
-						getActivity());
+				myPagerAdapter = new MyPagerAdapter(getActivity());
 				viewPager.setAdapter(myPagerAdapter);
 
-				//Tabhost
-				TabHost tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
+				// Tabhost
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
 				tabHost.setup();
-				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
+				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator(
+						"Tab1");
 				tabSpec.setContent(R.id.grid_all_popple);
-				tabSpec.setIndicator("tab one");
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab1));
 				tabHost.addTab(tabSpec);
-				
+
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.grid_friend);
-				tabSpec.setIndicator("tab two");
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab2));
 				tabHost.addTab(tabSpec);
-				//tabHost.setCurrentTab(0);
-				
+				tabHost.setCurrentTab(0);
+
 				// GridView
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_all_popple);
-				MainGridItemAdapter mainGridItemAdapater = new MainGridItemAdapter(
-						getActivity(), R.layout.view_grid, bettingItems);
-				gridView.setAdapter(mainGridItemAdapater);
-				gridView = (GridView) rootView
-						.findViewById(R.id.grid_friend);
-				gridView.setAdapter(mainGridItemAdapater);
+				mainGridItemAdapterAll = new MainGridItemAdapter(getActivity(),
+						R.layout.view_grid, allPopItems);
+				gridView.setAdapter(mainGridItemAdapterAll);
+				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
+				mainGridItemAdapterMyPople = new MainGridItemAdapter(
+						getActivity(), R.layout.view_grid, myPopItems);
+				gridView.setAdapter(mainGridItemAdapterMyPople);
 				break;
-			case 1: // betting item
+			case 1: // my page
+				// View Pager
+				ViewPager viewPage = (ViewPager) rootView
+						.findViewById(R.id.viewPager);
+				myPagerAdapter = new MyPagerAdapter(getActivity());
+				viewPage.setAdapter(myPagerAdapter);
+
+				// Tabhost
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
+				tabHost.setup();
+				TabSpec tabSpe = tabHost.newTabSpec("Tab1")
+						.setIndicator("Tab1");
+				tabSpe.setContent(R.id.grid_all_popple);
+				tabSpe.setIndicator("",
+						getResources().getDrawable(R.drawable.tab1));
+				tabHost.addTab(tabSpe);
+
+				tabSpe = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
+				tabSpe.setContent(R.id.grid_friend);
+				tabSpe.setIndicator("",
+						getResources().getDrawable(R.drawable.tab2));
+				tabHost.addTab(tabSpe);
+				tabHost.setCurrentTab(0);
+
+				// GridView
+				gridView = (GridView) rootView
+						.findViewById(R.id.grid_all_popple);
+				mainGridItemAdapterMaked = new MainGridItemAdapter(
+						getActivity(), R.layout.view_grid, makedPopItems);
+				gridView.setAdapter(mainGridItemAdapterMaked);
+				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
+				mainGridItemAdapterPar = new MainGridItemAdapter(getActivity(),
+						R.layout.view_grid, parPopItems);
+				gridView.setAdapter(mainGridItemAdapterPar);
+				break;
+			case 2: // betting item list
+				productItemAdapter = new ProductItemAdapter(getActivity(),
+						R.layout.view_grid2, productItems);
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
-				MainGridItemAdapter mainGridItemAdapter = new MainGridItemAdapter(
-						getActivity(), R.layout.view_grid, bettingItems);
-				gridView.setAdapter(mainGridItemAdapter);
-				gridView.setOnItemClickListener(bettingItemListener);
+				gridView.setAdapter(productItemAdapter);
 				break;
-			case 2: // friend list
-				listView = (ListView) rootView.findViewById(R.id.list_friend);
-				FriendListAdapter friendListAdapter = new FriendListAdapter(
-						getActivity(), R.layout.view_list, friendItems);
+			case 3:
+				// Tabhost
+				tabHost = (TabHost) rootView.findViewById(R.id.tabhost_friend);
+				tabHost.setup();
+				tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
+				tabSpec.setContent(R.id.list_my_friend);
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab_my_pople));
+				tabHost.addTab(tabSpec);
+
+				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
+				tabSpec.setContent(R.id.list_find_friend);
+				tabSpec.setIndicator("",
+						getResources().getDrawable(R.drawable.tab_find_pople));
+				tabHost.addTab(tabSpec);
+				tabHost.setCurrentTab(0);
+
+				// listView
+				listView = (ListView) rootView
+						.findViewById(R.id.list_my_friend);
+				friendListAdapter = new FriendListAdapter(getActivity(),
+						R.layout.view_list, friendItems);
 				listView.setAdapter(friendListAdapter);
-				listView.setOnItemClickListener(friendItemListener);
+				// listView.setOnItemClickListener(friendItemListener);
+
+				friendRequestListAdapter = new FriendListAdapter(getActivity(),
+						R.layout.view_list, friendRequestItems);
+				listView = (ListView) rootView
+						.findViewById(R.id.list_find_friend);
+				listView.setAdapter(friendRequestListAdapter);
+				// listView.setOnItemClickListener(friendItemListener);
 			default:
+			}
+		}
+
+		public void onTabChanged(String tabId) {
+			Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
+
+			TabWidget tabWidget = tabHost.getTabWidget();
+
+			if (tabId == "Tab1") {
+				Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT)
+						.show();
 			}
 		}
 
@@ -309,13 +435,105 @@ public class MainActivity extends Activity {
 				});
 			}
 		};
-		
+
 		AdapterView.OnItemClickListener friendItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(), "list click "+position, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "list click " + position,
+						Toast.LENGTH_SHORT).show();
 			}
 		};
+
+		@Override
+		public void onResult(HashMap<String, Object> result) {
+			String type = (String) result.get("type");
+			Boolean errorOccured = (Boolean) result.get("error_occured");
+			if (type.equals("showAllbettinglist")) {
+				if (!errorOccured) {
+					allPopItems.clear();
+					ArrayList<Pop> tempItems = (ArrayList<Pop>) result
+							.get("pops");
+					if (tempItems != null)
+						for (Pop b : tempItems)
+							allPopItems.add(b);
+					mainGridItemAdapterAll.notifyDataSetChanged();
+				} else {
+
+				}
+			} else if (type.equals("showFriendbettinglist")) {
+				if (!errorOccured) {
+					myPopItems.clear();
+					ArrayList<Pop> tempItems = (ArrayList<Pop>) result
+							.get("pops");
+					if (tempItems != null)
+						for (Pop b : tempItems)
+							myPopItems.add(b);
+					mainGridItemAdapterMyPople.notifyDataSetChanged();
+				}
+			} else if (type.equals("showMakebettinglist")) {
+				if (!errorOccured) {
+					makedPopItems.clear();
+					ArrayList<Pop> tempItems = (ArrayList<Pop>) result
+							.get("pops");
+					if (tempItems != null)
+						for (Pop b : tempItems)
+							makedPopItems.add(b);
+					mainGridItemAdapterMaked.notifyDataSetChanged();
+				}
+			} else if (type.equals("showJoinbettinglist")) {
+				if (!errorOccured) {
+					parPopItems.clear();
+					ArrayList<Pop> tempItems = (ArrayList<Pop>) result
+							.get("pops");
+					if (tempItems != null)
+						for (Pop b : tempItems)
+							parPopItems.add(b);
+					mainGridItemAdapterPar.notifyDataSetChanged();
+				}
+			} else if (type.equals("showMyproductlist")) {
+				if (!errorOccured) {
+					productItems.clear();
+					ArrayList<Product> tempItems = (ArrayList<Product>) result
+							.get("products");
+					if (tempItems != null)
+						for (Product b : tempItems)
+							productItems.add(b);
+					productItemAdapter.notifyDataSetChanged();
+				}
+			} else if (type.equals("showFriendlist")) {
+				if (!errorOccured) {
+					friendItems.clear();
+					ArrayList<User> tempItems = (ArrayList<User>) result
+							.get("users");
+					if (tempItems != null)
+						for (User b : tempItems)
+							friendItems.add(b);
+					friendListAdapter.notifyDataSetChanged();
+				}
+			} else if (type.equals("showFriendrequestlist")) {
+				if (!errorOccured) {
+					friendRequestItems.clear();
+					ArrayList<User> tempItems = (ArrayList<User>) result
+							.get("users");
+					if (tempItems != null)
+						for (User b : tempItems)
+							friendRequestItems.add(b);
+					friendRequestListAdapter.notifyDataSetChanged();
+				}
+			}
+		}
+
+		@Override
+		public void exceptionOccured(Exception e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void cancelled() {
+			// TODO Auto-generated method stub
+
+		}
 
 	}
 

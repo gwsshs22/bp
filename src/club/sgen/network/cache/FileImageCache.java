@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import club.sgen.network.BitmapHandler;
+
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -40,6 +42,24 @@ public class FileImageCache implements ImageCache {
 			Log.e(TAG, String.format("fail to bitmap file[%s] to fileCache",
 					bitmapFile.getAbsolutePath()), e);
 		}
+	}
+
+	@Override
+	public void addBitmap(String key, File bitmapFile, BitmapHandler handler) {
+		addBitmap(key, bitmapFile);
+	}
+
+	@Override
+	public Bitmap getBitmap(String key, BitmapHandler handler) {
+		FileEntry cachedFile = fileCache.get(key);
+		if (cachedFile == null) {
+			return null;
+		}
+		Bitmap org = BitmapFactory.decodeFile(cachedFile.getFile()
+				.getAbsolutePath());
+		Bitmap ret = handler.handleBitmap(org);
+		org.recycle();
+		return ret;
 	}
 
 	@Override

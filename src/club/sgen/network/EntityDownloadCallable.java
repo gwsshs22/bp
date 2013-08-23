@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 
 public class EntityDownloadCallable implements
 		Callable<HashMap<String, Object>> {
@@ -40,13 +41,14 @@ public class EntityDownloadCallable implements
 			HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
 			HttpPost post = new HttpPost(url);
 			UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(
-					params, "UTF-8");
+
+			params, HTTP.UTF_8);
 			post.setEntity(entityRequest);
 			HttpResponse response = client.execute(post);
 			HttpEntity entityResponse = response.getEntity();
 			is = entityResponse.getContent();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "UTF-8"));
+					is, HTTP.UTF_8));
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
