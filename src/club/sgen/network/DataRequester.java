@@ -89,6 +89,7 @@ public abstract class DataRequester {
 			AsyncCallback<HashMap<String, Object>> callback) {
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		parseBetting(params, betting);
+		addParam(params, "product_key", String.valueOf(product_key));
 		execute(serverURL + "/servlets/registerBetting", params, callback,
 				new DataParser("registerBetting") {
 					@Override
@@ -104,6 +105,7 @@ public abstract class DataRequester {
 			Betting betting) {
 		if (betting == null)
 			return;
+		addParam(params, "user_id", betting.getUserId());
 		addParam(params, "description", betting.getDescription());
 		addParam(params, "goal", betting.getGoal());
 		addParam(params, "name", betting.getName());

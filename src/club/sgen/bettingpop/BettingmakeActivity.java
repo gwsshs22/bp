@@ -138,7 +138,7 @@ public class BettingmakeActivity extends Activity implements
 				h = hour.getText().toString();
 				Betting betting = new Betting();
 				betting.setGoal(pro);
-				betting.setDescription(t);
+				betting.setName(t);
 				betting.setMax_number(max_number);
 				betting.setType(type);
 				betting.setProduct_key(productKey);
