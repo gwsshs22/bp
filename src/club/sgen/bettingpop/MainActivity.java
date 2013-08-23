@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -210,7 +211,7 @@ public class MainActivity extends Activity {
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
 	public static class PageFragment extends Fragment implements
-			AsyncCallback<HashMap<String, Object>> {
+			AsyncCallback<HashMap<String, Object>>,  OnClickListener{
 		public static final String ARG_PAGE_NUMBER = "page_number";
 		private int fragmentPosition = -1;
 		private GridView gridView;
@@ -228,6 +229,9 @@ public class MainActivity extends Activity {
 		private MainGridItemAdapter mainGridItemAdapterMyPople;
 		private FriendListAdapter friendListAdapter;
 		private FriendListAdapter friendRequestListAdapter;
+		private String friendId;
+		private User user;
+		private EditText editText;
 
 		private ArrayList<Pop> parPopItems;
 		private ArrayList<Pop> makedPopItems;
@@ -260,12 +264,12 @@ public class MainActivity extends Activity {
 			fragmentPosition = i;
 
 			switch (i) {
-			case 0: // my page
+			case 0: // main page
 				Log.d("A1", "my page입니당");
-				rootView = inflater.inflate(R.layout.fragment_my_page,
+				rootView = inflater.inflate(R.layout.fragment_main_page,
 						container, false);
 				break;
-			case 1:
+			case 1: // my page
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
 				break;
@@ -276,6 +280,7 @@ public class MainActivity extends Activity {
 			case 3:
 				rootView = inflater.inflate(R.layout.fragment_friend,
 						container, false);
+				
 				break;
 			default:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
@@ -294,7 +299,7 @@ public class MainActivity extends Activity {
 			Log.d("A1", "onActivityCreated started");
 			super.onActivityCreated(savedInstanceState);
 
-			User user = BettingpopApplication.getUser();
+			user = BettingpopApplication.getUser();
 			switch (fragmentPosition) {
 			case 0: // main page
 				// View Pager
@@ -342,13 +347,11 @@ public class MainActivity extends Activity {
 				DataRequester.showAllbettinglist(this);
 				DataRequester.showFriendbettinglist(user.getId(), this);
 				break;
-			case 1: // my page
-				// View Pager
-				ViewPager viewPage = (ViewPager) rootView
-						.findViewById(R.id.viewPager);
-				myPagerAdapter = new MyPagerAdapter(getActivity());
-				viewPage.setAdapter(myPagerAdapter);
+			case 1: // my page				
 
+				TextView userName = (TextView) rootView.findViewById(R.id.mypage_name);
+				userName.setText((String)user.getName());
+				
 				// Tabhost
 				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
 				tabHost.setup();
@@ -393,7 +396,7 @@ public class MainActivity extends Activity {
 						R.layout.view_grid2, productItems);
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
-				gridView.setAdapter(productItemAdapter);
+				gridView.setAdapter(productItemAdapter);				
 				productProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_betting_item_progres);
 				productProgress.setVisibility(View.VISIBLE);
@@ -421,22 +424,17 @@ public class MainActivity extends Activity {
 				listView = (ListView) rootView
 						.findViewById(R.id.list_my_friend);
 				friendListAdapter = new FriendListAdapter(getActivity(),
-						R.layout.view_list, friendItems);
+						R.layout.view_list, friendItems, user);
 				listView.setAdapter(friendListAdapter);
 				// listView.setOnItemClickListener(friendItemListener);
 
-				TextView textView = (TextView) rootView
+				editText = (EditText) rootView
 						.findViewById(R.id.search_name);
+				Toast.makeText(getActivity(), friendId, Toast.LENGTH_SHORT).show();
 				ImageButton imageButton = (ImageButton) rootView
 						.findViewById(R.id.btn_find_friend);
-				imageButton.setOnClickListener(new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						Toast.makeText(getActivity(), "친구를 찾습니다",
-								Toast.LENGTH_LONG).show();
-					}
-				});
+				imageButton.setOnClickListener(this);
+				
 
 				friendItems.clear();
 				DataRequester.showFriendlist(user.getId(), this);
@@ -444,6 +442,17 @@ public class MainActivity extends Activity {
 				break;
 			case 4:
 				getActivity().finish();
+			default:
+			}
+		}
+		
+		public void onClick(View view){
+			switch(view.getId()){
+			case R.id.btn_find_friend:
+				Toast.makeText(getActivity(), "friend requested", Toast.LENGTH_SHORT).show();
+				friendId = editText.getText().toString();
+				DataRequester.requestFriend(user.getId(), friendId, this);
+				break;
 			default:
 			}
 		}
@@ -458,7 +467,7 @@ public class MainActivity extends Activity {
 						.show();
 			}
 		}
-
+		
 		AdapterView.OnItemClickListener bettingItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -566,12 +575,15 @@ public class MainActivity extends Activity {
 							.get("users");
 					if (tempItems != null)
 						for (User b : tempItems) {
+							Toast.makeText(getActivity(), "r:"+b.getName(), Toast.LENGTH_SHORT).show();
 							FriendUser friendUser = new FriendUser(b);
 							friendUser.setIsRequestTrue();
 							friendItems.add(0, friendUser);
 						}
 					friendListAdapter.notifyDataSetChanged();
 				}
+			} else if (type.equals("requestFriend")){
+					Toast.makeText(getActivity(), "!"+(String)result.get("success"), Toast.LENGTH_SHORT).show();
 			}
 		}
 
