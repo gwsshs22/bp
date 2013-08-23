@@ -36,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import club.sgen.custom.DrawerListAdapter;
@@ -43,6 +44,7 @@ import club.sgen.custom.FriendListAdapter;
 import club.sgen.custom.MainGridItemAdapter;
 import club.sgen.custom.MyPagerAdapter;
 import club.sgen.custom.ProductItemAdapter;
+import club.sgen.entity.FriendUser;
 import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
 import club.sgen.entity.User;
@@ -219,7 +221,7 @@ public class MainActivity extends Activity {
 		private ArrayList<Pop> allPopItems;
 		private ArrayList<Product> productItems;
 		private ArrayList<User> friendRequestItems;
-		private ArrayList<User> friendItems;
+		private ArrayList<FriendUser> friendItems;
 		private MyPagerAdapter myPagerAdapter;
 		private ProductItemAdapter productItemAdapter;
 		private MainGridItemAdapter mainGridItemAdapterAll;
@@ -247,7 +249,7 @@ public class MainActivity extends Activity {
 			makedPopItems = new ArrayList<Pop>();
 
 			productItems = new ArrayList<Product>();
-			friendItems = new ArrayList<User>();
+			friendItems = new ArrayList<FriendUser>();
 			friendRequestItems = new ArrayList<User>();
 		}
 
@@ -409,7 +411,7 @@ public class MainActivity extends Activity {
 				tabHost.addTab(tabSpec);
 
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
-				tabSpec.setContent(R.id.list_find_friend);
+				tabSpec.setContent(R.id.find_friend);
 				tabSpec.setIndicator("",
 						getResources().getDrawable(R.drawable.tab_find_pople));
 				tabHost.addTab(tabSpec);
@@ -423,15 +425,25 @@ public class MainActivity extends Activity {
 				listView.setAdapter(friendListAdapter);
 				// listView.setOnItemClickListener(friendItemListener);
 
-				friendRequestListAdapter = new FriendListAdapter(getActivity(),
-						R.layout.view_list, friendRequestItems);
-				listView = (ListView) rootView
-						.findViewById(R.id.list_find_friend);
-				listView.setAdapter(friendRequestListAdapter);
-				// listView.setOnItemClickListener(friendItemListener);
+				TextView textView = (TextView) rootView
+						.findViewById(R.id.search_name);
+				ImageButton imageButton = (ImageButton) rootView
+						.findViewById(R.id.btn_find_friend);
+				imageButton.setOnClickListener(new View.OnClickListener() {
 
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(getActivity(), "친구를 찾습니다",
+								Toast.LENGTH_LONG).show();
+					}
+				});
+
+				friendItems.clear();
 				DataRequester.showFriendlist(user.getId(), this);
 				DataRequester.showFriendrequestlist(user.getId(), this);
+				break;
+			case 4:
+				getActivity().finish();
 			default:
 			}
 		}
@@ -539,23 +551,26 @@ public class MainActivity extends Activity {
 				}
 			} else if (type.equals("showFriendlist")) {
 				if (!errorOccured) {
-					friendItems.clear();
 					ArrayList<User> tempItems = (ArrayList<User>) result
 							.get("users");
 					if (tempItems != null)
-						for (User b : tempItems)
-							friendItems.add(b);
+						for (User b : tempItems) {
+							FriendUser friendUser = new FriendUser(b);
+							friendItems.add(friendUser);
+						}
 					friendListAdapter.notifyDataSetChanged();
 				}
 			} else if (type.equals("showFriendrequestlist")) {
 				if (!errorOccured) {
-					friendRequestItems.clear();
 					ArrayList<User> tempItems = (ArrayList<User>) result
 							.get("users");
 					if (tempItems != null)
-						for (User b : tempItems)
-							friendRequestItems.add(b);
-					friendRequestListAdapter.notifyDataSetChanged();
+						for (User b : tempItems) {
+							FriendUser friendUser = new FriendUser(b);
+							friendUser.setIsRequestTrue();
+							friendItems.add(0, friendUser);
+						}
+					friendListAdapter.notifyDataSetChanged();
 				}
 			}
 		}
