@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import club.sgen.network.R;
 
 public class BettingmakeActivity extends Activity implements
 		AsyncCallback<HashMap<String, Object>> {
-	
+
 	private ImageView closebutton;
 	private RadioButton bettingradio;
 	private RadioButton donationradio;
@@ -32,13 +33,13 @@ public class BettingmakeActivity extends Activity implements
 	private RadioButton number6;
 	private RadioButton number8;
 	private ImageView upload;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.betting_make);
-		
+
 		closebutton = (ImageView) findViewById(R.id.bettingmake_closebutton);
 		bettingradio = (RadioButton) findViewById(R.id.bettingmake_bettingicon);
 		donationradio = (RadioButton) findViewById(R.id.bettingmake_donationicon);
@@ -55,17 +56,29 @@ public class BettingmakeActivity extends Activity implements
 		number6 = (RadioButton) findViewById(R.id.bettingmake_people6);
 		number8 = (RadioButton) findViewById(R.id.bettingmake_people8);
 		upload = (ImageView) findViewById(R.id.bettingmake_ok);
+
+		writeproduct.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				if(arg1){
+					writeproductname.setEnabled(false);
+					
+				}
+			}
+			
+		});
 		
 		closebutton.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				finish();
 
 			}
 
 		});
-		
+
 		upload.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -75,7 +88,6 @@ public class BettingmakeActivity extends Activity implements
 			}
 
 		});
-		
 
 	}
 
@@ -86,7 +98,7 @@ public class BettingmakeActivity extends Activity implements
 		if (type.equals("registerBetting")) {
 			if (!errorOccured) {
 				boolean success = (Boolean) result.get("success");
-				
+
 			} else {
 
 			}
