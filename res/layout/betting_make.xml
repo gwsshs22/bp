@@ -7,14 +7,14 @@
 
     <FrameLayout
         android:id="@+id/bettingmake_titlebar"
-        android:layout_width="fill_parent"
+        android:layout_width="320dp"
         android:layout_height="48dp"
         android:background="@drawable/top_center" >
 
         <ImageView
             android:id="@+id/bettingmake_closebutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="right"
             android:background="@drawable/top_right_close" />
     </FrameLayout>
