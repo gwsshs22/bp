@@ -35,94 +35,97 @@
                 android:text="이지아"
                 android:textColor="#0372ba"
                 android:textSize="20dp" />
+
             <ImageView
                 android:layout_width="52dp"
                 android:layout_height="8dp"
                 android:layout_marginTop="7dp"
-                android:src="@drawable/betting_start_star_4"/>
+                android:src="@drawable/betting_start_star_4" />
         </LinearLayout>
     </LinearLayout>
 
-    <TabHost
-        android:id="@+id/tabhost"
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:paddingTop="14dp" >
+
+            <RadioButton
+                android:id="@+id/btn_tab3"
+                android:layout_width="124dp"
+                android:layout_height="33dp"
+                android:button="@drawable/btn_tab3"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/btn_tab4"
+                android:layout_width="124dp"
+                android:layout_height="33dp"
+                android:layout_marginLeft="2dp"
+                android:button="@drawable/btn_tab4"
+                android:checked="false" />
+        </RadioGroup>
+
+    <FrameLayout
+        android:id="@android:id/tabcontent"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:paddingTop="10dp"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="14dp" >
+        android:paddingRight="5dp">
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:id="@+id/grid_made_betting_linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="248dp"
-                android:layout_height="66dp"
-                android:layout_gravity="center"
-                android:padding="0px" >
-            </TabWidget>
+            <GridView
+                android:id="@+id/grid_made_betting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numColumns="2" />
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingTop="10dp" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical" >
 
-                <LinearLayout
-                    android:id="@+id/grid_all_popple_linear"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
-
-                    <GridView
-                        android:id="@+id/grid_all_popple"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numColumns="2" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:orientation="vertical" >
-
-                        <ProgressBar
-                            android:id="@+id/grid_all_popple_progress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="invisible" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/grid_friend_linear"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
-
-                    <GridView
-                        android:id="@+id/grid_friend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:numColumns="2" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:orientation="vertical" >
-
-                        <ProgressBar
-                            android:id="@+id/grid_friend_progress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="invisible" />
-                    </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
+                <ProgressBar
+                    android:id="@+id/grid_all_popple_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
+            </LinearLayout>
         </LinearLayout>
-    </TabHost>
+
+        <LinearLayout
+            android:id="@+id/grid_in_linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <GridView
+                android:id="@+id/grid_in_betting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numColumns="2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical" >
+
+                <ProgressBar
+                    android:id="@+id/grid_friend_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
@@ -211,7 +212,7 @@ public class MainActivity extends Activity {
 	 * "content_frame"이라구 하는 Fragment. shows menu content."
 	 */
 	public static class PageFragment extends Fragment implements
-			AsyncCallback<HashMap<String, Object>>,  OnClickListener{
+			AsyncCallback<HashMap<String, Object>>, OnClickListener {
 		public static final String ARG_PAGE_NUMBER = "page_number";
 		private int fragmentPosition = -1;
 		private GridView gridView;
@@ -232,6 +233,12 @@ public class MainActivity extends Activity {
 		private String friendId;
 		private User user;
 		private EditText editText;
+		private View tabView1;
+		private View tabView2;
+		private View tabView3;
+		private View tabView4;
+		private View tabView5;
+		private View tabView6;
 
 		private ArrayList<Pop> parPopItems;
 		private ArrayList<Pop> makedPopItems;
@@ -280,7 +287,7 @@ public class MainActivity extends Activity {
 			case 3:
 				rootView = inflater.inflate(R.layout.fragment_friend,
 						container, false);
-				
+
 				break;
 			default:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
@@ -308,26 +315,9 @@ public class MainActivity extends Activity {
 				myPagerAdapter = new MyPagerAdapter(getActivity());
 				viewPager.setAdapter(myPagerAdapter);
 
-				// Tabhost
-				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
-				tabHost.setup();
-				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator(
-						"Tab1");
-				tabSpec.setContent(R.id.grid_all_popple_linear);
-				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab1));
-				tabHost.addTab(tabSpec);
-
 				allProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_all_popple_progress);
 				allProgress.setVisibility(View.VISIBLE);
-
-				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
-				tabSpec.setContent(R.id.grid_friend_linear);
-				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab2));
-				tabHost.addTab(tabSpec);
-				tabHost.setCurrentTab(0);
 
 				myProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_friend_progress);
@@ -339,39 +329,49 @@ public class MainActivity extends Activity {
 				mainGridItemAdapterAll = new MainGridItemAdapter(getActivity(),
 						R.layout.view_grid, allPopItems);
 				gridView.setAdapter(mainGridItemAdapterAll);
+
 				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
 				mainGridItemAdapterMyPople = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, myPopItems);
 				gridView.setAdapter(mainGridItemAdapterMyPople);
+				
+				tabView1 = (View) rootView
+						.findViewById(R.id.grid_all_popple_linear);
+				tabView2 = (View) rootView
+						.findViewById(R.id.grid_friend_linear);
+				tabView1.setVisibility(View.VISIBLE);
+				tabView2.setVisibility(View.INVISIBLE);
+
+				RadioButton _imageButton = (RadioButton) rootView
+						.findViewById(R.id.btn_tab1);
+				_imageButton.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View arg0) {
+						tabView1.setVisibility(View.VISIBLE);
+						tabView2.setVisibility(View.INVISIBLE);
+					}
+					
+				});
+				_imageButton = (RadioButton) rootView
+						.findViewById(R.id.btn_tab2);
+				_imageButton.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View arg0) {
+						tabView1.setVisibility(View.INVISIBLE);
+						tabView2.setVisibility(View.VISIBLE);
+					}
+					
+				});				
 
 				DataRequester.showAllbettinglist(this);
 				DataRequester.showFriendbettinglist(user.getId(), this);
 				break;
-			case 1: // my page				
-
-				TextView userName = (TextView) rootView.findViewById(R.id.mypage_name);
-				userName.setText((String)user.getName());
-				
-				// Tabhost
-				tabHost = (TabHost) rootView.findViewById(R.id.tabhost);
-				tabHost.setup();
-				TabSpec tabSpe = tabHost.newTabSpec("Tab1")
-						.setIndicator("Tab1");
-				tabSpe.setContent(R.id.grid_all_popple);
-				tabSpe.setIndicator("",
-						getResources().getDrawable(R.drawable.tab1));
-				tabHost.addTab(tabSpe);
-
+			case 1: // my page
 				makedProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_all_popple_progress);
 				makedProgress.setVisibility(View.VISIBLE);
-
-				tabSpe = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
-				tabSpe.setContent(R.id.grid_friend);
-				tabSpe.setIndicator("",
-						getResources().getDrawable(R.drawable.tab2));
-				tabHost.addTab(tabSpe);
-				tabHost.setCurrentTab(0);
 
 				parProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_friend_progress);
@@ -379,15 +379,51 @@ public class MainActivity extends Activity {
 
 				// GridView
 				gridView = (GridView) rootView
-						.findViewById(R.id.grid_all_popple);
+						.findViewById(R.id.grid_made_betting);
 				mainGridItemAdapterMaked = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, makedPopItems);
 				gridView.setAdapter(mainGridItemAdapterMaked);
-				gridView = (GridView) rootView.findViewById(R.id.grid_friend);
+
+				gridView = (GridView) rootView.findViewById(R.id.grid_in_betting);
 				mainGridItemAdapterPar = new MainGridItemAdapter(getActivity(),
 						R.layout.view_grid, parPopItems);
 				gridView.setAdapter(mainGridItemAdapterPar);
 
+				TextView userName = (TextView) rootView
+						.findViewById(R.id.mypage_name);
+				userName.setText((String) user.getName());
+
+				// Tabhost
+				tabView3 = (View) rootView
+						.findViewById(R.id.grid_made_betting_linear);
+				tabView4 = (View) rootView
+						.findViewById(R.id.grid_in_linear);
+				tabView3.setVisibility(View.VISIBLE);
+				tabView4.setVisibility(View.INVISIBLE);
+
+				RadioButton _imageButton2 = (RadioButton) rootView
+						.findViewById(R.id.btn_tab3);
+				_imageButton2.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View arg0) {
+						tabView3.setVisibility(View.VISIBLE);
+						tabView4.setVisibility(View.INVISIBLE);
+					}
+					
+				});
+				_imageButton2 = (RadioButton) rootView
+						.findViewById(R.id.btn_tab4);
+				_imageButton2.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View arg0) {
+						tabView3.setVisibility(View.INVISIBLE);
+						tabView4.setVisibility(View.VISIBLE);
+					}
+					
+				});
+				
 				DataRequester.showMakebettinglist(user.getId(), this);
 				DataRequester.showJoinbettinglist(user.getId(), this);
 				break;
@@ -396,7 +432,7 @@ public class MainActivity extends Activity {
 						R.layout.view_grid2, productItems);
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
-				gridView.setAdapter(productItemAdapter);				
+				gridView.setAdapter(productItemAdapter);
 				productProgress = (ProgressBar) rootView
 						.findViewById(R.id.grid_betting_item_progres);
 				productProgress.setVisibility(View.VISIBLE);
@@ -405,21 +441,35 @@ public class MainActivity extends Activity {
 				break;
 			case 3:
 				// Tabhost
-				tabHost = (TabHost) rootView.findViewById(R.id.tabhost_friend);
-				tabHost.setup();
-				tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
-				tabSpec.setContent(R.id.list_my_friend);
-				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab_my_pople));
-				tabHost.addTab(tabSpec);
+				tabView5 = (View) rootView
+						.findViewById(R.id.list_my_friend_linear);
+				tabView6 = (View) rootView
+						.findViewById(R.id.find_friend);
+				tabView5.setVisibility(View.VISIBLE);
+				tabView6.setVisibility(View.INVISIBLE);
 
-				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
-				tabSpec.setContent(R.id.find_friend);
-				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab_find_pople));
-				tabHost.addTab(tabSpec);
-				tabHost.setCurrentTab(0);
+				RadioButton _imageButton3 = (RadioButton) rootView
+						.findViewById(R.id.btn_tab5);
+				_imageButton3.setOnClickListener(new OnClickListener(){
 
+					@Override
+					public void onClick(View arg0) {
+						tabView5.setVisibility(View.VISIBLE);
+						tabView6.setVisibility(View.INVISIBLE);
+					}
+					
+				});
+				_imageButton3 = (RadioButton) rootView
+						.findViewById(R.id.btn_tab6);
+				_imageButton3.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View arg0) {
+						tabView5.setVisibility(View.INVISIBLE);
+						tabView6.setVisibility(View.VISIBLE);
+					}
+					
+				});
 				// listView
 				listView = (ListView) rootView
 						.findViewById(R.id.list_my_friend);
@@ -428,13 +478,10 @@ public class MainActivity extends Activity {
 				listView.setAdapter(friendListAdapter);
 				// listView.setOnItemClickListener(friendItemListener);
 
-				editText = (EditText) rootView
-						.findViewById(R.id.search_name);
-				Toast.makeText(getActivity(), friendId, Toast.LENGTH_SHORT).show();
+				editText = (EditText) rootView.findViewById(R.id.search_name);
 				ImageButton imageButton = (ImageButton) rootView
 						.findViewById(R.id.btn_find_friend);
 				imageButton.setOnClickListener(this);
-				
 
 				friendItems.clear();
 				DataRequester.showFriendlist(user.getId(), this);
@@ -445,11 +492,10 @@ public class MainActivity extends Activity {
 			default:
 			}
 		}
-		
-		public void onClick(View view){
-			switch(view.getId()){
+
+		public void onClick(View view) {
+			switch (view.getId()) {
 			case R.id.btn_find_friend:
-				Toast.makeText(getActivity(), "friend requested", Toast.LENGTH_SHORT).show();
 				friendId = editText.getText().toString();
 				DataRequester.requestFriend(user.getId(), friendId, this);
 				break;
@@ -457,17 +503,8 @@ public class MainActivity extends Activity {
 			}
 		}
 
-		public void onTabChanged(String tabId) {
-			Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT).show();
 
-			TabWidget tabWidget = tabHost.getTabWidget();
 
-			if (tabId == "Tab1") {
-				Toast.makeText(getActivity(), "tab1", Toast.LENGTH_SHORT)
-						.show();
-			}
-		}
-		
 		AdapterView.OnItemClickListener bettingItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -492,8 +529,6 @@ public class MainActivity extends Activity {
 		AdapterView.OnItemClickListener friendItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(getActivity(), "list click " + position,
-						Toast.LENGTH_SHORT).show();
 			}
 		};
 
@@ -575,15 +610,13 @@ public class MainActivity extends Activity {
 							.get("users");
 					if (tempItems != null)
 						for (User b : tempItems) {
-							Toast.makeText(getActivity(), "r:"+b.getName(), Toast.LENGTH_SHORT).show();
 							FriendUser friendUser = new FriendUser(b);
 							friendUser.setIsRequestTrue();
 							friendItems.add(0, friendUser);
 						}
 					friendListAdapter.notifyDataSetChanged();
 				}
-			} else if (type.equals("requestFriend")){
-					Toast.makeText(getActivity(), "!"+(String)result.get("success"), Toast.LENGTH_SHORT).show();
+			} else if (type.equals("requestFriend")) {
 			}
 		}
 
