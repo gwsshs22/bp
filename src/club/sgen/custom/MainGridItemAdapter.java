@@ -3,15 +3,19 @@ package club.sgen.custom;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import club.sgen.bettingpop.BettingresultActivity;
+import club.sgen.bettingpop.BettingstartActivity;
 import club.sgen.entity.Betting;
 import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
@@ -55,7 +59,7 @@ public class MainGridItemAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View gridView;
 
 		if (convertView == null) {
@@ -65,7 +69,7 @@ public class MainGridItemAdapter extends BaseAdapter {
 			gridView = convertView;
 		}
 
-		Betting betting = popSrc.get(position).getBetting();
+		final Betting betting = popSrc.get(position).getBetting();
 		User user = popSrc.get(position).getUser();
 		Product product = popSrc.get(position).getProduct();
 
@@ -88,6 +92,22 @@ public class MainGridItemAdapter extends BaseAdapter {
 
 		textView = (TextView) gridView.findViewById(R.id.betting_title);
 		textView.setText(betting.getName());
+
+		gridView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = null;
+				if (!betting.getIs_end().equals("T")) {
+					intent = new Intent(context, BettingstartActivity.class);
+				} else {
+					intent = new Intent(context, BettingresultActivity.class);
+				}
+				Pop.putPopToIntent(intent, popSrc.get(position));
+				context.startActivity(intent);
+			}
+
+		});
 
 		return gridView;
 	}
