@@ -20,7 +20,7 @@ public class Pop {
 		p.setDescription(intent.getStringExtra("p_desc"));
 		p.setImage(intent.getStringExtra("p_image"));
 		p.setName(intent.getStringExtra("p_name"));
-		p.setPrice(intent.getIntExtra("p_pice", 0));
+		p.setPrice(intent.getIntExtra("p_price", 0));
 		p.setProduct_key(intent.getIntExtra("p_product", 0));
 		p.setTerm_end((Date) intent.getSerializableExtra("p_term_end"));
 		p.setTerm_start((Date) intent.getSerializableExtra("p_term_start"));
@@ -45,7 +45,7 @@ public class Pop {
 		pop.setProduct(p);
 		pop.setAgree(intent.getIntExtra("agree", 0));
 		pop.setDisagree(intent.getIntExtra("disagree", 0));
-		return null;
+		return pop;
 	}
 
 	public static void putPopToIntent(Intent intent, Pop pop) {

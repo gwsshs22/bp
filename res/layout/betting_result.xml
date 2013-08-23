@@ -94,7 +94,7 @@
                 android:layout_width="276dp"
                 android:layout_height="138dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="14dp"
                 android:src="@drawable/ic_launcher" />
 
             <TextView

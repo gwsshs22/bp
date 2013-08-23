@@ -168,8 +168,6 @@
             </TextView>
         </FrameLayout>
 
-        <TextView>
-        </TextView>
     </FrameLayout>
 
     <LinearLayout

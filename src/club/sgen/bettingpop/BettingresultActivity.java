@@ -3,8 +3,11 @@ package club.sgen.bettingpop;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -14,6 +17,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import club.sgen.crop.PictureSelector;
 import club.sgen.entity.Betting;
 import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
@@ -44,6 +49,11 @@ public class BettingresultActivity extends Activity implements
 	private Betting betting;
 	private Product product;
 
+	private PopupDialog popDialog;
+
+	private PictureSelector selector;
+	private AlertDialog alertDialog;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,14 @@ public class BettingresultActivity extends Activity implements
 		product = pop.getProduct();
 		betting = pop.getBetting();
 
+		selector = new PictureSelector(this, false);
+		alertDialog = selector.createDialog();
+		boolean isOwner = false;
+		if (user.getId().equals(BettingpopApplication.getUser().getId()))
+			isOwner = true;
+
+		popDialog = new PopupDialog(this);
+
 		closebutton = (ImageView) findViewById(R.id.bettingresult_closebutton);
 		userimg = (ImageView) findViewById(R.id.bettingresult_userimage);
 		username = (TextView) findViewById(R.id.bettingresult_name);
@@ -71,8 +89,9 @@ public class BettingresultActivity extends Activity implements
 		resultbutton = (ImageView) findViewById(R.id.bettingresult_result);
 		sharebutton = (ImageView) findViewById(R.id.bettingresult_share);
 
+		userterm.setText(DataRequester.dateToString(betting.getTerm_end()));
 		username.setText(user.getId());
-		usertitle.setText(betting.getDescription());
+		usertitle.setText(betting.getName());
 		productname.setText(product.getName());
 		productprice.setText(String.valueOf(product.getPrice()));
 		bettingfailnumber.setText(String.valueOf(pop.getDisagree()));
@@ -86,7 +105,12 @@ public class BettingresultActivity extends Activity implements
 		noImageDrawable = new BitmapDrawable(this.getResources(),
 				BitmapFactory.decodeResource(this.getResources(),
 						R.drawable.product_3));
-		downloader.download(product.getImage(), productimage, noImageDrawable);
+		if (betting.getResultImage() == null)
+			downloader.download(product.getImage(), productimage,
+					noImageDrawable);
+		else
+			downloader.download(betting.getResultImage(), productimage,
+					noImageDrawable);
 		closebutton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -94,26 +118,45 @@ public class BettingresultActivity extends Activity implements
 			}
 		});
 
-		bettingbutton.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+		if (!isOwner) {
+			bettingbutton.setOnClickListener(new Button.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					popDialog.show();
+				}
+			});
+		} else {
+			productimage.setOnClickListener(new OnClickListener() {
 
-			}
-		});
+				@Override
+				public void onClick(View v) {
+					alertDialog.show();
+				}
 
+			});
+			resultbutton.setOnClickListener(new Button.OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					DataRequester.updateResultImage(betting.getBetting_key(),
+							selector.getFileName());
+					Toast.makeText(BettingresultActivity.this, "사진을 업로드합니다.",
+							Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
 	}
 
 	public class PopupDialog extends Dialog implements OnClickListener {
-		private Button success;
-		private Button fail;
-		private Button close;
+		private ImageView success;
+		private ImageView fail;
+		private ImageView close;
 
 		public PopupDialog(Context context) {
 			super(context);
 			setContentView(R.layout.popup_bettingresult_accept);
-			success = (Button) findViewById(R.id.popup_bettingresult_success);
-			fail = (Button) findViewById(R.id.popup_bettingresult_failure);
-			close = (Button) findViewById(R.id.popup_bettingresult_closebutton);
+			success = (ImageView) findViewById(R.id.popup_bettingresult_success);
+			fail = (ImageView) findViewById(R.id.popup_bettingresult_failure);
+			close = (ImageView) findViewById(R.id.popup_bettingresult_closebutton);
 			close.setOnClickListener(this);
 			fail.setOnClickListener(this);
 			success.setOnClickListener(this);
@@ -135,6 +178,13 @@ public class BettingresultActivity extends Activity implements
 	}
 
 	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (selector != null)
+			selector.deleteTempFile();
+	}
+
+	@Override
 	public void onResult(HashMap<String, Object> result) {
 		String type = (String) result.get("type");
 		Boolean errorOccured = (Boolean) result.get("error_occured");
@@ -143,6 +193,16 @@ public class BettingresultActivity extends Activity implements
 				finish();
 			}
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (selector == null)
+			return;
+		selector.onActivityResult(requestCode, resultCode, data);
+		Bitmap bitmap = selector.getBitmap();
+		if (bitmap != null)
+			productimage.setImageBitmap(bitmap);
 	}
 
 	@Override

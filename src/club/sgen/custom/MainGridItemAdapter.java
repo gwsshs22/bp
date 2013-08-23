@@ -98,6 +98,7 @@ public class MainGridItemAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = null;
+				Betting b = betting;
 				if (!betting.getIs_end().equals("T")) {
 					intent = new Intent(context, BettingstartActivity.class);
 				} else {
