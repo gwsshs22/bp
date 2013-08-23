@@ -441,6 +441,9 @@ public class MainActivity extends Activity {
 				friendItems.clear();
 				DataRequester.showFriendlist(user.getId(), this);
 				DataRequester.showFriendrequestlist(user.getId(), this);
+				break;
+			case 4:
+				getActivity().finish();
 			default:
 			}
 		}
