@@ -35,9 +35,11 @@ public class PictureSelector {
 	private Uri mImageCaptureUri;
 	private Activity activity;
 	private Bitmap photo = null;
+	private boolean useBitmapHandler = false;
 
-	public PictureSelector(Activity activity) {
+	public PictureSelector(Activity activity, boolean useBitmapHandler) {
 		this.activity = activity;
+		this.useBitmapHandler = useBitmapHandler;
 	}
 
 	public Bitmap getBitmap() {
@@ -257,11 +259,14 @@ public class PictureSelector {
 
 			String full_path = mImageCaptureUri.getPath();
 			photo = BitmapFactory.decodeFile(full_path);
-			BitmapDrawRingOnOuter bdro = new BitmapDrawRingOnOuter(Color.RED,
-					20, 17);
-			Bitmap output = bdro.handleBitmap(photo);
-			photo.recycle();
-			photo = output;
+			if (useBitmapHandler) {
+				BitmapDrawRingOnOuter bdro = new BitmapDrawRingOnOuter(
+						Color.RED, 20, 17);
+				Bitmap output = bdro.handleBitmap(photo);
+				photo.recycle();
+				photo = output;
+			}
+
 			break;
 		}
 		}
