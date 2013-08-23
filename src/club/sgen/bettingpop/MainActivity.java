@@ -308,7 +308,7 @@ public class MainActivity extends Activity {
 						"Tab1");
 				tabSpec.setContent(R.id.grid_all_popple_linear);
 				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab1));
+						getResources().getDrawable(R.drawable.tab_allpople_button));
 				tabHost.addTab(tabSpec);
 
 				allProgress = (ProgressBar) rootView
@@ -318,7 +318,7 @@ public class MainActivity extends Activity {
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.grid_friend_linear);
 				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab2));
+						getResources().getDrawable(R.drawable.tab_mypople_button));
 				tabHost.addTab(tabSpec);
 				tabHost.setCurrentTab(0);
 
@@ -354,7 +354,7 @@ public class MainActivity extends Activity {
 						.setIndicator("Tab1");
 				tabSpe.setContent(R.id.grid_all_popple);
 				tabSpe.setIndicator("",
-						getResources().getDrawable(R.drawable.tab1));
+						getResources().getDrawable(R.drawable.tab_allpople_button));
 				tabHost.addTab(tabSpe);
 
 				makedProgress = (ProgressBar) rootView
@@ -364,7 +364,7 @@ public class MainActivity extends Activity {
 				tabSpe = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpe.setContent(R.id.grid_friend);
 				tabSpe.setIndicator("",
-						getResources().getDrawable(R.drawable.tab2));
+						getResources().getDrawable(R.drawable.tab_mypople_button));
 				tabHost.addTab(tabSpe);
 				tabHost.setCurrentTab(0);
 
@@ -405,13 +405,13 @@ public class MainActivity extends Activity {
 				tabSpec = tabHost.newTabSpec("Tab1").setIndicator("Tab1");
 				tabSpec.setContent(R.id.list_my_friend);
 				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab_my_pople));
+						getResources().getDrawable(R.drawable.tab_mypople_button_red));
 				tabHost.addTab(tabSpec);
 
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpec.setContent(R.id.list_find_friend);
 				tabSpec.setIndicator("",
-						getResources().getDrawable(R.drawable.tab_find_pople));
+						getResources().getDrawable(R.drawable.tab_findpople_button_red));
 				tabHost.addTab(tabSpec);
 				tabHost.setCurrentTab(0);
 
