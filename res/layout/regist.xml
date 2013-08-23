@@ -7,36 +7,17 @@
 
     <FrameLayout
         android:id="@+id/regist_titlebar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000" >
+                android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/top_center" >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/ic_launcher" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="가입하기"
-            android:textColor="#C6FFF6"
-            android:textSize="22sp" />
-
+        
         <ImageView
             android:id="@+id/regist_titlebar_closebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/ic_launcher" />
+            android:background="@drawable/top_right_close" />
     </FrameLayout>
 
     <ImageView
@@ -87,7 +68,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="PASSWORD"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="#c7c7c7"
                 android:textSize="12sp" />
         </FrameLayout>
@@ -106,7 +87,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="CONFIRM PASSWORD"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="#c7c7c7"
                 android:textSize="12sp" />
         </FrameLayout>

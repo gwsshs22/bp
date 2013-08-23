@@ -29,6 +29,10 @@
         <activity android:name="club.sgen.bettingpop.LoginActivity" />
         <activity android:name="club.sgen.bettingpop.MainActivity" />
         <activity android:name="club.sgen.bettingpop.RegistActivity" />
+        <activity android:name="club.sgen.bettingpop.BettingstartActivity"></activity>
+        <activity android:name="club.sgen.bettingpop.BettingresultActivity"></activity>
+        <activity android:name="club.sgen.bettingpop.DonationresultActivity"></activity>
+        <activity android:name="club.sgen.bettingpop.DonationstartActivity"></activity>
     </application>
 
 </manifest>

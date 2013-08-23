@@ -5,36 +5,18 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <FrameLayout
+   <FrameLayout
         android:id="@+id/login_titlebar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000" >
-
-        <ImageView
-            android:id="@+id/regist_userimage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="로그인하기"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
+        android:layout_height="48dp"
+        android:background="@drawable/top_center" >
 
         <ImageView
             android:id="@+id/login_titlebar_closebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/ic_launcher" />
+            android:background="@drawable/top_right_close" />
     </FrameLayout>
 
     <LinearLayout
@@ -77,7 +59,7 @@
                 android:layout_marginLeft="70dp"
                 android:layout_marginTop="10dp"
                 android:hint="PASSWORD"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="#c7c7c7"
                 android:textSize="12sp" />
 
