@@ -20,7 +20,10 @@ public class BettingmakeActivity extends Activity implements
 	private RadioButton bettingradio;
 	private RadioButton donationradio;
 	private EditText title;
-	private EditText term;
+	private EditText year;
+	private EditText month;
+	private EditText day;
+	private EditText hour;
 	private RadioButton buyproduct;
 	private RadioButton writeproduct;
 	private EditText writeproductname;
@@ -40,7 +43,10 @@ public class BettingmakeActivity extends Activity implements
 		bettingradio = (RadioButton) findViewById(R.id.bettingmake_bettingicon);
 		donationradio = (RadioButton) findViewById(R.id.bettingmake_donationicon);
 		title = (EditText) findViewById(R.id.bettingmake_title);
-		term = (EditText) findViewById(R.id.bettingmake_term);
+		year = (EditText) findViewById(R.id.bettingmake_year);
+		month = (EditText) findViewById(R.id.bettingmake_month);
+		day = (EditText) findViewById(R.id.bettingmake_day);
+		hour = (EditText) findViewById(R.id.bettingmake_hour);
 		buyproduct = (RadioButton) findViewById(R.id.bettingmake_findgift);
 		writeproduct = (RadioButton) findViewById(R.id.bettingmake_inputgift);
 		writeproductname = (EditText) findViewById(R.id.bettingmake_writeproduct);
