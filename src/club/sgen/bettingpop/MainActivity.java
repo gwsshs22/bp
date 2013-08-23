@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
@@ -231,6 +232,13 @@ public class MainActivity extends Activity {
 		private MainGridItemAdapter mainGridItemAdapterPar;
 		private MainGridItemAdapter mainGridItemAdapterMaked;
 
+		private ProgressBar allProgress;
+		private ProgressBar myProgress;
+		private ProgressBar makedProgress;
+		private ProgressBar parProgress;
+
+		private ProgressBar productProgress;
+
 		public PageFragment() {
 			// Empty constructor
 			myPopItems = new ArrayList<Pop>();
@@ -248,32 +256,24 @@ public class MainActivity extends Activity {
 				Bundle savedInstanceState) {
 			int i = getArguments().getInt(ARG_PAGE_NUMBER);
 			fragmentPosition = i;
-			User user = BettingpopApplication.getUser();
 
 			switch (i) {
 			case 0: // my page
 				Log.d("A1", "my page¿‘¥œ¥Á");
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
-				DataRequester.showAllbettinglist(this);
-				DataRequester.showFriendbettinglist(user.getId(), this);
 				break;
 			case 1:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
-				DataRequester.showMakebettinglist(user.getId(), this);
-				DataRequester.showJoinbettinglist(user.getId(), this);
 				break;
 			case 2:
 				rootView = inflater.inflate(R.layout.fragment_betting_item,
 						container, false);
-				DataRequester.showMyproductlist(user.getId(), this);
 				break;
 			case 3:
 				rootView = inflater.inflate(R.layout.fragment_friend,
 						container, false);
-				DataRequester.showFriendlist(user.getId(), this);
-				DataRequester.showFriendrequestlist(user.getId(), this);
 				break;
 			default:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
@@ -291,6 +291,8 @@ public class MainActivity extends Activity {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			Log.d("A1", "onActivityCreated started");
 			super.onActivityCreated(savedInstanceState);
+
+			User user = BettingpopApplication.getUser();
 			switch (fragmentPosition) {
 			case 0: // main page
 				// View Pager
@@ -304,17 +306,25 @@ public class MainActivity extends Activity {
 				tabHost.setup();
 				TabSpec tabSpec = tabHost.newTabSpec("Tab1").setIndicator(
 						"Tab1");
-				tabSpec.setContent(R.id.grid_all_popple);
+				tabSpec.setContent(R.id.grid_all_popple_linear);
 				tabSpec.setIndicator("",
 						getResources().getDrawable(R.drawable.tab1));
 				tabHost.addTab(tabSpec);
 
+				allProgress = (ProgressBar) rootView
+						.findViewById(R.id.grid_all_popple_progress);
+				allProgress.setVisibility(View.VISIBLE);
+
 				tabSpec = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
-				tabSpec.setContent(R.id.grid_friend);
+				tabSpec.setContent(R.id.grid_friend_linear);
 				tabSpec.setIndicator("",
 						getResources().getDrawable(R.drawable.tab2));
 				tabHost.addTab(tabSpec);
 				tabHost.setCurrentTab(0);
+
+				myProgress = (ProgressBar) rootView
+						.findViewById(R.id.grid_friend_progress);
+				myProgress.setVisibility(View.VISIBLE);
 
 				// GridView
 				gridView = (GridView) rootView
@@ -326,6 +336,9 @@ public class MainActivity extends Activity {
 				mainGridItemAdapterMyPople = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, myPopItems);
 				gridView.setAdapter(mainGridItemAdapterMyPople);
+
+				DataRequester.showAllbettinglist(this);
+				DataRequester.showFriendbettinglist(user.getId(), this);
 				break;
 			case 1: // my page
 				// View Pager
@@ -344,12 +357,20 @@ public class MainActivity extends Activity {
 						getResources().getDrawable(R.drawable.tab1));
 				tabHost.addTab(tabSpe);
 
+				makedProgress = (ProgressBar) rootView
+						.findViewById(R.id.grid_all_popple_progress);
+				makedProgress.setVisibility(View.VISIBLE);
+
 				tabSpe = tabHost.newTabSpec("Tab2").setIndicator("Tab2");
 				tabSpe.setContent(R.id.grid_friend);
 				tabSpe.setIndicator("",
 						getResources().getDrawable(R.drawable.tab2));
 				tabHost.addTab(tabSpe);
 				tabHost.setCurrentTab(0);
+
+				parProgress = (ProgressBar) rootView
+						.findViewById(R.id.grid_friend_progress);
+				parProgress.setVisibility(View.VISIBLE);
 
 				// GridView
 				gridView = (GridView) rootView
@@ -361,6 +382,9 @@ public class MainActivity extends Activity {
 				mainGridItemAdapterPar = new MainGridItemAdapter(getActivity(),
 						R.layout.view_grid, parPopItems);
 				gridView.setAdapter(mainGridItemAdapterPar);
+
+				DataRequester.showMakebettinglist(user.getId(), this);
+				DataRequester.showJoinbettinglist(user.getId(), this);
 				break;
 			case 2: // betting item list
 				productItemAdapter = new ProductItemAdapter(getActivity(),
@@ -368,6 +392,11 @@ public class MainActivity extends Activity {
 				gridView = (GridView) rootView
 						.findViewById(R.id.grid_betting_item);
 				gridView.setAdapter(productItemAdapter);
+				productProgress = (ProgressBar) rootView
+						.findViewById(R.id.grid_betting_item_progres);
+				productProgress.setVisibility(View.VISIBLE);
+
+				DataRequester.showMyproductlist(user.getId(), this);
 				break;
 			case 3:
 				// Tabhost
@@ -400,6 +429,9 @@ public class MainActivity extends Activity {
 						.findViewById(R.id.list_find_friend);
 				listView.setAdapter(friendRequestListAdapter);
 				// listView.setOnItemClickListener(friendItemListener);
+
+				DataRequester.showFriendlist(user.getId(), this);
+				DataRequester.showFriendrequestlist(user.getId(), this);
 			default:
 			}
 		}
@@ -456,6 +488,7 @@ public class MainActivity extends Activity {
 					if (tempItems != null)
 						for (Pop b : tempItems)
 							allPopItems.add(b);
+					allProgress.setVisibility(View.GONE);
 					mainGridItemAdapterAll.notifyDataSetChanged();
 				} else {
 
@@ -468,6 +501,7 @@ public class MainActivity extends Activity {
 					if (tempItems != null)
 						for (Pop b : tempItems)
 							myPopItems.add(b);
+					myProgress.setVisibility(View.GONE);
 					mainGridItemAdapterMyPople.notifyDataSetChanged();
 				}
 			} else if (type.equals("showMakebettinglist")) {
@@ -478,6 +512,7 @@ public class MainActivity extends Activity {
 					if (tempItems != null)
 						for (Pop b : tempItems)
 							makedPopItems.add(b);
+					makedProgress.setVisibility(View.GONE);
 					mainGridItemAdapterMaked.notifyDataSetChanged();
 				}
 			} else if (type.equals("showJoinbettinglist")) {
@@ -488,6 +523,7 @@ public class MainActivity extends Activity {
 					if (tempItems != null)
 						for (Pop b : tempItems)
 							parPopItems.add(b);
+					parProgress.setVisibility(View.GONE);
 					mainGridItemAdapterPar.notifyDataSetChanged();
 				}
 			} else if (type.equals("showMyproductlist")) {
@@ -498,6 +534,7 @@ public class MainActivity extends Activity {
 					if (tempItems != null)
 						for (Product b : tempItems)
 							productItems.add(b);
+					productProgress.setVisibility(View.GONE);
 					productItemAdapter.notifyDataSetChanged();
 				}
 			} else if (type.equals("showFriendlist")) {

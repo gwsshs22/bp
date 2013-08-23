@@ -1,5 +1,2 @@
-<<<<<<< HEAD
-/bin/*
-=======
-/bin/
->>>>>>> origin/pigbug
+bin/*
+gen/*
