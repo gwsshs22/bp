@@ -8,9 +8,18 @@
         android:id="@+id/search_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="70dp"
+        android:layout_marginStart="70dp"
         android:layout_gravity="center_vertical"
         android:text="이지아"
         android:textColor="#000000"
         android:textSize="20dp" />
+    
+    <ImageButton 
+        android:id="@+id/btn_find_friend"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="120dp"
+        android:src="@drawable/search_pople"/>
+    
 </LinearLayout>

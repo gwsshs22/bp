@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/friend_list_background"
     android:layout_width="330dp"
-    android:layout_height="53dp"
-    android:background="@drawable/list_mid"
+    android:layout_height="55dp"
+    android:background="@drawable/result_mid"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -24,4 +25,19 @@
         android:textColor="#000000"
         android:textSize="20dp" />
 
+    <ImageButton 
+        android:id="@+id/btn_add_friend"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="95dp"
+        android:src="@drawable/top_right_new_betting"/>
+    
+    <ImageButton 
+        android:id="@+id/btn_reject_friend"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="6dp"
+        android:src="@drawable/top_right_close"/>
 </LinearLayout>
