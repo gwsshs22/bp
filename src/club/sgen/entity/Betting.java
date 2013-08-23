@@ -18,6 +18,16 @@ public class Betting {
 			return D;
 		}
 	};
+	
+	private String is_end;
+	
+	public String getIs_end(){
+		return is_end;
+	}
+	
+	public void setIs_end(String is_end){
+		this.is_end = is_end;
+	}
 
 	public Product getProduct() {
 		return product;
