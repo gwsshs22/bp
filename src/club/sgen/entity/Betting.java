@@ -27,6 +27,7 @@ public class Betting {
 		this.product = product;
 	}
 
+	private String is_end;
 	private Product product;
 	private int betting_key;
 	private String name;
@@ -39,6 +40,14 @@ public class Betting {
 	private int product_key;
 	private String result_image;
 	private String user_id;
+	
+	public String getIs_end(){
+		return is_end;
+	}
+	
+	public void setIs_end(String is_end){
+		this.is_end = is_end;
+	}
 
 	public String getUserId() {
 		return user_id;
