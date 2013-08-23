@@ -491,7 +491,7 @@ public abstract class DataRequester {
 			});
 	}
 	
-	public static void acceptFriend(final String user_id, final String friend_id,
+	public static void acceptFriend(final String user_id, final String friend_id, final String accept,
 		AsyncCallback<HashMap<String, Object>> callback) {
 	ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 	addParam(params, "user_id", user_id);

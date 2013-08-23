@@ -4,6 +4,10 @@ public class FriendUser {
 	private User user;
 	private boolean isRequest=false;
 	
+	public FriendUser(){
+		
+	}
+	
 	public FriendUser(User user){
 		this.user = user;
 	}
