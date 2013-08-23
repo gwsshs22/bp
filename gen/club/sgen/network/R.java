@@ -159,6 +159,7 @@ public final class R {
     }
     public static final class id {
         public static final int actionbar_toggle=0x7f0a0000;
+<<<<<<< HEAD
         public static final int better_image=0x7f0a009b;
         public static final int better_name=0x7f0a009c;
         public static final int betting_image=0x7f0a009a;
@@ -181,6 +182,24 @@ public final class R {
         public static final int bettingmake_people6=0x7f0a001c;
         public static final int bettingmake_people8=0x7f0a001d;
         public static final int bettingmake_title=0x7f0a0010;
+=======
+        public static final int better_image=0x7f0a0098;
+        public static final int better_name=0x7f0a0099;
+        public static final int betting_image=0x7f0a0097;
+        public static final int betting_make_bettingicon=0x7f0a000d;
+        public static final int betting_make_btn=0x7f0a0009;
+        public static final int betting_make_donationicon=0x7f0a000e;
+        public static final int betting_title=0x7f0a009b;
+        public static final int bettingmake_date=0x7f0a0010;
+        public static final int bettingmake_findgift=0x7f0a0012;
+        public static final int bettingmake_inputgift=0x7f0a0013;
+        public static final int bettingmake_ok=0x7f0a001a;
+        public static final int bettingmake_people2=0x7f0a0016;
+        public static final int bettingmake_people4=0x7f0a0017;
+        public static final int bettingmake_people6=0x7f0a0018;
+        public static final int bettingmake_people8=0x7f0a0019;
+        public static final int bettingmake_title=0x7f0a000f;
+>>>>>>> origin/pigbug_progress
         public static final int bettingmake_titlebar=0x7f0a000b;
         public static final int bettingmake_writeproduct=0x7f0a0018;
         public static final int bettingmake_year=0x7f0a0011;
@@ -216,11 +235,19 @@ public final class R {
         public static final int bettingstart_titlebar=0x7f0a002f;
         public static final int bettingstart_userimage=0x7f0a0031;
         public static final int btn_add_betting=0x7f0a0001;
+<<<<<<< HEAD
         public static final int btn_camera_crop=0x7f0a0071;
         public static final int btn_gellary_crop=0x7f0a0072;
         public static final int btn_tab=0x7f0a00a7;
         public static final int buttonLayout=0x7f0a006c;
         public static final int button_close_popup=0x7f0a007a;
+=======
+        public static final int btn_camera_crop=0x7f0a006f;
+        public static final int btn_gellary_crop=0x7f0a0070;
+        public static final int btn_tab=0x7f0a00a4;
+        public static final int buttonLayout=0x7f0a0066;
+        public static final int button_close_popup=0x7f0a0079;
+>>>>>>> origin/pigbug_progress
         public static final int content_frame=0x7f0a0003;
         public static final int donationresult_bettingbutton=0x7f0a004c;
         public static final int donationresult_bettingfail=0x7f0a004d;
@@ -258,6 +285,7 @@ public final class R {
         public static final int donationstart_titlebar=0x7f0a0053;
         public static final int donationstart_userimage=0x7f0a0055;
         public static final int drawer_layout=0x7f0a0002;
+<<<<<<< HEAD
         public static final int drawer_list_back=0x7f0a0099;
         public static final int fragment_betting_item_linear=0x7f0a0067;
         public static final int friend_image=0x7f0a00a4;
@@ -265,10 +293,25 @@ public final class R {
         public static final int grid_all_popple=0x7f0a006f;
         public static final int grid_betting_item=0x7f0a0068;
         public static final int grid_friend=0x7f0a0070;
+=======
+        public static final int drawer_list_back=0x7f0a0096;
+        public static final int fragment_betting_item_linear=0x7f0a0060;
+        public static final int friend_image=0x7f0a00a1;
+        public static final int friend_name=0x7f0a00a2;
+        public static final int grid_all_popple=0x7f0a006a;
+        public static final int grid_all_popple_linear=0x7f0a0069;
+        public static final int grid_all_popple_progress=0x7f0a006b;
+        public static final int grid_betting_item=0x7f0a0062;
+        public static final int grid_betting_item_progres=0x7f0a0061;
+        public static final int grid_friend=0x7f0a006d;
+        public static final int grid_friend_linear=0x7f0a006c;
+        public static final int grid_friend_progress=0x7f0a006e;
+>>>>>>> origin/pigbug_progress
         public static final int id_text=0x7f0a0006;
         public static final int image_down_test_btn=0x7f0a0065;
         public static final int image_test_delete_btn=0x7f0a0066;
         public static final int img_down_btn=0x7f0a000a;
+<<<<<<< HEAD
         public static final int intro_loginbutton=0x7f0a0074;
         public static final int intro_registbutton=0x7f0a0073;
         public static final int left_drawer=0x7f0a0004;
@@ -326,6 +369,64 @@ public final class R {
         public static final int user_image=0x7f0a0005;
         public static final int user_image_test=0x7f0a0064;
         public static final int viewPager=0x7f0a006d;
+=======
+        public static final int intro_loginbutton=0x7f0a0072;
+        public static final int intro_registbutton=0x7f0a0071;
+        public static final int left_drawer=0x7f0a0004;
+        public static final int list_find_friend=0x7f0a0065;
+        public static final int list_my_friend=0x7f0a0064;
+        public static final int login_okbutton=0x7f0a0078;
+        public static final int login_titlebar=0x7f0a0073;
+        public static final int login_titlebar_closebutton=0x7f0a0075;
+        public static final int login_userid=0x7f0a0076;
+        public static final int login_userpassword=0x7f0a0077;
+        public static final int password_text=0x7f0a0007;
+        public static final int popup_bettingresult_closebutton=0x7f0a007c;
+        public static final int popup_bettingresult_failure=0x7f0a007b;
+        public static final int popup_bettingresult_success=0x7f0a007a;
+        public static final int popup_bettingstart_productbuy_cancel=0x7f0a007f;
+        public static final int popup_bettingstart_productbuy_close=0x7f0a007e;
+        public static final int popup_bettingstart_productbuy_image=0x7f0a007d;
+        public static final int popup_bettingstart_productbuy_name=0x7f0a0081;
+        public static final int popup_bettingstart_productbuy_number=0x7f0a0083;
+        public static final int popup_bettingstart_productbuy_ok=0x7f0a0080;
+        public static final int popup_bettingstart_productbuy_price=0x7f0a0082;
+        public static final int popup_bettingstart_productbuy_totalprice=0x7f0a0084;
+        public static final int popup_bettingstart_start_background=0x7f0a0085;
+        public static final int popup_bettingstart_start_cancel=0x7f0a0087;
+        public static final int popup_bettingstart_start_close=0x7f0a0086;
+        public static final int popup_bettingstart_start_ok=0x7f0a0088;
+        public static final int popup_donationresult_closebutton=0x7f0a008b;
+        public static final int popup_donationresult_failure=0x7f0a008a;
+        public static final int popup_donationresult_success=0x7f0a0089;
+        public static final int popup_donationstart_closebutton=0x7f0a008e;
+        public static final int popup_donationstart_failure=0x7f0a008d;
+        public static final int popup_donationstart_success=0x7f0a008c;
+        public static final int product_image=0x7f0a009c;
+        public static final int product_intro=0x7f0a009e;
+        public static final int product_name=0x7f0a009d;
+        public static final int product_price=0x7f0a009f;
+        public static final int product_price_won=0x7f0a00a0;
+        public static final int radioGroup1=0x7f0a000c;
+        public static final int radioGroup2=0x7f0a0011;
+        public static final int radioGroup3=0x7f0a0015;
+        public static final int regist_okbutton=0x7f0a0095;
+        public static final int regist_titlebar=0x7f0a008f;
+        public static final int regist_titlebar_closebutton=0x7f0a0090;
+        public static final int regist_useremail=0x7f0a0094;
+        public static final int regist_userid=0x7f0a0091;
+        public static final int regist_userimage=0x7f0a0074;
+        public static final int regist_userpassword=0x7f0a0092;
+        public static final int regist_userpasswordre=0x7f0a0093;
+        public static final int request_btn=0x7f0a0008;
+        public static final int search_name=0x7f0a00a3;
+        public static final int star_image=0x7f0a009a;
+        public static final int tabhost=0x7f0a0068;
+        public static final int tabhost_friend=0x7f0a0063;
+        public static final int user_image=0x7f0a0005;
+        public static final int user_image_test=0x7f0a005d;
+        public static final int viewPager=0x7f0a0067;
+>>>>>>> origin/pigbug_progress
     }
     public static final class layout {
         public static final int actionbar_background=0x7f030000;
