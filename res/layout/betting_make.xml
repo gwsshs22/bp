@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:id="@+id/bettingmake_titlebar"
-        android:layout_width="320dp"
+        android:layout_width="360dp"
         android:layout_height="48dp"
         android:background="@drawable/top_center" >
 
