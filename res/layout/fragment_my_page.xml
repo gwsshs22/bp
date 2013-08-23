@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:id="@+id/buttonLayout"
@@ -13,11 +14,14 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="fill_parent"
-        android:layout_height="110dp"
+        android:layout_height="120dp"
         android:background="#ff0000" />
 
     <TabHost
         android:id="@+id/tabhost"
+        android:paddingTop="14dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
@@ -28,13 +32,15 @@
 
             <TabWidget
                 android:id="@android:id/tabs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" >
+                android:layout_width="248dp"
+                android:layout_height="66dp"
+                android:padding="0px"
+                android:layout_gravity="center">
             </TabWidget>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
+                android:paddingTop="10dp"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
@@ -42,71 +48,15 @@
                     android:id="@+id/grid_all_popple"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:numColumns="2"
-                    android:padding="5dp" />
+                    android:numColumns="2"/>
 
                 <GridView
                     android:id="@+id/grid_friend"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:numColumns="2"
-                    android:padding="5dp" />
+                    android:numColumns="2"/>
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-
-    <!--
-    <LinearLayout
-        android:id="@+id/my_page_tab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/button_my_page_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="만든 배팅" />
-
-        <Button
-            android:id="@+id/button_may_page_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="참여 배팅" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent" >
-
-        <ScrollView
-            android:id="@+id/view_all_popple"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-
-            <GridView
-                android:id="@+id/grid_all_popple"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:numColumns="2"
-                android:padding="5dp" />
-        </ScrollView>
-        
-        <ScrollView
-            android:id="@+id/view_friend"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:visibility="gone">
-
-            <GridView
-                android:id="@+id/grid_friend"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:numColumns="2"
-                android:padding="5dp" />
-        </ScrollView>
-    </FrameLayout>
-    -->
 
 </LinearLayout>

@@ -1,10 +1,29 @@
 package club.sgen.network;
 
+import android.app.Application;
+import club.sgen.entity.User;
 import club.sgen.network.cache.FileCacheFactory;
 import club.sgen.network.cache.ImageCacheFactory;
-import android.app.Application;
 
 public class BettingpopApplication extends Application {
+	private static User user;
+
+	public static void login(User u) {
+		user = u;
+	}
+
+	public static User getUser() {
+		return user;
+	}
+
+	public static void logout() {
+		user = null;
+	}
+
+	public boolean isLogined() {
+		return user != null;
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();

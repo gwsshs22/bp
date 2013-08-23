@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:background="@drawable/top_gift_box" >
+    
+    <ToggleButton 
+        android:id="@+id/actionbar_toggle"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:textOn=""
+        android:textOff=""
+        android:background="@drawable/actionbar_btn_menu"/>
+
+</LinearLayout>
