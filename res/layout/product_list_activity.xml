@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_betting_item_linear"
+    android:id="@+id/product_list_activity_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -11,14 +12,14 @@
         android:orientation="vertical" >
 
         <ProgressBar
-            android:id="@+id/grid_betting_item_progres"
+            android:id="@+id/product_list_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible" />
     </LinearLayout>
 
     <GridView
-        android:id="@+id/grid_betting_item"
+        android:id="@+id/product_list_grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numColumns="2" />

@@ -1,5 +1,14 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /bin/*
 =======
 /bin/
 >>>>>>> origin/pigbug
+=======
+bin/*
+gen/*
+<<<<<<< HEAD
+>>>>>>> origin/pigbug_progress
+=======
+>>>>>>> pigbug_progress
+>>>>>>> origin/master
