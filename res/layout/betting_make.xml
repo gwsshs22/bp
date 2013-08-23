@@ -7,14 +7,14 @@
 
     <FrameLayout
         android:id="@+id/bettingmake_titlebar"
-        android:layout_width="fill_parent"
+        android:layout_width="320dp"
         android:layout_height="48dp"
         android:background="@drawable/top_center" >
 
         <ImageView
             android:id="@+id/bettingmake_closebutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="right"
             android:background="@drawable/top_right_close" />
     </FrameLayout>
@@ -60,15 +60,15 @@
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="55dp"
+            android:layout_marginLeft="65dp"
             android:layout_marginTop="2dp"
+            android:background="@drawable/edittext_background"
             android:hint="주제"
             android:inputType="text"
             android:maxLength="70"
             android:textColor="#c7c7c7"
             android:textColorHint="#c7c7c7"
             android:textSize="15sp" >
-
         </EditText>
     </FrameLayout>
 
@@ -78,20 +78,97 @@
         android:layout_marginLeft="15dp"
         android:background="@drawable/new_plate_2" >
 
-        <EditText
-            android:id="@+id/bettingmake_term"
-            android:layout_width="240dp"
+        <LinearLayout
+            android:layout_width="255dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="55dp"
-            android:layout_marginTop="2dp"
-            android:inputType="text"
-            android:maxLength="70"
-            android:textColor="#c7c7c7"
-            android:textColorHint="#c7c7c7"
-            android:textSize="15sp" >
+            android:layout_marginLeft="64dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal" >
 
-        </EditText>
+            <EditText
+                android:id="@+id/bettingmake_year"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edittext_background"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textColor="#c7c7c7"
+                android:textColorHint="#c7c7c7"
+                android:textSize="13sp" >
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="년"
+                android:textColor="#c7c7c7" />
+
+            <EditText
+                android:id="@+id/bettingmake_month"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/edittext_background"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="#c7c7c7"
+                android:textColorHint="#c7c7c7"
+                android:textSize="13sp" >
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="월"
+                android:textColor="#c7c7c7" />
+
+            <EditText
+                android:id="@+id/bettingmake_day"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/edittext_background"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="#c7c7c7"
+                android:textColorHint="#c7c7c7"
+                android:textSize="13sp" >
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="일"
+                android:textColor="#c7c7c7" />
+
+            <EditText
+                android:id="@+id/bettingmake_hour"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/edittext_background"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="#c7c7c7"
+                android:textColorHint="#c7c7c7"
+                android:textSize="13sp" >
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="시"
+                android:textColor="#c7c7c7" />
+        </LinearLayout>
     </FrameLayout>
 
     <FrameLayout
@@ -129,15 +206,15 @@
                     android:id="@+id/bettingmake_findgift"
                     android:layout_width="90dp"
                     android:layout_height="32dp"
-                    android:button="@drawable/betting_make_buy_product"
-                    android:checked="true" />
+                    android:button="@drawable/betting_make_buy_product" />
 
                 <RadioButton
                     android:id="@+id/bettingmake_inputgift"
                     android:layout_width="90dp"
                     android:layout_height="32dp"
                     android:layout_marginLeft="2dp"
-                    android:button="@drawable/betting_make_write" />
+                    android:button="@drawable/betting_make_write"
+                    android:checked="true" />
             </RadioGroup>
         </LinearLayout>
     </FrameLayout>
@@ -154,15 +231,15 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="55dp"
+            android:layout_marginLeft="65dp"
             android:layout_marginTop="2dp"
+            android:background="@drawable/edittext_background"
             android:hint="베팅 상품 직접 입력하기"
             android:inputType="text"
             android:maxLength="70"
             android:textColor="#c7c7c7"
             android:textColorHint="#c7c7c7"
             android:textSize="15sp" >
-
         </EditText>
     </FrameLayout>
 

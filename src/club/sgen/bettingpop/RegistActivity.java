@@ -34,7 +34,7 @@ public class RegistActivity extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.regist);
 
@@ -45,7 +45,7 @@ public class RegistActivity extends Activity implements
 		email = (EditText) findViewById(R.id.regist_useremail);
 		userProfile = (ImageView) findViewById(R.id.regist_userimage);
 
-		pictureSelector = new PictureSelector(this);
+		pictureSelector = new PictureSelector(this, true);
 		imageSelectDialog = pictureSelector.createDialog();
 		userProfile.setOnClickListener(new OnClickListener() {
 			@Override

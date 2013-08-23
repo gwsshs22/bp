@@ -5,7 +5,7 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-   <FrameLayout
+    <FrameLayout
         android:id="@+id/login_titlebar"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
@@ -33,17 +33,15 @@
 
             <EditText
                 android:id="@+id/login_userid"
-                android:layout_width="254dp"
+                android:layout_width="240dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp"
-                android:ems="10"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="80dp"
+                android:background="@drawable/edittext_background"
                 android:hint="USER ID"
                 android:inputType="text"
                 android:textColor="#c7c7c7"
                 android:textSize="12sp" />
-
         </FrameLayout>
 
         <FrameLayout
@@ -53,16 +51,15 @@
 
             <EditText
                 android:id="@+id/login_userpassword"
-                android:layout_width="254dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="80dp"
+                android:background="@drawable/edittext_background"
                 android:hint="PASSWORD"
                 android:inputType="textPassword"
                 android:textColor="#c7c7c7"
                 android:textSize="12sp" />
-
         </FrameLayout>
     </LinearLayout>
 
