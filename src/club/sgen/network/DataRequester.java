@@ -307,6 +307,7 @@ public abstract class DataRequester {
 	betting.setTerm_end(parseDateString(object
 			.getString("betting_term_end")));
 	betting.setProduct_key(object.getInt("product_key"));
+	betting.setDescription("betting_description");
 	betting.setIs_end("is_end");
 	betting.setProduct(product);
 	
