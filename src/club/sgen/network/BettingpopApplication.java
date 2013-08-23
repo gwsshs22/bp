@@ -12,6 +12,10 @@ public class BettingpopApplication extends Application {
 		user = u;
 	}
 
+	public static User getUser() {
+		return user;
+	}
+
 	public static void logout() {
 		user = null;
 	}

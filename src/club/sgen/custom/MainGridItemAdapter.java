@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import club.sgen.entity.Betting;
 import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
 import club.sgen.entity.User;
+import club.sgen.network.BitmapDrawRingOnOuter;
 import club.sgen.network.ImageDownloader;
 import club.sgen.network.R;
 import club.sgen.network.cache.ImageCacheFactory;
@@ -78,7 +80,8 @@ public class MainGridItemAdapter extends BaseAdapter {
 		noImage = new BitmapDrawable(context.getResources(),
 				BitmapFactory.decodeResource(context.getResources(),
 						R.drawable.user1));
-		imageDownloader.download(user.getImage(), imageView, noImage);
+		imageDownloader.download(user.getImage(), imageView, noImage,
+				new BitmapDrawRingOnOuter(Color.BLUE, 3, 3));
 
 		TextView textView = (TextView) gridView.findViewById(R.id.better_name);
 		textView.setText(betting.getUserId());

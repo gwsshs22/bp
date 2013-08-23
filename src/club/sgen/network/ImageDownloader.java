@@ -38,6 +38,21 @@ public class ImageDownloader {
 		}
 	}
 
+	public void download(String fileName, ImageView imageView,
+			Drawable noImageDrawable, BitmapHandler handler) {
+		imageView.setImageDrawable(noImageDrawable);
+		if (fileName == null)
+			return;
+		String url = DataRequester.serverURL + "/images/" + fileName;
+		Bitmap bitmap = imageCache.getBitmap(url, handler);
+		if (bitmap == null) {
+			forceDownload(url, imageView, noImageDrawable);
+		} else {
+			cancelPotentialDownload(url, imageView);
+			imageView.setImageBitmap(bitmap);
+		}
+	}
+
 	private void forceDownload(String url, ImageView imageView,
 			Drawable noImageDrawable) {
 		if (!cancelPotentialDownload(url, imageView))

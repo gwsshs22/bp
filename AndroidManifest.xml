@@ -17,8 +17,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/MyTheme" >
-        <activity
-            android:name="club.sgen.bettingpop.MainActivity">
+        <activity android:name="club.sgen.bettingpop.IntroActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity android:name="club.sgen.bettingpop.AddBettingActivity" />
-        <activity android:name="club.sgen.test.ImageDownloadTestActivity" >
-        </activity>
-        <activity android:name="club.sgen.test.BettingMakeActivity" >
-        </activity>
+        <activity android:name="club.sgen.bettingpop.BettingmakeActivity" />
+        <activity android:name="club.sgen.bettingpop.LoginActivity" />
+        <activity android:name="club.sgen.bettingpop.MainActivity" />
+        <activity android:name="club.sgen.bettingpop.RegistActivity" />
     </application>
 
 </manifest>

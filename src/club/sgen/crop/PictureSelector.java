@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import club.sgen.network.BitmapDrawRingOnOuter;
 import club.sgen.network.R;
 
 public class PictureSelector {
@@ -33,8 +35,6 @@ public class PictureSelector {
 	private Uri mImageCaptureUri;
 	private Activity activity;
 	private Bitmap photo = null;
-	private int width = 0;
-	private int height = 0;
 
 	public PictureSelector(Activity activity) {
 		this.activity = activity;
@@ -45,12 +45,9 @@ public class PictureSelector {
 	}
 
 	public String getFileName() {
+		if (mImageCaptureUri == null)
+			return null;
 		return mImageCaptureUri.getPath();
-	}
-
-	public void setImageSize(int width, int height) {
-		this.width = width;
-		this.height = height;
 	}
 
 	public AlertDialog createDialog() {
@@ -237,6 +234,8 @@ public class PictureSelector {
 			// 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
 
 			Intent intent = new Intent("com.android.camera.action.CROP");
+			intent.putExtra("aspectX", 1);
+			intent.putExtra("aspectY", 1);
 			intent.setDataAndType(mImageCaptureUri, "image/*");
 
 			// Crop한 이미지를 저장할 Path
@@ -258,12 +257,11 @@ public class PictureSelector {
 
 			String full_path = mImageCaptureUri.getPath();
 			photo = BitmapFactory.decodeFile(full_path);
-			if (height > 0 && width > 0) {
-				Bitmap temp = photo;
-				photo = Bitmap.createScaledBitmap(temp, width, height, false);
-				temp.recycle();
-			}
-
+			BitmapDrawRingOnOuter bdro = new BitmapDrawRingOnOuter(Color.RED,
+					20, 17);
+			Bitmap output = bdro.handleBitmap(photo);
+			photo.recycle();
+			photo = output;
 			break;
 		}
 		}

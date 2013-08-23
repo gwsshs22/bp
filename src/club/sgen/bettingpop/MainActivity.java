@@ -46,6 +46,7 @@ import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
 import club.sgen.entity.User;
 import club.sgen.network.AsyncCallback;
+import club.sgen.network.BettingpopApplication;
 import club.sgen.network.DataRequester;
 import club.sgen.network.R;
 
@@ -136,7 +137,7 @@ public class MainActivity extends Activity {
 			button.setOnClickListener(new OnClickListener() {
 				public void onClick(View arg0) {
 					Intent intent = new Intent(MainActivity.this,
-							AddBettingActivity.class);
+							BettingmakeActivity.class);
 					startActivity(intent);
 				}
 			});
@@ -247,6 +248,7 @@ public class MainActivity extends Activity {
 				Bundle savedInstanceState) {
 			int i = getArguments().getInt(ARG_PAGE_NUMBER);
 			fragmentPosition = i;
+			User user = BettingpopApplication.getUser();
 
 			switch (i) {
 			case 0: // my page
@@ -254,24 +256,24 @@ public class MainActivity extends Activity {
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
 				DataRequester.showAllbettinglist(this);
-				DataRequester.showFriendbettinglist("Hwang", this);
+				DataRequester.showFriendbettinglist(user.getId(), this);
 				break;
 			case 1:
 				rootView = inflater.inflate(R.layout.fragment_my_page,
 						container, false);
-				DataRequester.showMakebettinglist("Lee", this);
-				DataRequester.showJoinbettinglist("Gang", this);
+				DataRequester.showMakebettinglist(user.getId(), this);
+				DataRequester.showJoinbettinglist(user.getId(), this);
 				break;
 			case 2:
 				rootView = inflater.inflate(R.layout.fragment_betting_item,
 						container, false);
-				DataRequester.showMyproductlist("Gang", this);
+				DataRequester.showMyproductlist(user.getId(), this);
 				break;
 			case 3:
 				rootView = inflater.inflate(R.layout.fragment_friend,
 						container, false);
-				DataRequester.showFriendlist("Hwang", this);
-				DataRequester.showFriendrequestlist("Hwang", this);
+				DataRequester.showFriendlist(user.getId(), this);
+				DataRequester.showFriendrequestlist(user.getId(), this);
 				break;
 			default:
 				rootView = inflater.inflate(R.layout.fragment_my_page,

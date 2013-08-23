@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/popup_bettingstart_productbuy_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="47dp"
+        android:layout_marginTop="17dp"
+        android:src="@drawable/buy_product_buy_back" />
+
+    <ImageView
+        android:id="@+id/popup_bettingstart_productbuy_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@drawable/popup_closebutton" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="204dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/popup_bettingstart_productbuy_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/buy_product_betting_cancel" />
+
+        <ImageView
+            android:id="@+id/popup_bettingstart_productbuy_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:src="@drawable/buy_product_betting_ok" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="63dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="9dp"
+            android:layout_marginLeft="15dp"
+            android:text="상품명" />
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:text="가격" />
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="15dp"
+            android:text="개수" />
+
+        <TextView
+            android:id="@+id/popup_bettingstart_productbuy_totalprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총금액" />
+    </LinearLayout>
+
+</FrameLayout>
