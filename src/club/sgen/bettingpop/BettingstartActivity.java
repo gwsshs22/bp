@@ -5,6 +5,8 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -28,7 +30,7 @@ import club.sgen.network.cache.ImageCacheFactory;
 
 public class BettingstartActivity extends Activity implements
 		AsyncCallback<HashMap<String, Object>> {
-
+	private static final int REQUEST_POPUP = 18;
 	private ImageView closebutton;
 	private ImageView userimg;
 	private TextView username;
@@ -45,9 +47,6 @@ public class BettingstartActivity extends Activity implements
 	private Betting betting;
 	private Product product;
 
-	private PopupDialog popDialog;
-
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,8 +57,6 @@ public class BettingstartActivity extends Activity implements
 		user = pop.getUser();
 		product = pop.getProduct();
 		betting = pop.getBetting();
-
-		popDialog = new PopupDialog(this);
 
 		closebutton = (ImageView) findViewById(R.id.bettingstart_closebutton);
 		userimg = (ImageView) findViewById(R.id.bettingstart_userimage);
@@ -99,36 +96,23 @@ public class BettingstartActivity extends Activity implements
 		bettingbutton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				popDialog.show();
+				startActivityForResult(new Intent(BettingstartActivity.this,
+						PopupbettingstartActivity.class), REQUEST_POPUP);
 			}
 		});
 
 	}
 
-	public class PopupDialog extends Dialog implements OnClickListener {
-		private ImageView ok;
-
-		public PopupDialog(Context context) {
-			super(context);
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.popup_bettingstart_start);
-			ok = (ImageView) findViewById(R.id.popup_bettingstart_start_ok);
-			ok.setOnClickListener(this);
-			ImageView btn = (ImageView) findViewById(R.id.popup_bettingstart_start_cancel);
-			btn.setOnClickListener(this);
-			btn = (ImageView) findViewById(R.id.popup_bettingstart_start_close);
-			btn.setOnClickListener(this);
-		}
-
-		@Override
-		public void onClick(View arg0) {
-			if (arg0 == ok) {
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_POPUP) {
+			if (resultCode == Activity.RESULT_OK) {
 				DataRequester.joinBetting(
 						String.valueOf(betting.getBetting_key()),
 						BettingpopApplication.getUser().getId(), "F",
 						BettingstartActivity.this);
 			}
-			this.dismiss();
+			return;
 		}
 	}
 
@@ -157,5 +141,4 @@ public class BettingstartActivity extends Activity implements
 		// TODO Auto-generated method stub
 
 	}
-
 }

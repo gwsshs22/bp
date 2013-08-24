@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/popup_start_background" >
 
-
     <ImageView
         android:id="@+id/popup_bettingstart_start_close"
         android:layout_width="wrap_content"
@@ -18,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="330dp"
         android:orientation="horizontal" >
 
         <ImageView
@@ -34,4 +33,5 @@
             android:layout_marginLeft="22dp"
             android:src="@drawable/popup_bettingstart_betting_ok" />
     </LinearLayout>
+
 </FrameLayout>

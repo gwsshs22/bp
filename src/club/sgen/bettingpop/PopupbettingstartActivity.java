@@ -1,12 +1,14 @@
 package club.sgen.bettingpop;
 
-import club.sgen.network.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import club.sgen.network.R;
 
-public class PopupbettingstartActivity extends Activity {
-
+public class PopupbettingstartActivity extends Activity implements
+		OnClickListener {
 	private ImageView ok;
 	private ImageView cancel;
 	private ImageView close;
@@ -21,8 +23,17 @@ public class PopupbettingstartActivity extends Activity {
 		ok = (ImageView) findViewById(R.id.popup_bettingstart_start_ok);
 		cancel = (ImageView) findViewById(R.id.popup_bettingstart_start_cancel);
 		close = (ImageView) findViewById(R.id.popup_bettingstart_start_close);
-
-		// TODO Auto-generated method stub
+		ok.setOnClickListener(this);
+		cancel.setOnClickListener(this);
+		close.setOnClickListener(this);
 	}
 
+	@Override
+	public void onClick(View arg0) {
+		if (arg0 == ok)
+			setResult(Activity.RESULT_OK);
+		else if (arg0 == cancel)
+			setResult(Activity.RESULT_CANCELED);
+		finish();
+	}
 }

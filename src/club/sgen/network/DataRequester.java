@@ -22,15 +22,17 @@ import club.sgen.entity.User;
 
 public abstract class DataRequester {
 	public static final String serverURL = "http://ec2-54-213-12-61.us-west-2.compute.amazonaws.com:8080/bettingpop_s";
-	private static final DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+	public static final DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
 
 	public static Date getCurrentDate() {
 		return new Date(System.currentTimeMillis());
 	}
 
 	public static String dateToString(Date date) {
-		return date.getMonth() + "월  " + date.getDate() + "일  "
-				+ date.getHours() + "시";
+		DateFormat f = new SimpleDateFormat("yyyy년  MM월  dd일  hh시");
+		return f.format(date);
+		// return date.getMonth() + "월  " + date.getDate() + "일  "
+		//			+ date.getHours() + "시";
 	}
 
 	public static Date toDate(int y, int M, int d, int h, int m, int s) {
@@ -277,7 +279,7 @@ public abstract class DataRequester {
 		return product;
 	}
 
-	private static Date parseDateString(String string) {
+	public static Date parseDateString(String string) {
 		if (string != null)
 			try {
 				return df.parse(string);
@@ -286,6 +288,10 @@ public abstract class DataRequester {
 				e.printStackTrace();
 			}
 		return null;
+	}
+
+	public static String formatDateString(Date date) {
+		return df.format(date);
 	}
 
 	public static Betting toBetting(JSONObject object) throws JSONException,

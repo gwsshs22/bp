@@ -78,6 +78,7 @@ public class BettingmakeActivity extends Activity implements
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				if (arg1) {
 					writeproductname.setEnabled(false);
+					writeproductname.setText("");
 					Intent intent = new Intent(BettingmakeActivity.this,
 							ProductListActivity.class);
 					intent.putExtra(ProductListActivity.REQUEST_PRODUCT_TYPE,

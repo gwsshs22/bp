@@ -8,8 +8,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -36,10 +39,7 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
-import android.widget.TabWidget;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import club.sgen.custom.DrawerListAdapter;
 import club.sgen.custom.FriendListAdapter;
@@ -53,7 +53,9 @@ import club.sgen.entity.User;
 import club.sgen.network.AsyncCallback;
 import club.sgen.network.BettingpopApplication;
 import club.sgen.network.DataRequester;
+import club.sgen.network.ImageDownloader;
 import club.sgen.network.R;
+import club.sgen.network.cache.ImageCacheFactory;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -179,7 +181,8 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		// fragment를 새로 replace 하면서 main content를 업데이트
-		Fragment fragment = new PageFragment();
+		PageFragment fragment = new PageFragment();
+		fragment.setContext(this);
 		Bundle args = new Bundle();
 		args.putInt(PageFragment.ARG_PAGE_NUMBER, position);
 		fragment.setArguments(args);
@@ -214,6 +217,7 @@ public class MainActivity extends Activity {
 	public static class PageFragment extends Fragment implements
 			AsyncCallback<HashMap<String, Object>>, OnClickListener {
 		public static final String ARG_PAGE_NUMBER = "page_number";
+		private Context context;
 		private int fragmentPosition = -1;
 		private GridView gridView;
 		private ListView listView;
@@ -253,7 +257,6 @@ public class MainActivity extends Activity {
 		private ProgressBar productProgress;
 
 		public PageFragment() {
-			// Empty constructor
 			myPopItems = new ArrayList<Pop>();
 			allPopItems = new ArrayList<Pop>();
 			parPopItems = new ArrayList<Pop>();
@@ -262,6 +265,10 @@ public class MainActivity extends Activity {
 			productItems = new ArrayList<Product>();
 			friendItems = new ArrayList<FriendUser>();
 			friendRequestItems = new ArrayList<User>();
+		}
+
+		public void setContext(Context context) {
+			this.context = context;
 		}
 
 		@Override
@@ -334,7 +341,7 @@ public class MainActivity extends Activity {
 				mainGridItemAdapterMyPople = new MainGridItemAdapter(
 						getActivity(), R.layout.view_grid, myPopItems);
 				gridView.setAdapter(mainGridItemAdapterMyPople);
-				
+
 				tabView1 = (View) rootView
 						.findViewById(R.id.grid_all_popple_linear);
 				tabView2 = (View) rootView
@@ -344,26 +351,26 @@ public class MainActivity extends Activity {
 
 				RadioButton _imageButton = (RadioButton) rootView
 						.findViewById(R.id.btn_tab1);
-				_imageButton.setOnClickListener(new OnClickListener(){
+				_imageButton.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
 						tabView1.setVisibility(View.VISIBLE);
 						tabView2.setVisibility(View.INVISIBLE);
 					}
-					
+
 				});
 				_imageButton = (RadioButton) rootView
 						.findViewById(R.id.btn_tab2);
-				_imageButton.setOnClickListener(new OnClickListener(){
+				_imageButton.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
 						tabView1.setVisibility(View.INVISIBLE);
 						tabView2.setVisibility(View.VISIBLE);
 					}
-					
-				});				
+
+				});
 
 				DataRequester.showAllbettinglist(this);
 				DataRequester.showFriendbettinglist(user.getId(), this);
@@ -384,46 +391,54 @@ public class MainActivity extends Activity {
 						getActivity(), R.layout.view_grid, makedPopItems);
 				gridView.setAdapter(mainGridItemAdapterMaked);
 
-				gridView = (GridView) rootView.findViewById(R.id.grid_in_betting);
+				gridView = (GridView) rootView
+						.findViewById(R.id.grid_in_betting);
 				mainGridItemAdapterPar = new MainGridItemAdapter(getActivity(),
 						R.layout.view_grid, parPopItems);
 				gridView.setAdapter(mainGridItemAdapterPar);
 
+				ImageView userImage = (ImageView) rootView
+						.findViewById(R.id.friend_user_image);
+				ImageDownloader down = new ImageDownloader(context,
+						ImageCacheFactory.DEFAULT_CACHE_NAME);
+				BitmapDrawable bitmapDrawable = new BitmapDrawable(
+						getResources(), BitmapFactory.decodeResource(
+								getResources(), R.drawable.user1));
+				down.download(user.getImage(), userImage, bitmapDrawable);
 				TextView userName = (TextView) rootView
 						.findViewById(R.id.mypage_name);
-				userName.setText((String) user.getName());
+				userName.setText((String) user.getId());
 
 				// Tabhost
 				tabView3 = (View) rootView
 						.findViewById(R.id.grid_made_betting_linear);
-				tabView4 = (View) rootView
-						.findViewById(R.id.grid_in_linear);
+				tabView4 = (View) rootView.findViewById(R.id.grid_in_linear);
 				tabView3.setVisibility(View.VISIBLE);
 				tabView4.setVisibility(View.INVISIBLE);
 
 				RadioButton _imageButton2 = (RadioButton) rootView
 						.findViewById(R.id.btn_tab3);
-				_imageButton2.setOnClickListener(new OnClickListener(){
+				_imageButton2.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
 						tabView3.setVisibility(View.VISIBLE);
 						tabView4.setVisibility(View.INVISIBLE);
 					}
-					
+
 				});
 				_imageButton2 = (RadioButton) rootView
 						.findViewById(R.id.btn_tab4);
-				_imageButton2.setOnClickListener(new OnClickListener(){
+				_imageButton2.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
 						tabView3.setVisibility(View.INVISIBLE);
 						tabView4.setVisibility(View.VISIBLE);
 					}
-					
+
 				});
-				
+
 				DataRequester.showMakebettinglist(user.getId(), this);
 				DataRequester.showJoinbettinglist(user.getId(), this);
 				break;
@@ -443,32 +458,31 @@ public class MainActivity extends Activity {
 				// Tabhost
 				tabView5 = (View) rootView
 						.findViewById(R.id.list_my_friend_linear);
-				tabView6 = (View) rootView
-						.findViewById(R.id.find_friend);
+				tabView6 = (View) rootView.findViewById(R.id.find_friend);
 				tabView5.setVisibility(View.VISIBLE);
 				tabView6.setVisibility(View.INVISIBLE);
 
 				RadioButton _imageButton3 = (RadioButton) rootView
 						.findViewById(R.id.btn_tab5);
-				_imageButton3.setOnClickListener(new OnClickListener(){
+				_imageButton3.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
 						tabView5.setVisibility(View.VISIBLE);
 						tabView6.setVisibility(View.INVISIBLE);
 					}
-					
+
 				});
 				_imageButton3 = (RadioButton) rootView
 						.findViewById(R.id.btn_tab6);
-				_imageButton3.setOnClickListener(new OnClickListener(){
+				_imageButton3.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {
 						tabView5.setVisibility(View.INVISIBLE);
 						tabView6.setVisibility(View.VISIBLE);
 					}
-					
+
 				});
 				// listView
 				listView = (ListView) rootView
@@ -502,8 +516,6 @@ public class MainActivity extends Activity {
 			default:
 			}
 		}
-
-
 
 		AdapterView.OnItemClickListener bettingItemListener = new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,

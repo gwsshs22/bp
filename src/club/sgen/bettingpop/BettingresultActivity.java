@@ -32,6 +32,7 @@ import club.sgen.network.cache.ImageCacheFactory;
 
 public class BettingresultActivity extends Activity implements
 		AsyncCallback<HashMap<String, Object>> {
+	private static final int REQUEST_POPUP = 18;
 	private ImageView closebutton;
 	private ImageView userimg;
 	private TextView username;
@@ -48,8 +49,6 @@ public class BettingresultActivity extends Activity implements
 	private User user;
 	private Betting betting;
 	private Product product;
-
-	private PopupDialog popDialog;
 
 	private PictureSelector selector;
 	private AlertDialog alertDialog;
@@ -74,8 +73,6 @@ public class BettingresultActivity extends Activity implements
 		boolean isOwner = false;
 		if (user.getId().equals(BettingpopApplication.getUser().getId()))
 			isOwner = true;
-
-		popDialog = new PopupDialog(this);
 
 		closebutton = (ImageView) findViewById(R.id.bettingresult_closebutton);
 		userimg = (ImageView) findViewById(R.id.bettingresult_userimage);
@@ -123,7 +120,9 @@ public class BettingresultActivity extends Activity implements
 			bettingbutton.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					popDialog.show();
+					startActivityForResult(new Intent(
+							BettingresultActivity.this,
+							PopupbettingresultActivity.class), REQUEST_POPUP);
 				}
 			});
 		} else {
@@ -147,35 +146,37 @@ public class BettingresultActivity extends Activity implements
 		}
 	}
 
-	public class PopupDialog extends Dialog implements OnClickListener {
-		private ImageView success;
-		private ImageView fail;
-		private ImageView close;
-
-		public PopupDialog(Context context) {
-			super(context);
-			setContentView(R.layout.popup_bettingresult_accept);
-			success = (ImageView) findViewById(R.id.popup_bettingresult_success);
-			fail = (ImageView) findViewById(R.id.popup_bettingresult_failure);
-			close = (ImageView) findViewById(R.id.popup_bettingresult_closebutton);
-			close.setOnClickListener(this);
-			fail.setOnClickListener(this);
-			success.setOnClickListener(this);
-		}
-
-		@Override
-		public void onClick(View arg0) {
-			if (success == arg0) {
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_POPUP) {
+			if (resultCode == Activity.RESULT_OK) {
 				DataRequester.distributeProduct(user.getId(),
 						String.valueOf(product.getProduct_key()),
 						BettingresultActivity.this);
-			} else if (fail == arg0) {
+			} else if (resultCode == Activity.RESULT_CANCELED) {
 				DataRequester.distributeProduct(BettingpopApplication.getUser()
 						.getId(), String.valueOf(product.getProduct_key()),
 						BettingresultActivity.this);
 			}
-			this.dismiss();
+			return;
 		}
+		if (selector == null)
+			return;
+		selector.onActivityResult(requestCode, resultCode, data);
+		Bitmap bitmap = selector.getBitmap();
+		if (bitmap != null)
+			productimage.setImageBitmap(bitmap);
+	}
+
+	@Override
+	public void exceptionOccured(Exception e) {
+
+	}
+
+	@Override
+	public void cancelled() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -196,24 +197,4 @@ public class BettingresultActivity extends Activity implements
 		}
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (selector == null)
-			return;
-		selector.onActivityResult(requestCode, resultCode, data);
-		Bitmap bitmap = selector.getBitmap();
-		if (bitmap != null)
-			productimage.setImageBitmap(bitmap);
-	}
-
-	@Override
-	public void exceptionOccured(Exception e) {
-
-	}
-
-	@Override
-	public void cancelled() {
-		// TODO Auto-generated method stub
-
-	}
 }

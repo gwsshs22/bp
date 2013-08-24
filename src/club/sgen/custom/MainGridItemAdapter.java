@@ -78,6 +78,9 @@ public class MainGridItemAdapter extends BaseAdapter {
 			imageView.setVisibility(View.VISIBLE);
 		}
 
+		TextView tv = (TextView) gridView.findViewById(R.id.textView1);
+		tv.setText(String.valueOf(popSrc.get(position).getDisagree()));
+
 		imageView = (ImageView) gridView.findViewById(R.id.betting_image);
 		BitmapDrawable noImage = new BitmapDrawable(context.getResources(),
 				BitmapFactory.decodeResource(context.getResources(),
@@ -89,7 +92,7 @@ public class MainGridItemAdapter extends BaseAdapter {
 				BitmapFactory.decodeResource(context.getResources(),
 						R.drawable.user1));
 		imageDownloader.download(user.getImage(), imageView, noImage,
-				new BitmapDrawRingOnOuter(Color.BLUE, 3, 3));
+				new BitmapDrawRingOnOuter(0x00037eba, 3, 3));
 
 		TextView textView = (TextView) gridView.findViewById(R.id.better_name);
 		textView.setText(betting.getUserId());
@@ -102,7 +105,6 @@ public class MainGridItemAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = null;
-				Betting b = betting;
 				if (!betting.getIs_end().equals("T")) {
 					intent = new Intent(context, BettingstartActivity.class);
 				} else {

@@ -2,6 +2,8 @@ package club.sgen.entity;
 
 import java.util.Date;
 
+import club.sgen.network.DataRequester;
+
 import android.content.Intent;
 
 public class Pop {
@@ -22,8 +24,10 @@ public class Pop {
 		p.setName(intent.getStringExtra("p_name"));
 		p.setPrice(intent.getIntExtra("p_price", 0));
 		p.setProduct_key(intent.getIntExtra("p_product", 0));
-		p.setTerm_end((Date) intent.getSerializableExtra("p_term_end"));
-		p.setTerm_start((Date) intent.getSerializableExtra("p_term_start"));
+		p.setTerm_end((Date) DataRequester.parseDateString(intent
+				.getStringExtra("p_term_end")));
+		p.setTerm_start((Date) DataRequester.parseDateString(intent
+				.getStringExtra("p_term_start")));
 		p.setType((Product.TYPE) intent.getSerializableExtra("p_t"));
 
 		b.setBetting_key(intent.getIntExtra("b_key", 0));
@@ -35,8 +39,10 @@ public class Pop {
 		b.setProduct_key(intent.getIntExtra("b_pk", 0));
 		b.setResultImage(intent.getStringExtra("b_ri"));
 		b.setUserId(intent.getStringExtra("b_ui"));
-		b.setTerm_end((Date) intent.getSerializableExtra("b_te"));
-		b.setTerm_start((Date) intent.getSerializableExtra("b_ts"));
+		b.setTerm_end((Date) DataRequester.parseDateString(intent
+				.getStringExtra("b_te")));
+		b.setTerm_start((Date) DataRequester.parseDateString(intent
+				.getStringExtra("b_ts")));
 		b.setType((Betting.TYPE) intent.getSerializableExtra("b_t"));
 
 		Pop pop = new Pop();
@@ -67,8 +73,10 @@ public class Pop {
 		intent.putExtra("p_name", product.getName());
 		intent.putExtra("p_price", product.getPrice());
 		intent.putExtra("p_product", product.getProduct_key());
-		intent.putExtra("p_term_end", product.getTerm_end());
-		intent.putExtra("p_term_start", product.getTerm_start());
+		intent.putExtra("p_term_end",
+				DataRequester.formatDateString(product.getTerm_end()));
+		intent.putExtra("p_term_start",
+				DataRequester.formatDateString(product.getTerm_start()));
 		intent.putExtra("p_t", product.getType());
 
 		intent.putExtra("b_key", betting.getBetting_key());
@@ -80,8 +88,10 @@ public class Pop {
 		intent.putExtra("b_pk", betting.getProduct_key());
 		intent.putExtra("b_ri", betting.getResultImage());
 		intent.putExtra("b_ui", betting.getUserId());
-		intent.putExtra("b_te", betting.getTerm_end());
-		intent.putExtra("b_ts", betting.getTerm_start());
+		intent.putExtra("b_te",
+				DataRequester.formatDateString(betting.getTerm_end()));
+		intent.putExtra("b_ts",
+				DataRequester.formatDateString(betting.getTerm_start()));
 		intent.putExtra("b_t", betting.getType());
 	}
 
