@@ -4,6 +4,7 @@
     android:layout_height="248dp" >
 
     <LinearLayout
+        android:id="@+id/view_grid_linear"
         android:layout_width="175dp"
         android:layout_height="248dp"
         android:background="@drawable/plate_betting"

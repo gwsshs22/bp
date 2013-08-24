@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +12,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import club.sgen.bettingpop.BettingresultActivity;
 import club.sgen.bettingpop.BettingstartActivity;
+import club.sgen.bettingpop.DonationresultActivity;
+import club.sgen.bettingpop.DonationstartActivity;
 import club.sgen.entity.Betting;
 import club.sgen.entity.Pop;
 import club.sgen.entity.Product;
@@ -73,6 +75,11 @@ public class MainGridItemAdapter extends BaseAdapter {
 		User user = popSrc.get(position).getUser();
 		Product product = popSrc.get(position).getProduct();
 
+		LinearLayout linear = (LinearLayout) gridView
+				.findViewById(R.id.view_grid_linear);
+		if (betting.getType() == Betting.TYPE.D)
+			linear.setBackgroundResource(R.drawable.plate_donation);
+
 		ImageView imageView = (ImageView) gridView.findViewById(R.id.black);
 		if (betting.getIs_end().equals("T")) {
 			imageView.setVisibility(View.VISIBLE);
@@ -105,10 +112,21 @@ public class MainGridItemAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = null;
-				if (!betting.getIs_end().equals("T")) {
-					intent = new Intent(context, BettingstartActivity.class);
+				if (betting.getType() == Betting.TYPE.B) {
+					if (!betting.getIs_end().equals("T")) {
+						intent = new Intent(context, BettingstartActivity.class);
+					} else {
+						intent = new Intent(context,
+								BettingresultActivity.class);
+					}
 				} else {
-					intent = new Intent(context, BettingresultActivity.class);
+					if (!betting.getIs_end().equals("T")) {
+						intent = new Intent(context,
+								DonationstartActivity.class);
+					} else {
+						intent = new Intent(context,
+								DonationresultActivity.class);
+					}
 				}
 				Pop.putPopToIntent(intent, popSrc.get(position));
 				context.startActivity(intent);
