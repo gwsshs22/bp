@@ -77,16 +77,16 @@ public class MainGridItemAdapter extends BaseAdapter {
 
 		LinearLayout linear = (LinearLayout) gridView
 				.findViewById(R.id.view_grid_linear);
+		TextView tv = (TextView) gridView.findViewById(R.id.textView1);
 		if (betting.getType() == Betting.TYPE.D)
 			linear.setBackgroundResource(R.drawable.plate_donation);
+		else
+			tv.setText(String.valueOf(popSrc.get(position).getDisagree()));
 
 		ImageView imageView = (ImageView) gridView.findViewById(R.id.black);
 		if (betting.getIs_end().equals("T")) {
 			imageView.setVisibility(View.VISIBLE);
 		}
-
-		TextView tv = (TextView) gridView.findViewById(R.id.textView1);
-		tv.setText(String.valueOf(popSrc.get(position).getDisagree()));
 
 		imageView = (ImageView) gridView.findViewById(R.id.betting_image);
 		BitmapDrawable noImage = new BitmapDrawable(context.getResources(),

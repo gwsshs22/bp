@@ -91,8 +91,8 @@
 
             <ImageView
                 android:id="@+id/donationstart_donationproductimage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="276dp"
+                android:layout_height="138dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/ic_launcher" />
