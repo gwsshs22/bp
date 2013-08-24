@@ -69,6 +69,7 @@ public class BettingresultActivity extends Activity implements
 		betting = pop.getBetting();
 
 		selector = new PictureSelector(this, false);
+		selector.setAspect(276, 138);
 		alertDialog = selector.createDialog();
 		boolean isOwner = false;
 		if (user.getId().equals(BettingpopApplication.getUser().getId()))

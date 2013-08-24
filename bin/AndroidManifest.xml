@@ -30,10 +30,20 @@
         <activity android:name="club.sgen.bettingpop.MainActivity" />
         <activity android:name="club.sgen.bettingpop.RegistActivity" />
         <activity android:name="club.sgen.bettingpop.ProductListActivity" />
-        <activity android:name="club.sgen.bettingpop.BettingstartActivity"></activity>
-        <activity android:name="club.sgen.bettingpop.BettingresultActivity"></activity>
-        <activity android:name="club.sgen.bettingpop.DonationresultActivity"></activity>
-        <activity android:name="club.sgen.bettingpop.DonationstartActivity"></activity>
+        <activity android:name="club.sgen.bettingpop.BettingstartActivity" >
+        </activity>
+        <activity android:name="club.sgen.bettingpop.BettingresultActivity" >
+        </activity>
+        <activity android:name="club.sgen.bettingpop.DonationresultActivity" >
+        </activity>
+        <activity android:name="club.sgen.bettingpop.DonationstartActivity" >
+        </activity>
+        <activity
+            android:name="club.sgen.bettingpop.PopupbettingresultActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="club.sgen.bettingpop.PopupbettingstartActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

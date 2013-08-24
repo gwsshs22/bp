@@ -37,6 +37,9 @@ public class PictureSelector {
 	private Bitmap photo = null;
 	private boolean useBitmapHandler = false;
 
+	private int aspectX = 1;
+	private int aspectY = 1;
+
 	public PictureSelector(Activity activity, boolean useBitmapHandler) {
 		this.activity = activity;
 		this.useBitmapHandler = useBitmapHandler;
@@ -44,6 +47,11 @@ public class PictureSelector {
 
 	public Bitmap getBitmap() {
 		return photo;
+	}
+
+	public void setAspect(int x, int y) {
+		this.aspectX = x;
+		this.aspectY = y;
 	}
 
 	public String getFileName() {
@@ -225,7 +233,7 @@ public class PictureSelector {
 			mImageCaptureUri = createSaveCropFile();
 			File cpoy_file = new File(mImageCaptureUri.getPath());
 
-			// SD카드에 저장된 파일을 이미지 Crop을 위해 복사한다.
+			// SD카드에 저장된 파일을 이미지 Crop을 위해 복사한다.F
 			copyFile(original_file, cpoy_file);
 		}
 
@@ -236,8 +244,8 @@ public class PictureSelector {
 			// 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
 
 			Intent intent = new Intent("com.android.camera.action.CROP");
-			intent.putExtra("aspectX", 1);
-			intent.putExtra("aspectY", 1);
+			intent.putExtra("aspectX", aspectX);
+			intent.putExtra("aspectY", aspectY);
 			intent.setDataAndType(mImageCaptureUri, "image/*");
 
 			// Crop한 이미지를 저장할 Path

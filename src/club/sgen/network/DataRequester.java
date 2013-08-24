@@ -29,8 +29,8 @@ public abstract class DataRequester {
 	}
 
 	public static String dateToString(Date date) {
-		return date.getYear() + "년  " + date.getMonth() + "월  "
-				+ date.getDate() + "일  " + date.getHours() + "시";
+		return date.getMonth() + "월  " + date.getDate() + "일  "
+				+ date.getHours() + "시";
 	}
 
 	public static Date toDate(int y, int M, int d, int h, int m, int s) {
@@ -134,8 +134,8 @@ public abstract class DataRequester {
 
 	public static void updateResultImage(int betting_key, String image) {
 		executeFileUpload(image,
-				"UPDATE betting SET result_image = ? WHERE betting_key = \""
-						+ betting_key + "\"", String.valueOf(betting_key));
+				"UPDATE betting SET result_image = ? WHERE betting_key = "
+						+ betting_key, String.valueOf(betting_key));
 	}
 
 	public static void login(String id, String password,
@@ -150,6 +150,7 @@ public abstract class DataRequester {
 							JSONObject data) throws JSONException {
 						boolean success = data.getBoolean("success");
 						map.put("success", success);
+						data.put("name", "name");
 						if (success)
 							try {
 								map.put("user", toUser(data));
@@ -253,7 +254,8 @@ public abstract class DataRequester {
 		user.setName(object.getString("name"));
 		user.setEmail(object.getString("email"));
 		user.setPoint(object.getInt("point"));
-		user.setImage(object.getString("image"));
+		if (object.has("image"))
+			user.setImage(object.getString("image"));
 
 		return user;
 	}
@@ -316,6 +318,8 @@ public abstract class DataRequester {
 		betting.setProduct_key(object.getInt("product_key"));
 		betting.setDescription(object.getString("betting_description"));
 		betting.setIs_end(object.getString("is_end"));
+		if (object.has("betting_result_image"))
+			betting.setResultImage(object.getString("betting_result_image"));
 		betting.setProduct(product);
 
 		return betting;

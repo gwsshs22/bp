@@ -104,6 +104,8 @@ public class RegistActivity extends Activity implements
 				if (success) {
 					Toast.makeText(this, "성공적으로 가입되었습니다.", Toast.LENGTH_LONG)
 							.show();
+					startActivity(new Intent(this, LoginActivity.class));
+					finish();
 				} else {
 					Toast.makeText(this, "중복되는 ID 입니다.", Toast.LENGTH_LONG)
 							.show();
